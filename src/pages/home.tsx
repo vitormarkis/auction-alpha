@@ -1,7 +1,16 @@
+import { api } from "@/services/api";
+import { useQuery } from "@tanstack/react-query";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 export default function () {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
+
+  const { data: users } = useQuery({
+    queryKey: ["users"],
+    queryFn: () => api.get("/users").then((res) => res.data),
+  });
+
+  console.log(users)
 
   if (!session) {
     return (
@@ -16,7 +25,10 @@ export default function () {
 
   return (
     <div>
-      <pre>{JSON.stringify(session, null, 2)}</pre>
+      <h1>Session</h1>
+      <pre className="mb-4">{JSON.stringify(session, null, 2)}</pre>
+      <h2>Users</h2>
+      <pre className="mb-4">{JSON.stringify(users, null, 2)}</pre>
       <button className="p-2 rounded-md border bg-red-400 text-white" onClick={() => signOut()}>
         Sair
       </button>

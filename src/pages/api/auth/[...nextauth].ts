@@ -71,7 +71,7 @@ export const authOptions: NextAuthOptions = {
 
           return {
             ...sessionUser,
-            accessToken: "AUTHORIZATION HEADER!!",
+            accessToken: "newToken",
           };
           /** */
         } catch (error) {
