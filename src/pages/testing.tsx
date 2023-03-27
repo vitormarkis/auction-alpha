@@ -1,32 +1,33 @@
-import { getSession, signIn, signOut, useSession } from "next-auth/react";
-import { useQuery } from "@tanstack/react-query";
-import { api } from "@/services/api";
+import { api } from "@/services/api"
+import { useQuery } from "@tanstack/react-query"
+import { getSession, signIn, signOut, useSession } from "next-auth/react"
 
 export default function () {
-  const { data: session } = useSession();
-  
+  const { data: session } = useSession()
+
   const { data: users } = useQuery({
     queryKey: ["users"],
     queryFn: () => api.get("/users").then((res) => res.data),
-  });
-  
+  })
+
   return session ? (
-    <div>
+    <div className="flex w-full flex-col">
       <span>Oi {session.user?.name}</span>
-      <pre>{users && JSON.stringify(users, null, 2)}</pre>
-      <button onClick={() => signOut({ redirect: false })} className="bg-red-500 text-white p-2">
+      {/* <pre>{users && JSON.stringify(users, null, 2)}</pre> */}
+      <pre>{session && JSON.stringify(session, null, 2)}</pre>
+      <button onClick={() => signOut({ redirect: false })} className="ml-auto bg-red-500 text-white p-2">
         Sair
       </button>
     </div>
   ) : (
     <div>
       <span>Faça login para ver a página</span>
+      <pre>{JSON.stringify(session, null, 2)}</pre>
       <button onClick={() => signIn()} className="bg-emerald-500 text-white p-2">
         Entrar
       </button>
     </div>
-  );
-
+  )
 
   // console.log(users);
 
@@ -50,11 +51,11 @@ export default function () {
           Sair
         </button> */}
     </div>
-  );
+  )
 }
 
 export const getServerSideProps = async (ctx) => {
-  const session = await getSession(ctx);
+  const session = await getSession(ctx)
 
   return session
     ? {
@@ -62,5 +63,5 @@ export const getServerSideProps = async (ctx) => {
       }
     : {
         props: {},
-      };
-};
+      }
+}

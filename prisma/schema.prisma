@@ -16,6 +16,7 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  repos_amount  Int?
   accounts      Account[]
   sessions      Session[]
 }
