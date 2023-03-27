@@ -1,8 +1,11 @@
 import NextAuth from "next-auth/next";
 import { z } from "zod";
 
+import { prisma } from "@/services/prisma";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GithubProvider from "next-auth/providers/github";
 
 const usersDatabase = [
   {
@@ -22,9 +25,10 @@ const usersDatabase = [
 ];
 
 export const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma),
   callbacks: {
     async jwt({ token, user }) {
-      if (user) {
+      if (user?.accessToken) {
         token = {
           ...token,
           accessToken: user.accessToken,
@@ -33,10 +37,12 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token, user }) {
-      session = {
-        ...session,
-        accessToken: token.accessToken,
-      };
+      if (token?.accessToken) {
+        session = {
+          ...session,
+          accessToken: token.accessToken,
+        };
+      }
 
       return session;
     },
@@ -75,10 +81,13 @@ export const authOptions: NextAuthOptions = {
           };
           /** */
         } catch (error) {
-          console.log(error);
-          return null;
+          throw error;
         }
       },
+    }),
+    GithubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID as string,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
     }),
   ],
   secret: process.env.NEXT_SECRET,

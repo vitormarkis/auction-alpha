@@ -1,15 +1,14 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.headers.authorization !== "newToken") {
-    console.log(req.headers.authorization, "newToken", typeof req.headers.authorization, typeof "newToken");
-    return res.json({
-      message: "sem autorização",
-      header: req.headers.authorization,
-      reqHeader: "newToken",
-      doesMatch: req.headers.authorization === "newToken",
-    });
-  }
+  // if (req.headers.authorization !== "newToken") {
+  //   return res.json({
+  //     message: "sem autorização",
+  //     header: req.headers.authorization,
+  //     reqHeader: "newToken",
+  //     doesMatch: req.headers.authorization === "newToken",
+  //   });
+  // }
 
   res.json([
     {
