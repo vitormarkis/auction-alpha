@@ -7,7 +7,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { NextAuthOptions, Session, User } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import GithubProvider, { GithubProfile } from "next-auth/providers/github"
-import GoogleProvider from "next-auth/providers/google"
+import GoogleProvider, { GoogleProfile } from "next-auth/providers/google"
 
 interface DatabaseUser extends User {
   username: string
@@ -105,28 +105,30 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      profile(profile: GoogleProfile) {
+
+        profile = {
+          /**
+           * Esse objeto será salvo no banco de dados.
+           * Você pode resgatar ele nas funções callbacks, através do user
+           */
+        }
+        
+        return profile
+      }
     }),
   ],
   secret: process.env.NEXT_SECRET,
   callbacks: {
-    session({ session, token, user }) {
-      console.log("user?", user)
-
-      if (token?.accessToken) {
-        session = {
-          ...session,
-          accessToken: token.accessToken,
-        }
-      }
+    session({ session, user }) {
 
       const newSession = {
         ...session,
         user: {
           ...session.user,
-          ...user,
+          repos_amount: user.repos_amount,
         },
-        // otherToken: "heh83h489",
-      } as Session
+      }
 
       return newSession
     },
