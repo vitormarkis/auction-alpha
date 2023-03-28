@@ -50,14 +50,14 @@ export default function () {
           </div>
 
           <div className="text-gray-700 flex gap-3">
-            <div className="p-1 border relative h-12 border-gray-400 flex items-center justify-center rounded-lg grow">
+            <button className="focus:outline-1 focus:outline-offset-1 focus:outline-green-500 focus:outline-double p-1 border relative h-12 border-gray-400 flex items-center justify-center rounded-lg grow">
               <Google className="absolute left-1 top-1/2 -translate-y-1/2" width={32} height={32} />
               <p>Google</p>
-            </div>  
-            <div className="p-1 border relative h-12 border-gray-400 flex items-center justify-center rounded-lg grow">
+            </button>
+            <button className="focus:outline-1 focus:outline-offset-1 focus:outline-green-500 focus:outline-double p-1 border relative h-12 border-gray-400 flex items-center justify-center rounded-lg grow">
               <Github className="absolute left-1 top-1/2 -translate-y-1/2" width={32} height={32} />
               <p>Github</p>
-            </div>
+            </button>
           </div>
         </form>
       </div>
