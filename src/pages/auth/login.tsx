@@ -1,11 +1,24 @@
-import { IUserLogin, IUserRegisterInput, userLoginSchema, userRegisterSchemaClient } from "@/schemas/users"
+import { IUserLogin, userLoginSchema } from "@/schemas/users"
 import { api } from "@/services/api"
 import { Github, Google } from "@styled-icons/boxicons-logos"
-import { signIn } from "next-auth/react"
+import { GetServerSideProps } from "next"
+import { getCsrfToken, signIn } from "next-auth/react"
 import Link from "next/link"
 import { SubmitHandler, useForm } from "react-hook-form"
 
-export default function () {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const csrfToken = await getCsrfToken({
+    ctx,
+  })
+
+  return {
+    props: {
+      csrfToken,
+    },
+  }
+}
+
+export default function ({ csrfToken }: { csrfToken: string }) {
   const { handleSubmit, reset, register } = useForm<IUserLogin>()
 
   const handleSignIn = (provider: string) => () => {
@@ -19,7 +32,7 @@ export default function () {
   const submitHandler: SubmitHandler<IUserLogin> = async (formData) => {
     try {
       const { email, password } = userLoginSchema.parse(formData)
-      await signIn("credentials", { email, password, callbackUrl: '/testing' })
+      await signIn("credentials", { email, password, csrfToken, callbackUrl: "/testing", redirect: false })
     } catch (error) {
       console.log(error)
     }
@@ -52,12 +65,18 @@ export default function () {
 
           <p className="text-gray-700 my-3">
             Ainda não possui uma conta?{" "}
-            <Link href="/auth/register" className="focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double underline text-blue-500 cursor-pointer">
+            <Link
+              href="/auth/register"
+              className="focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double underline text-blue-500 cursor-pointer"
+            >
               Registre-se
             </Link>
           </p>
 
-          <button className="bg-blue-600 py-3 text-white rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double">
+          <button
+            type="submit"
+            className="bg-blue-600 py-3 text-white rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double"
+          >
             Entrar
           </button>
 

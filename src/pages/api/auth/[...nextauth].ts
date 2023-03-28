@@ -15,10 +15,7 @@ export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       id: "credentials",
-      credentials: {
-        username: { label: "Username:", placeholder: "vitormarkis", type: "text" },
-        password: { label: "Senha:", placeholder: "Sua senha aqui...", type: "password" },
-      },
+      credentials: {},
       name: "Autenticação própria.",
       type: "credentials",
       async authorize(credentials) {
@@ -79,8 +76,8 @@ export const authOptions: NextAuthOptions = {
     },
   },
   pages: {
-    // signIn: "/auth/register",
     newUser: "/testing",
+    signIn: "/auth/login",
   },
 }
 
