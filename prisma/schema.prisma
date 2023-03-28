@@ -11,15 +11,48 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String      @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?     @unique
   emailVerified DateTime?
-  password      String?   @db.Text
+  password      String?     @db.Text
   image         String?
   repos_amount  Int?
+  posts         Post[]
+  saved_posts   SavedPost[]
   accounts      Account[]
   sessions      Session[]
+}
+
+model Post {
+  id         String      @id @default(cuid())
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
+  title      String
+  text       String      @db.Text
+  author_id  String
+  author     User        @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  saved_by   SavedPost[]
+  post_media PostMedia[]
+}
+
+model PostMedia {
+  id         String   @id @default(cuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  media      String?
+  Post       Post     @relation(fields: [post_id], references: [id], onDelete: Cascade)
+  post_id    String
+}
+
+model SavedPost {
+  id         String   @id @default(cuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  user_id    String
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  saved_post String
+  saved      Post     @relation(fields: [saved_post], references: [id], onDelete: Cascade)
 }
 
 model Account {
