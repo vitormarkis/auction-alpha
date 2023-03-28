@@ -23,6 +23,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@styled-icons/boxicons-logos": "^10.47.0",
     "@types/next": "^9.0.0",
     "@types/node": "18.15.9",
     "@types/react": "18.0.29",

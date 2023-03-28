@@ -15,6 +15,7 @@ model User {
   name          String?
   email         String?   @unique
   emailVerified DateTime?
+  password      String?   @db.Text
   image         String?
   repos_amount  Int?
   accounts      Account[]
