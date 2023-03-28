@@ -31,6 +31,12 @@ export default function () {
             type="password"
             placeholder="Escreva sua senha..."
           />
+          <label className="mb-1 text-gray-700">Confirme sua senha</label>
+          <input
+            className="mb-2 bg-white border border-gray-400 px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-green-500 focus:outline-double"
+            type="password"
+            placeholder="Repita sua senha..."
+          />
 
           <p className="text-gray-700 my-3">
             Já possui uma conta?{" "}
