@@ -2,9 +2,9 @@ import { z } from "zod"
 
 export const userSchema = z.object({
   id: z.string(),
-  username: z.string(),
+  email: z.string().email(),
   name: z.string(),
-  age: z.number(),
+  image: z.string().url().nullable(),
 })
 
 export const userRegisterSchemaClient = z
@@ -25,5 +25,12 @@ export const userRegisterSchema = z.object({
   password: z.string(),
 })
 
+export const userLoginSchema = z.object({
+  email: z.string().email(),
+  password: z.string(),
+})
+
+export type IUserSession = z.infer<typeof userSchema>
 export type IUserRegisterInput = z.input<typeof userRegisterSchemaClient>
 export type IUserRegister = z.output<typeof userRegisterSchemaClient>
+export type IUserLogin = z.output<typeof userLoginSchema>
