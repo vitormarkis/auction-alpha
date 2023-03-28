@@ -4,10 +4,10 @@ import { z } from "zod"
 import { api } from "@/services/api"
 import { prisma } from "@/services/prisma"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
-import { NextAuthOptions, Session, User } from "next-auth"
+import { NextAuthOptions, User } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import GithubProvider, { GithubProfile } from "next-auth/providers/github"
-import GoogleProvider, { GoogleProfile } from "next-auth/providers/google"
+import GoogleProvider from "next-auth/providers/google"
 
 interface DatabaseUser extends User {
   username: string
@@ -82,21 +82,14 @@ export const authOptions: NextAuthOptions = {
     GithubProvider({
       clientId: process.env.GITHUB_CLIENT_ID as string,
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
-      async profile(profile: GithubProfile, tokens) {
-        console.log({
-          where: "github profile callback",
-          content: {
-            profile,
-            tokens,
-          },
-        })
-
+      async profile(profile: GithubProfile) {
         const repos: string[] = await api.get(profile.repos_url).then((res) => res.data)
 
         /** Não enviar o ID, deixar o prisma criar o ID */
         return Promise.resolve({
           id: profile.id.toString(),
           image: profile.avatar_url,
+          email: profile.email,
           name: profile.name,
           repos_amount: repos.length,
         })
@@ -105,23 +98,11 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-      profile(profile: GoogleProfile) {
-
-        profile = {
-          /**
-           * Esse objeto será salvo no banco de dados.
-           * Você pode resgatar ele nas funções callbacks, através do user
-           */
-        }
-        
-        return profile
-      }
     }),
   ],
   secret: process.env.NEXT_SECRET,
   callbacks: {
     session({ session, user }) {
-
       const newSession = {
         ...session,
         user: {

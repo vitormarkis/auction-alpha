@@ -1,33 +1,49 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { userRegisterSchema } from "@/schemas/users"
+import { prisma } from "@/services/prisma"
+import bcrypt from "bcryptjs"
+import jwt from "jsonwebtoken"
+import { NextApiRequest, NextApiResponse } from "next"
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  // if (req.headers.authorization !== "newToken") {
-  //   return res.json({
-  //     message: "sem autorização",
-  //     header: req.headers.authorization,
-  //     reqHeader: "newToken",
-  //     doesMatch: req.headers.authorization === "newToken",
-  //   });
-  // }
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method === "POST") {
+    try {
+      const { email, name, password } = userRegisterSchema.parse(req.body)
 
-  res.json([
-    {
-      id: "b37hf498h",
-      username: "boysnoize",
-      name: "Boys Noize",
-      age: 23,
-    },
-    {
-      id: "min2h828f",
-      username: "skrillex",
-      name: "Sonny Skrillex",
-      age: 31,
-    },
-    {
-      id: "mf90348h3",
-      username: "martingarrix",
-      name: "Martin Garrix",
-      age: 26,
-    },
-  ]);
+      const user = await prisma.user.findFirst({
+        where: {
+          email,
+        },
+      })
+
+      if (user) throw new Error("Email já cadastrado.")
+
+      const salt = bcrypt.genSaltSync(10)
+      const hashedPassword = bcrypt.hashSync(password, salt)
+
+      const registeredUser = await prisma.user.create({
+        data: {
+          email,
+          name,
+          password: hashedPassword,
+        },
+        select: {
+          id: true,
+          email: true,
+          image: true,
+          name: true,
+        },
+      })
+
+      const accessToken = jwt.sign({}, process.env.SERVER_SECRET as string, {
+        subject: registeredUser.id,
+      })
+
+      return res.setHeader("Authorization", accessToken).status(201).json({
+        accessToken,
+        user: registeredUser,
+      })
+    } catch (error) {
+      return res.status(400).json(error)
+    }
+  }
 }
