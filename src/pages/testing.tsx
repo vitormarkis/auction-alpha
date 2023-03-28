@@ -1,6 +1,7 @@
 import { api } from "@/services/api"
 import { useQuery } from "@tanstack/react-query"
 import { getSession, signIn, signOut, useSession } from "next-auth/react"
+import Link from "next/link"
 
 export default function () {
   const { data: session } = useSession()
@@ -11,7 +12,7 @@ export default function () {
   })
 
   return session ? (
-    <div className="flex w-full flex-col">
+    <div className="flex flex-col">
       <span>Oi {session.user?.name}</span>
       {/* <pre>{users && JSON.stringify(users, null, 2)}</pre> */}
       <pre>{session && JSON.stringify(session, null, 2)}</pre>
@@ -23,9 +24,14 @@ export default function () {
     <div>
       <span>Faça login para ver a página</span>
       <pre>{JSON.stringify(session, null, 2)}</pre>
-      <button onClick={() => signIn()} className="bg-emerald-500 text-white p-2">
-        Entrar
-      </button>
+      <div className="flex flex-col gap-2 items-start">
+        <button onClick={() => signIn()} className="bg-emerald-500 text-center text-white p-2">
+          Entrar
+        </button>
+        <Link href="/auth/register" className="bg-teal-600 text-center text-white p-2">
+          Registrar
+        </Link>
+      </div>{" "}
     </div>
   )
 
