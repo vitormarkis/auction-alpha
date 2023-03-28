@@ -2,6 +2,14 @@ import { Github, Google } from "@styled-icons/boxicons-logos"
 import { signIn } from "next-auth/react"
 
 export default function () {
+  const handleSignIn = (provider: string) => () => {
+    try {
+      signIn(provider, { redirect: true, callbackUrl: "/testing" })
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   return (
     <div className="h-screen bg-gray-900 flex flex-col justify-center items-center overflow-hidden">
       <div className="p-5 rounded-lg shadow-md shadow-black/20 bg-white w-[520px]">
@@ -56,11 +64,19 @@ export default function () {
           </div>
 
           <div className="text-gray-700 flex gap-3">
-            <button className="focus:outline-1 focus:outline-offset-1 focus:outline-green-500 focus:outline-double p-1 border relative h-12 border-gray-400 flex items-center justify-center rounded-lg grow">
+            <button
+              type="button"
+              onClick={handleSignIn("github")}
+              className="focus:outline-1 focus:outline-offset-1 focus:outline-green-500 focus:outline-double p-1 border relative h-12 border-gray-400 flex items-center justify-center rounded-lg grow"
+            >
               <Google className="absolute left-1 top-1/2 -translate-y-1/2" width={32} height={32} />
               <p>Google</p>
             </button>
-            <button className="focus:outline-1 focus:outline-offset-1 focus:outline-green-500 focus:outline-double p-1 border relative h-12 border-gray-400 flex items-center justify-center rounded-lg grow">
+            <button
+              onClick={handleSignIn("github")}
+              type="button"
+              className="focus:outline-1 focus:outline-offset-1 focus:outline-green-500 focus:outline-double p-1 border relative h-12 border-gray-400 flex items-center justify-center rounded-lg grow"
+            >
               <Github className="absolute left-1 top-1/2 -translate-y-1/2" width={32} height={32} />
               <p>Github</p>
             </button>

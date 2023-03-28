@@ -131,10 +131,10 @@ export const authOptions: NextAuthOptions = {
       return newSession
     },
   },
-  // pages: {
-  //   signIn: "/auth/login",
-  //   newUser: "/auth/register",
-  // },
+  pages: {
+    // signIn: "/auth/register",
+    newUser: "/testing",
+  },
 }
 
 export default NextAuth(authOptions)
