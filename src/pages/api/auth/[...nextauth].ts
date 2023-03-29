@@ -1,6 +1,6 @@
 import NextAuth from "next-auth/next"
 
-import { sessionUserSchema } from "@/schemas/users"
+import { sessionUserSchema, userLoginSchema } from "@/schemas/users"
 import { api } from "@/services/api"
 import { prisma } from "@/services/prisma"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
@@ -29,77 +29,35 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials, req) {
         const reqValidation = z.object({
           user: sessionUserSchema,
-          token: z.string(),
+          accessToken: z.string(),
         })
 
-        // You need to provide your own logic here that takes the credentials
-        // submitted and returns either a object representing a user or value
-        // that is false/null if the credentials are invalid.
-        // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-        // You can also use the `req` object to obtain additional parameters
-        // (i.e., the request IP address)
-        // const user = await api.post("/login", credentials).then(res => res.data)
+        try {
+          const { email, password } = userLoginSchema.parse(credentials)
 
-        const res = await fetch("http://localhost:3000/api/login", {
-          method: "POST",
-          body: JSON.stringify(credentials),
-          headers: { "Content-Type": "application/json" },
-        })
-        const user = await res.json()
+          const { user, accessToken } = await api
+            .post("/login", { email, password })
+            .then(res => reqValidation.parse(res.data))
 
-        // If no error and we have user data, return it
-        if (res.ok && user) {
-          return user
+          // const response = await fetch("http://localhost:3000/api/login", {
+          //   body: JSON.stringify({
+          //     email,
+          //     password,
+          //   }),
+          //   method: "POST",
+          //   headers: {
+          //     "Content-Type": "application/json",
+          //     "X-CSRF-Token": csrfToken,
+          //   },
+          // }).then(res => res.json())
+
+          return {
+            ...user,
+            accessToken,
+          }
+        } catch (error) {
+          throw error
         }
-
-        // if (user) {
-        //   return user
-        // }
-        // Return null if user data could not be retrieved
-        return null
-
-        // try {
-        //   const { email, password } = userLoginSchema.parse(credentials)
-
-        //   const { csrfToken } = await api.get("/auth/csrf").then(res => res.data)
-
-        //   console.log("csrfToken?", csrfToken)
-
-        //   // const { token, user } = await api
-        //   //   .post(
-        //   //     "/login",
-        //   //     { email, password },
-        //   //     {
-        //   //       headers: {
-        //   //         "X-CSRF-TOKEN": csrfToken,
-        //   //       },
-        //   //     }
-        //   //   )
-        //   //   .then(res => reqValidation.parse(res.data))
-
-        //   const response = await fetch("http://localhost:3000/api/login", {
-        //     body: JSON.stringify({
-        //       email,
-        //       password,
-        //     }),
-        //     method: "POST",
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //       "X-CSRF-Token": csrfToken,
-        //     },
-        //   }).then(res => res.json())
-
-        //   console.log("response", response)
-
-        //   return null
-
-        //   return {
-        //     ...user,
-        //     repos_amount: null,
-        //   }
-        // } catch (error) {
-        //   throw error
-        // }
       },
     }),
     GithubProvider({
@@ -126,7 +84,7 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXT_SECRET,
   callbacks: {
     jwt({ token, user }) {
-      return { ...token, ...user }
+      return { ...user, ...token }
     },
 
     session({ session, token }) {

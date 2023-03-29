@@ -18,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (user) {
         return res.status(404).json({ msg: "Email já cadastrado." })
       }
-      
+
       const salt = bcrypt.genSaltSync(10)
       const hashedPassword = bcrypt.hashSync(password, salt)
 
@@ -47,6 +47,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     } catch (error) {
       return res.status(400).json(error)
     }
+  } else if (req.method === "GET") {
+    return res.status(200).json([{ id: "jerheg8", name: "gast" }])
   } else {
     return res.status(404).json({ msg: "Nao existe endpoint" })
   }

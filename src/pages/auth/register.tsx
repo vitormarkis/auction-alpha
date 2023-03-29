@@ -15,10 +15,11 @@ export default function () {
     }
   }
 
-  const submitHandler: SubmitHandler<IUserRegisterInput> = async (formData) => {
+  const submitHandler: SubmitHandler<IUserRegisterInput> = async formData => {
     try {
       const { email, name, password } = userRegisterSchemaClient.parse(formData)
       await api.post("/users", { email, name, password })
+      await signIn("credentials", { email, password, redirect: true, callbackUrl: "/testing" })
       reset()
     } catch (error) {
       console.log(error)
@@ -28,7 +29,10 @@ export default function () {
   return (
     <div className="h-screen bg-gray-900 flex flex-col justify-center items-center overflow-hidden">
       <div className="p-5 rounded-lg shadow-md shadow-black/20 bg-white w-[520px]">
-        <form onSubmit={handleSubmit(submitHandler)} className="flex flex-col">
+        <form
+          onSubmit={handleSubmit(submitHandler)}
+          className="flex flex-col"
+        >
           <div className="mb-3">
             <h1 className="text-2xl font-bold">Crie sua conta</h1>
             <p className="text-gray-400 leading-5 text-sm">
@@ -67,7 +71,10 @@ export default function () {
 
           <p className="text-gray-700 my-3">
             Já possui uma conta?{" "}
-            <span onClick={() => signIn()} className="underline text-blue-500 cursor-pointer">
+            <span
+              onClick={() => signIn()}
+              className="underline text-blue-500 cursor-pointer"
+            >
               Entrar
             </span>
           </p>
@@ -88,7 +95,11 @@ export default function () {
               onClick={handleSignIn("google")}
               className="focus:outline-1 focus:outline-offset-1 focus:outline-green-500 focus:outline-double p-1 border relative h-12 border-gray-400 flex items-center justify-center rounded-lg grow"
             >
-              <Google className="absolute left-1 top-1/2 -translate-y-1/2" width={32} height={32} />
+              <Google
+                className="absolute left-1 top-1/2 -translate-y-1/2"
+                width={32}
+                height={32}
+              />
               <p>Google</p>
             </button>
             <button
@@ -96,7 +107,11 @@ export default function () {
               type="button"
               className="focus:outline-1 focus:outline-offset-1 focus:outline-green-500 focus:outline-double p-1 border relative h-12 border-gray-400 flex items-center justify-center rounded-lg grow"
             >
-              <Github className="absolute left-1 top-1/2 -translate-y-1/2" width={32} height={32} />
+              <Github
+                className="absolute left-1 top-1/2 -translate-y-1/2"
+                width={32}
+                height={32}
+              />
               <p>Github</p>
             </button>
           </div>

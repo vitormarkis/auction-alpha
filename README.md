@@ -49,3 +49,7 @@ Para passar uma propriedade especifica agora é facil, basta pegar ela do user e
    * provider que criei dentro do profile, e estou passando para o client.
   */
 ```
+
+## Erro Unauthorized 401 fazendo chamadas dentro do authorize
+
+Um dos motivos era porque a minha api estava lançando erros sem ser pegos em lugar algum, eu imaginei que dentro de um bloco try catch, lançando um erro dentro do try ele seria capturado pelo catch, mas estava enganado.
