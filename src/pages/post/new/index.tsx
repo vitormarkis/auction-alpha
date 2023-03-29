@@ -1,9 +1,11 @@
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 
+type MediaString = Record<string, string>
+
 const NewPost: React.FC = () => {
   const { register } = useForm()
-  const [mediaInput, setMediaInput] = useState<Record<string, string>[]>([
+  const [mediaInput, setMediaInput] = useState<MediaString[]>([
     {
       initial: "",
     },
@@ -15,9 +17,19 @@ const NewPost: React.FC = () => {
     return Math.random().toString(36).substring(2, 9)
   }
 
-  const handleAddNewMediaInput = () => {
+  const handleNewMediaInputRow = () => {
     if (mediaInput.length >= maxInputs) return
-    setMediaInput((old) => [...old, { [rand()]: "" }])
+    setMediaInput(old => [...old, { [rand()]: "" }])
+  }
+
+  const handleDeleteMediaInputRow = (mediaString: MediaString) => {
+    const [key] = Object.entries(mediaString)[0]
+
+    setMediaInput(old =>
+      old.filter(oldObj => {
+        return !(key in oldObj)
+      })
+    )
   }
 
   return (
@@ -38,12 +50,10 @@ const NewPost: React.FC = () => {
           placeholder="text"
         />
         <div>
-          {mediaInput.map((obj, idx, arr) => {
-            const isLast = idx === arr.length - 1
-
+          {mediaInput.map(obj => {
             const [key] = Object.entries(obj)[0]
 
-            const { [key]: value } = mediaInput.find((arrObj) => {
+            const { [key]: value } = mediaInput.find(arrObj => {
               return key in arrObj
             })
 
@@ -55,13 +65,12 @@ const NewPost: React.FC = () => {
                 className="flex flex-row gap-2"
               >
                 <input
-                  // {...register(`media-${idx}`)}
                   type="text"
                   placeholder="URL da mídia..."
                   value={value}
-                  onChange={(e) =>
-                    setMediaInput((old) =>
-                      old.map((oldObj) => (key in oldObj ? { ...oldObj, [key]: e.target.value } : oldObj))
+                  onChange={e =>
+                    setMediaInput(old =>
+                      old.map(oldObj => (key in oldObj ? { ...oldObj, [key]: e.target.value } : oldObj))
                     )
                   }
                 />
@@ -69,44 +78,25 @@ const NewPost: React.FC = () => {
                   <></>
                 ) : lastInput?.length > 0 && mediaInput.length !== maxInputs ? (
                   <>
-                    <button
-                      type="button"
-                      onClick={handleAddNewMediaInput}
-                    >
-                      Adicionar
-                    </button>
+                    <RowButton
+                      mediaString={obj}
+                      onClickHandle={handleNewMediaInputRow}
+                      content="Adicionar"
+                    />
                     {mediaInput.length > 1 && mediaInput.length <= maxInputs && (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const [key] = Object.entries(obj)[0]
-
-                          setMediaInput((old) =>
-                            old.filter((oldObj) => {
-                              return !(key in oldObj)
-                            })
-                          )
-                        }}
-                      >
-                        Remover
-                      </button>
+                      <RowButton
+                        mediaString={obj}
+                        onClickHandle={handleDeleteMediaInputRow}
+                        content="Remover"
+                      />
                     )}
                   </>
                 ) : (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const [key] = Object.entries(obj)[0]
-
-                      setMediaInput((old) =>
-                        old.filter((oldObj) => {
-                          return !(key in oldObj)
-                        })
-                      )
-                    }}
-                  >
-                    Remover
-                  </button>
+                  <RowButton
+                    mediaString={obj}
+                    onClickHandle={handleDeleteMediaInputRow}
+                    content="Remover"
+                  />
                 )}
 
                 <pre>{JSON.stringify(obj, null)}</pre>
@@ -124,5 +114,20 @@ const NewPost: React.FC = () => {
     </div>
   )
 }
+
+interface RowButtonProps {
+  onClickHandle: (mediaString?: MediaString) => void
+  mediaString: MediaString
+  content: string
+}
+
+const RowButton: React.FC<RowButtonProps> = ({ onClickHandle, mediaString, content }) => (
+  <button
+    type="button"
+    onClick={() => onClickHandle(mediaString)}
+  >
+    {content}
+  </button>
+)
 
 export default NewPost
