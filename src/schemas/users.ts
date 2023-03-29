@@ -30,6 +30,13 @@ export const userLoginSchema = z.object({
   password: z.string(),
 })
 
+export const sessionUserSchema = z.object({
+  id: userSchema.shape.id,
+  name: userSchema.shape.name,
+  email: userSchema.shape.email,
+  image: userSchema.shape.image,
+})
+
 export type IUserSession = z.infer<typeof userSchema>
 export type IUserRegisterInput = z.input<typeof userRegisterSchemaClient>
 export type IUserRegister = z.output<typeof userRegisterSchemaClient>

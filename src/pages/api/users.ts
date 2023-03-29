@@ -15,8 +15,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         },
       })
 
-      if (user) throw new Error("Email já cadastrado.")
-
+      if (user) {
+        return res.status(404).json({ msg: "Email já cadastrado." })
+      }
+      
       const salt = bcrypt.genSaltSync(10)
       const hashedPassword = bcrypt.hashSync(password, salt)
 
@@ -45,5 +47,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     } catch (error) {
       return res.status(400).json(error)
     }
+  } else {
+    return res.status(404).json({ msg: "Nao existe endpoint" })
   }
 }

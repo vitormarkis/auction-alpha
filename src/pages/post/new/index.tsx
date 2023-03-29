@@ -1,19 +1,9 @@
+import { newPostSchema, TNewPostBody } from "@/pages/api/posts/schemas"
+import { api } from "@/services/api"
 import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
-import { z } from "zod"
 
 type MediaString = Record<string, string>
-
-const mediasPostSchema = z.array(z.string())
-
-const newPostSchema = z.object({
-  title: z.string(),
-  text: z.string(),
-  medias_url: mediasPostSchema,
-  price: z.string().transform(old => Number(old)),
-})
-
-type TNewPostBody = z.input<typeof newPostSchema>
 
 const NewPost: React.FC = () => {
   const { register, handleSubmit } = useForm<TNewPostBody>()
@@ -26,6 +16,7 @@ const NewPost: React.FC = () => {
   const submitHandler: SubmitHandler<TNewPostBody> = async formData => {
     const arrMediasURL = mediaInput.map(inp => Object.values(inp)[0])
     const { medias_url, text, title, price } = newPostSchema.parse({ ...formData, medias_url: arrMediasURL })
+    await api.post("/posts", { medias_url, text, title, price })
     console.log({ medias_url, text, title, price })
   }
 
@@ -50,6 +41,10 @@ const NewPost: React.FC = () => {
     )
   }
 
+  const handleClick = () => {
+    api.get("/me").then(res => console.log(res.data))
+  }
+
   return (
     <div
       className="mx-auto min-h-screen w-full max-w-[680px] bg-gray-200 p-6 
@@ -57,6 +52,7 @@ const NewPost: React.FC = () => {
     [&_input]:border [&_input]:border-black
     "
     >
+      <button onClick={handleClick} className="px-4 py-2 rounded-full bg-gray-500 text-white">/me</button>
       <form
         onSubmit={handleSubmit(submitHandler)}
         className="flex flex-col gap-3"

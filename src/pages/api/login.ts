@@ -1,4 +1,4 @@
-import { userLoginSchema } from "@/schemas/users"
+import { sessionUserSchema, userLoginSchema } from "@/schemas/users"
 import { prisma } from "@/services/prisma"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
@@ -15,20 +15,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         },
       })
 
-      if (!user) throw new Error("E-mail não cadastrado.")
-      if (!user.password)
-        throw new Error("Não é possível fazer login com essa conta, faça login com seu provedor.")
+      if (!user) {
+        return res.status(400).json("E-mail não cadastrado.")
+      }
+      if (!user.password) {
+        return res.status(400).json("Não é possível fazer login com essa conta, faça login com seu provedor.")
+      }
 
-      const passwordMatches = bcrypt.compareSync(user.password, password)
-      if (!passwordMatches) throw new Error("E-mail ou senha incorretos.")
+      const passwordMatches = bcrypt.compareSync(password, user.password)
+      if (!passwordMatches) {
+        return res.status(400).json("E-mail ou senha incorretos.")
+      }
 
       const accessToken = jwt.sign({}, process.env.SERVER_SECRET as string, {
         subject: user.id,
       })
 
-      const { emailVerified, password: desPassword, repos_amount, ...sessionUser } = user
+      const sessionUser = sessionUserSchema.parse(user)
 
-      return res.setHeader("Authorization", accessToken).status(201).json({
+      // const { emailVerified, password: desPassword, repos_amount, ...sessionUser } = user
+
+      return res.setHeader("Authorization", `Bearer ${accessToken}`).status(201).json({
         accessToken,
         user: sessionUser,
       })

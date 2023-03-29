@@ -1,12 +1,11 @@
 import { IUserLogin, userLoginSchema } from "@/schemas/users"
-import { api } from "@/services/api"
 import { Github, Google } from "@styled-icons/boxicons-logos"
 import { GetServerSideProps } from "next"
 import { getCsrfToken, signIn } from "next-auth/react"
 import Link from "next/link"
 import { SubmitHandler, useForm } from "react-hook-form"
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+export const getServerSideProps: GetServerSideProps = async ctx => {
   const csrfToken = await getCsrfToken({
     ctx,
   })
@@ -29,10 +28,10 @@ export default function ({ csrfToken }: { csrfToken: string }) {
     }
   }
 
-  const submitHandler: SubmitHandler<IUserLogin> = async (formData) => {
+  const submitHandler: SubmitHandler<IUserLogin> = async formData => {
     try {
       const { email, password } = userLoginSchema.parse(formData)
-      await signIn("credentials", { email, password, csrfToken, callbackUrl: "/testing", redirect: false })
+      await signIn("credentials", { email, password, callbackUrl: "/testing", redirect: true })
     } catch (error) {
       console.log(error)
     }
@@ -41,7 +40,10 @@ export default function ({ csrfToken }: { csrfToken: string }) {
   return (
     <div className="h-screen bg-gray-900 flex flex-col justify-center items-center overflow-hidden">
       <div className="p-5 rounded-lg shadow-md shadow-black/20 bg-white w-[520px]">
-        <form onSubmit={handleSubmit(submitHandler)} className="flex flex-col">
+        <form
+          onSubmit={handleSubmit(submitHandler)}
+          className="flex flex-col"
+        >
           <div className="mb-3">
             <h1 className="text-2xl font-bold">Faça login para continuar</h1>
             <p className="text-gray-400 leading-5 text-sm">
@@ -92,7 +94,11 @@ export default function ({ csrfToken }: { csrfToken: string }) {
               onClick={handleSignIn("google")}
               className="focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double p-1 border relative h-12 border-gray-400 flex items-center justify-center rounded-lg grow"
             >
-              <Google className="absolute left-1 top-1/2 -translate-y-1/2" width={32} height={32} />
+              <Google
+                className="absolute left-1 top-1/2 -translate-y-1/2"
+                width={32}
+                height={32}
+              />
               <p>Google</p>
             </button>
             <button
@@ -100,7 +106,11 @@ export default function ({ csrfToken }: { csrfToken: string }) {
               type="button"
               className="focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double p-1 border relative h-12 border-gray-400 flex items-center justify-center rounded-lg grow"
             >
-              <Github className="absolute left-1 top-1/2 -translate-y-1/2" width={32} height={32} />
+              <Github
+                className="absolute left-1 top-1/2 -translate-y-1/2"
+                width={32}
+                height={32}
+              />
               <p>Github</p>
             </button>
           </div>
