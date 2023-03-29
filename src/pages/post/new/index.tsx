@@ -1,15 +1,32 @@
 import { useState } from "react"
-import { useForm } from "react-hook-form"
+import { SubmitHandler, useForm } from "react-hook-form"
+import { z } from "zod"
 
 type MediaString = Record<string, string>
 
+const mediasPostSchema = z.array(z.string())
+
+const newPostSchema = z.object({
+  title: z.string(),
+  text: z.string(),
+  medias_url: mediasPostSchema,
+})
+
+type TNewPostBody = z.input<typeof newPostSchema>
+
 const NewPost: React.FC = () => {
-  const { register } = useForm()
+  const { register, handleSubmit } = useForm<TNewPostBody>()
   const [mediaInput, setMediaInput] = useState<MediaString[]>([
     {
       initial: "",
     },
   ])
+
+  const submitHandler: SubmitHandler<TNewPostBody> = async formData => {
+    const arrMediasURL = mediaInput.map(inp => Object.values(inp)[0])
+    const { medias_url, text, title } = newPostSchema.parse({ ...formData, medias_url: arrMediasURL })
+    console.log({ medias_url, text, title })
+  }
 
   const maxInputs = 5
 
@@ -39,7 +56,10 @@ const NewPost: React.FC = () => {
     [&_input]:border [&_input]:border-black
     "
     >
-      <form className="flex flex-col gap-3">
+      <form
+        onSubmit={handleSubmit(submitHandler)}
+        className="flex flex-col gap-3"
+      >
         <input
           type="text"
           {...register("title")}
