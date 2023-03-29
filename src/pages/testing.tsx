@@ -1,6 +1,7 @@
 import { api } from "@/services/api"
 import { useQuery } from "@tanstack/react-query"
 import { getSession, signIn, signOut, useSession } from "next-auth/react"
+import Image from "next/image"
 import Link from "next/link"
 
 export default function () {
@@ -8,15 +9,24 @@ export default function () {
 
   const { data: users } = useQuery({
     queryKey: ["users"],
-    queryFn: () => api.get("/users").then((res) => res.data),
+    queryFn: () => api.get("/users").then(res => res.data),
   })
 
   return session ? (
     <div className="flex flex-col">
       <span>Oi {session.user?.name}</span>
-      {/* <pre>{users && JSON.stringify(users, null, 2)}</pre> */}
+      <Image
+        src={session.user?.image ?? ""}
+        width={56}
+        height={56}
+        alt={"Foto de perfil de " + session.user?.name}
+      />
+      <pre>{users && JSON.stringify(users, null, 2)}</pre>
       <pre>{session && JSON.stringify(session, null, 2)}</pre>
-      <button onClick={() => signOut({ redirect: false })} className="ml-auto bg-red-500 text-white p-2">
+      <button
+        onClick={() => signOut({ redirect: false })}
+        className="ml-auto bg-red-500 text-white p-2"
+      >
         Sair
       </button>
     </div>
@@ -25,10 +35,16 @@ export default function () {
       <span>Faça login para ver a página</span>
       <pre>{JSON.stringify(session, null, 2)}</pre>
       <div className="flex flex-col gap-2 items-start">
-        <button onClick={() => signIn()} className="bg-emerald-500 text-center text-white p-2">
+        <button
+          onClick={() => signIn()}
+          className="bg-emerald-500 text-center text-white p-2"
+        >
           Entrar
         </button>
-        <Link href="/auth/register" className="bg-teal-600 text-center text-white p-2">
+        <Link
+          href="/auth/register"
+          className="bg-teal-600 text-center text-white p-2"
+        >
           Registrar
         </Link>
       </div>{" "}
@@ -60,7 +76,7 @@ export default function () {
   )
 }
 
-export const getServerSideProps = async (ctx) => {
+export const getServerSideProps = async ctx => {
   const session = await getSession(ctx)
 
   return session

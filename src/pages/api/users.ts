@@ -3,6 +3,7 @@ import { prisma } from "@/services/prisma"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import { NextApiRequest, NextApiResponse } from "next"
+import { getSession } from "next-auth/react"
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
@@ -48,7 +49,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json(error)
     }
   } else if (req.method === "GET") {
-    return res.status(200).json([{ id: "jerheg8", name: "gast" }])
+    const session = await getSession({ req })
+
+    if (!session) return res.status(400).send("Sem sessão.")
+
+    const sub = session.user.sub
+
+    // if (!req.headers.authorization) return res.status(401).json({ message: "Usuário não autorizado." })
+    // const [type, token] = req.headers.authorization.split(" ")
+
+    // if (type.toLowerCase() !== "bearer") return res.status(401).json({ message: "Tipo de token inválido." })
+
+    // const { sub } = jwt.verify(token, process.env.SERVER_SECRET as string)
+
+    const user = await prisma.user.findFirst({
+      where: {
+        id: String(sub),
+      },
+    })
+
+    return res.status(200).json([user])
   } else {
     return res.status(404).json({ msg: "Nao existe endpoint" })
   }

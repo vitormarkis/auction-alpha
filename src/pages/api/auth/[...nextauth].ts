@@ -16,16 +16,8 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       id: "credentials",
       name: "Credentials",
-      credentials: {
-        email: { label: "Email", type: "email", placeholder: "jsmith@mail.com" },
-        password: { label: "Password", type: "password" },
-      },
+      credentials: {},
       type: "credentials",
-      // The name to display on the sign in form (e.g. 'Sign in with...')
-      // The credentials is used to generate a suitable form on the sign in page.
-      // You can specify whatever fields you are expecting to be submitted.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
       async authorize(credentials, req) {
         const reqValidation = z.object({
           user: sessionUserSchema,
@@ -38,18 +30,6 @@ export const authOptions: NextAuthOptions = {
           const { user, accessToken } = await api
             .post("/login", { email, password })
             .then(res => reqValidation.parse(res.data))
-
-          // const response = await fetch("http://localhost:3000/api/login", {
-          //   body: JSON.stringify({
-          //     email,
-          //     password,
-          //   }),
-          //   method: "POST",
-          //   headers: {
-          //     "Content-Type": "application/json",
-          //     "X-CSRF-Token": csrfToken,
-          //   },
-          // }).then(res => res.json())
 
           return {
             ...user,
