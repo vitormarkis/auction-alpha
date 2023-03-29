@@ -10,6 +10,7 @@ const newPostSchema = z.object({
   title: z.string(),
   text: z.string(),
   medias_url: mediasPostSchema,
+  price: z.string().transform(old => Number(old)),
 })
 
 type TNewPostBody = z.input<typeof newPostSchema>
@@ -24,8 +25,8 @@ const NewPost: React.FC = () => {
 
   const submitHandler: SubmitHandler<TNewPostBody> = async formData => {
     const arrMediasURL = mediaInput.map(inp => Object.values(inp)[0])
-    const { medias_url, text, title } = newPostSchema.parse({ ...formData, medias_url: arrMediasURL })
-    console.log({ medias_url, text, title })
+    const { medias_url, text, title, price } = newPostSchema.parse({ ...formData, medias_url: arrMediasURL })
+    console.log({ medias_url, text, title, price })
   }
 
   const maxInputs = 5
@@ -39,8 +40,8 @@ const NewPost: React.FC = () => {
     setMediaInput(old => [...old, { [rand()]: "" }])
   }
 
-  const handleDeleteMediaInputRow = (mediaString: MediaString) => {
-    const [key] = Object.entries(mediaString)[0]
+  const handleDeleteMediaInputRow = (mediaString?: MediaString) => {
+    const [key] = Object.entries(mediaString ?? {})[0]
 
     setMediaInput(old =>
       old.filter(oldObj => {
@@ -75,9 +76,9 @@ const NewPost: React.FC = () => {
 
             const { [key]: value } = mediaInput.find(arrObj => {
               return key in arrObj
-            })
+            })!
 
-            const lastInput = mediaInput.at(-1)[key]
+            const lastInput = mediaInput.at(-1)?.[key] ?? ""
 
             return (
               <div
@@ -124,6 +125,12 @@ const NewPost: React.FC = () => {
             )
           })}
         </div>
+        <input
+          type="number"
+          step="0.01"
+          {...register("price")}
+          placeholder="price"
+        />
         <button
           className="bg-emerald-500 text-center text-white p-2"
           type="submit"
@@ -144,7 +151,7 @@ interface RowButtonProps {
 const RowButton: React.FC<RowButtonProps> = ({ onClickHandle, mediaString, content }) => (
   <button
     type="button"
-    onClick={() => onClickHandle(mediaString)}
+    onClick={() => (mediaString ? onClickHandle(mediaString) : onClickHandle())}
   >
     {content}
   </button>
