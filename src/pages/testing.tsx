@@ -1,5 +1,6 @@
 import { api } from "@/services/api"
 import { useQuery } from "@tanstack/react-query"
+import { GetServerSideProps } from "next"
 import { getSession, signIn, signOut, useSession } from "next-auth/react"
 import Image from "next/image"
 import Link from "next/link"
@@ -11,6 +12,10 @@ export default function () {
     queryKey: ["users"],
     queryFn: () => api.get("/users").then(res => res.data),
   })
+  const { data: userRole } = useQuery({
+    queryKey: ["userRole", session?.user?.email],
+    queryFn: () => api.get("/aint").then(res => res.data),
+  })
 
   return session ? (
     <div className="flex flex-col">
@@ -21,6 +26,7 @@ export default function () {
         height={56}
         alt={"Foto de perfil de " + session.user?.name}
       />
+      <pre>{userRole && JSON.stringify(userRole, null, 2)}</pre>
       <pre>{users && JSON.stringify(users, null, 2)}</pre>
       <pre>{session && JSON.stringify(session, null, 2)}</pre>
       <button
@@ -76,7 +82,7 @@ export default function () {
   )
 }
 
-export const getServerSideProps = async ctx => {
+export const getServerSideProps: GetServerSideProps = async ctx => {
   const session = await getSession(ctx)
 
   return session

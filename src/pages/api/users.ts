@@ -51,7 +51,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } else if (req.method === "GET") {
     const session = await getSession({ req })
 
-    if (!session) return res.status(400).send("Sem sessão.")
+    if (!session || !session.user?.sub) return res.status(400).send("Sem sessão.")
 
     const sub = session.user.sub
 

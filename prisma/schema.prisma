@@ -18,10 +18,16 @@ model User {
   password      String?     @db.Text
   image         String?
   repos_amount  Int?
+  role          Role        @default(USER)
   posts         Post[]
   saved_posts   SavedPost[]
   accounts      Account[]
   sessions      Session[]
+}
+
+enum Role {
+  USER
+  ADMIN
 }
 
 model Post {
