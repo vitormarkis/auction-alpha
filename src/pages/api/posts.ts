@@ -15,6 +15,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
           select: {
             name: true,
             image: true,
+            role: true,
           },
         },
         post_media: {

@@ -1,5 +1,6 @@
 import { IPostFeed } from "@/schemas/posts"
 import { Eye, MoreHorizontal, Poll } from "@styled-icons/fluentui-system-regular"
+import clsx from "clsx"
 import moment from "moment"
 import "moment/locale/pt-br"
 import Image from "next/image"
@@ -15,6 +16,7 @@ export const Post: React.FC<Props> = ({ postProps, className, ...rest }) => {
   const [leftPrice, rightPrice] = String(price).split(".")
 
   const cents = rightPrice?.length === 1 ? rightPrice + "0" : rightPrice
+  const isPremium = author.role === "ADMIN"
 
   return (
     <div
@@ -58,7 +60,11 @@ export const Post: React.FC<Props> = ({ postProps, className, ...rest }) => {
             />
           ))}
         </div>
-        <div className="p-2 bg-black">
+        <div
+          className={clsx("p-2 bg-black", {
+            "bg-gradient-to-r to-fuchsia-600 via-indigo-700 from-cyan-600": isPremium,
+          })}
+        >
           <h2 className="text-white font-semibold">{title}</h2>
         </div>
         <div className="px-4 py-3 flex items-center">

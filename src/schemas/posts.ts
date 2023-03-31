@@ -9,6 +9,7 @@ export const postFeedSchema = z.object({
   author_id: z.string(),
   author: z.object({
     name: z.string(),
+    role: z.enum(["USER", "ADMIN"]),
     image: z.string(),
   }),
   post_media: z.array(
