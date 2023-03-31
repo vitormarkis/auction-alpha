@@ -36,6 +36,7 @@ model Post {
   updated_at DateTime    @updatedAt
   title      String
   text       String      @db.Text
+  price      Float
   author_id  String
   author     User        @relation(fields: [author_id], references: [id], onDelete: Cascade)
   saved_by   SavedPost[]

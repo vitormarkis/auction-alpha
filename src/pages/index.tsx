@@ -1,10 +1,58 @@
+import { Post } from "@/components/Post"
+import { SaveCopy } from "@styled-icons/fluentui-system-regular"
+
+import { postFeedSchema } from "@/schemas/posts"
+import { api } from "@/services/api"
+import { useQuery } from "@tanstack/react-query"
 import { Inter } from "next/font/google"
 import Head from "next/head"
-import Image from "next/image"
+import Link from "next/link"
+import { z } from "zod"
 
 const inter = Inter({ subsets: ["latin"] })
 
+// const posts = [
+//   {
+//     id: "clfuib3st0000vesirheyb8t5",
+//     created_at: "2023-03-30T02:38:37.566Z",
+//     title: "iPhone 8 semi novo s/fone de ouvido",
+//     text: "texto desse novo post texto desse novo post texto desse novo post texto desse novo post",
+//     price: 799.9,
+//     author_id: "clfrvga5k0008ve7r9ex04lgg",
+//     media_posts: [
+//       {
+//         id: "clfuicz8e0002vesirqtgaykc",
+//         media: "https://img.olx.com.br/images/73/730396125379230.jpg",
+//       },
+//       {
+//         id: "clfuidb9u0004vesiyeyh201j",
+//         media: "https://img.olx.com.br/images/73/731333607460976.jpg",
+//       },
+//     ],
+//     author: {
+//       image: "https://avatars.githubusercontent.com/u/121525239?v=4",
+//       name: "Vitor Markis",
+//     },
+//   },
+// ]
+
+// export type TPost = typeof posts[number]
+
 export default function Home() {
+  const {
+    data: posts,
+    isLoading,
+    error,
+  } = useQuery(["posts"], () => api.get("/posts").then(res => z.array(postFeedSchema).parse(res.data)), {
+    refetchOnWindowFocus: true,
+    staleTime: 1000 * 10, // 10 seconds
+  })
+
+  if (isLoading) return <p className="text-center font-bold">Carregando...</p>
+  if (error) return <p className="text-center font-bold">Aconteceu um erro...</p>
+  if (!posts) return <p className="text-center font-bold">Algo de errado aconteceu...</p>
+  if (posts.length === 0) return <p className="text-center font-bold">Não há nada por aqui...</p>
+
   return (
     <>
       <Head>
@@ -22,52 +70,27 @@ export default function Home() {
           href="/favicon.ico"
         />
       </Head>
-      <div className="h-screen bg-neutral-200">
+      <div className="bg-neutral-200">
         <div className="w-full max-w-[560px] h-full bg-neutral-100 border-x border-x-neutral-500 mx-auto">
-          <div className="p-6 border-b border-b-neutral-500">
+          <div className="">
+            <div className="p-6 border-b border-black flex items-center justify-center">
+              <Link href="/post/new">
+                <button className="rounded-lg bg-black text-white px-8 py-2 font-semibold flex items-center gap-2">
+                  <span>Fazer uma publicação</span>
+                  <SaveCopy
+                    width={22}
+                    height={22}
+                  />
+                </button>
+              </Link>
+            </div>
             <div>
-              <div>
-                <div className="flex">
-                  <div>
-                    <Image
-                      src="https://avatars.githubusercontent.com/u/121525239?v=4"
-                      alt="Foto de Vitor Markis"
-                      width={56}
-                      height={56}
-                      className="rounded-full border border-black shrink-0 object-cover"
-                    />
-                  </div>
-                  <div className="leading-4 ml-3">
-                    <p className="text-lg text-neutral-800">Vitor Markis</p>
-                    <span className="text-sm text-neutral-500">há 20 minutos</span>
-                  </div>
-                  <div className="ml-auto flex">
-                    <p className="">...</p>
-                  </div>
-                </div>
-                <div className="mt-3">
-                  <p>
-                    texto desse novo post texto desse novo post texto desse novo post texto desse novo post
-                  </p>
-                </div>
-                <div className="mt-3 rounded-lg flex flex-col border border-black overflow-hidden cursor-pointer">
-                  <div className="flex">
-                    <img
-                      alt="Foto do post"
-                      src="https://img.olx.com.br/images/73/730396125379230.jpg"
-                      className="object-cover w-full h-72 border-r border-r-black"
-                    />
-                    <img
-                      alt="Foto do post"
-                      src="https://img.olx.com.br/images/73/731333607460976.jpg"
-                      className="object-cover w-full h-72"
-                    />
-                  </div>
-                  <div className="p-2 bg-neutral-800">
-                    <h2 className="text-white font-semibold">iPhone 8 semi novo s/fone de ouvido</h2>
-                  </div>
-                </div>
-              </div>
+              {posts.map(post => (
+                <Post
+                  postProps={post}
+                  key={post.id}
+                />
+              ))}
             </div>
           </div>
         </div>
