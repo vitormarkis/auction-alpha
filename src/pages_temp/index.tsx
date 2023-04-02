@@ -11,33 +11,6 @@ import { z } from "zod"
 
 const inter = Inter({ subsets: ["latin"] })
 
-// const posts = [
-//   {
-//     id: "clfuib3st0000vesirheyb8t5",
-//     created_at: "2023-03-30T02:38:37.566Z",
-//     title: "iPhone 8 semi novo s/fone de ouvido",
-//     text: "texto desse novo post texto desse novo post texto desse novo post texto desse novo post",
-//     price: 799.9,
-//     author_id: "clfrvga5k0008ve7r9ex04lgg",
-//     media_posts: [
-//       {
-//         id: "clfuicz8e0002vesirqtgaykc",
-//         media: "https://img.olx.com.br/images/73/730396125379230.jpg",
-//       },
-//       {
-//         id: "clfuidb9u0004vesiyeyh201j",
-//         media: "https://img.olx.com.br/images/73/731333607460976.jpg",
-//       },
-//     ],
-//     author: {
-//       image: "https://avatars.githubusercontent.com/u/121525239?v=4",
-//       name: "Vitor Markis",
-//     },
-//   },
-// ]
-
-// export type TPost = typeof posts[number]
-
 export default function Home() {
   const {
     data: posts,

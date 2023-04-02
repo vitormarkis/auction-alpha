@@ -1,7 +1,8 @@
-import { prisma } from "@/services/prisma"
 import { NextApiRequest, NextApiResponse } from "next"
+import { newPostSchema } from "./schemas"
+import { prisma } from "@/services/prisma"
 
-export default async function (req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
     const posts = await prisma.post.findMany({
       select: {
@@ -31,5 +32,17 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     })
 
     return res.json(posts)
+  }
+  
+  if (req.method === "POST") {
+    try {
+      const { medias_url, price, text, title } = newPostSchema.parse(req.body)
+
+      console.log(req)
+
+      return res.json(req.headers)
+    } catch (error) {
+      return res.json(error)
+    }
   }
 }

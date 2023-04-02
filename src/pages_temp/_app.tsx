@@ -23,3 +23,5 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
     </SessionProvider>
   )
 }
+
+export const EmptyLayout = ({ children }: { children: JSX.Element }) => <>{children}</>
