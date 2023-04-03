@@ -57,7 +57,7 @@ export default function SignIn() {
           <p className="text-gray-700 my-3">
             Ainda não possui uma conta?{" "}
             <Link
-              href="/auth/register"
+              href="/register"
               className="focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double underline text-blue-500 cursor-pointer"
             >
               Registre-se

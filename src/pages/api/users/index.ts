@@ -3,7 +3,9 @@ import { prisma } from "@/services/prisma"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import { NextApiRequest, NextApiResponse } from "next"
+import { getServerSession } from "next-auth"
 import { getSession } from "next-auth/react"
+import { authOptions } from "../auth/[...nextauth]"
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
@@ -49,7 +51,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json(error)
     }
   } else if (req.method === "GET") {
-    const session = await getSession({ req })
+    const session = await getServerSession(req, res, authOptions)
 
     if (!session || !session.user?.sub) return res.status(400).send("Sem sessão.")
 

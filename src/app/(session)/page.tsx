@@ -2,7 +2,7 @@
 
 import { FeedInfo } from "@/components/FeedInfo"
 import { Post } from "@/components/Post"
-import { postFeedSchema } from "@/schemas/posts"
+import { IPostFeed, postFeedSchema } from "@/schemas/posts"
 import { api } from "@/services/api"
 import { SaveCopy } from "@styled-icons/fluentui-system-regular"
 import { useQuery } from "@tanstack/react-query"
@@ -21,16 +21,10 @@ export default function () {
 
   // const posts = [] as IPostFeed[]
   // const error = false
-  // const isLoading = false
+  // const isLoading = true
 
-  if (isLoading)
-    return (
-      <FeedInfo>
-        <p className="text-center font-bold">Carregando...</p>
-      </FeedInfo>
-    )
   if (error) return <p className="text-center font-bold">Aconteceu um erro...</p>
-  if (!posts) return <p className="text-center font-bold">Algo de errado aconteceu...</p>
+  if (!isLoading && !posts) return <p className="text-center font-bold">Algo de errado aconteceu...</p>
 
   return (
     <div>
@@ -47,7 +41,11 @@ export default function () {
               </button>
             </Link>
           </div>
-          {posts.length > 0 ? (
+          {isLoading ? (
+            <FeedInfo>
+              <p className="text-center font-bold">Carregando...</p>
+            </FeedInfo>
+          ) : posts.length > 0 ? (
             <div>
               {posts.map(post => (
                 <Post

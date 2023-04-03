@@ -1,3 +1,5 @@
+"use client"
+
 import { IUserRegisterInput, userRegisterSchemaClient } from "@/schemas/users"
 import { api } from "@/services/api"
 import { Github, Google } from "@styled-icons/boxicons-logos"
