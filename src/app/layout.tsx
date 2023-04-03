@@ -10,7 +10,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en">
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <div className="min-h-screen bg-neutral-100">
+          {children}
+          </div>
+        </Providers>
       </body>
     </html>
   )

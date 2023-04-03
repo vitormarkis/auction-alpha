@@ -7,7 +7,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import GithubProvider, { GithubProfile } from "next-auth/providers/github"
-import GoogleProvider from "next-auth/providers/google"
+import GoogleProvider, { GoogleProfile } from "next-auth/providers/google"
 import { z } from "zod"
 
 export const authOptions: NextAuthOptions = {
@@ -75,7 +75,7 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     newUser: "/testing",
-    signIn: "/auth/login",
+    signIn: "/signin",
   },
   session: {
     strategy: "jwt",

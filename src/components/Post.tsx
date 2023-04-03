@@ -30,7 +30,7 @@ export const Post: React.FC<Props> = ({ postProps, className, ...rest }) => {
             alt={`Foto de ${author.name}`}
             width={56}
             height={56}
-            className="rounded-full border border-black shrink-0 object-cover"
+            className="rounded-full border border-neutral-400 shrink-0 object-cover"
           />
         </div>
         <div className="leading-4 ml-3">
@@ -49,19 +49,19 @@ export const Post: React.FC<Props> = ({ postProps, className, ...rest }) => {
       <div className="mt-3">
         <p>{text}</p>
       </div>
-      <div className="mt-3 rounded-lg flex flex-col border border-black overflow-hidden cursor-pointer">
+      <div className="mt-3 rounded-lg flex flex-col border border-neutral-400 overflow-hidden cursor-pointer">
         <div className="flex">
           {post_media.map(media => (
             <img
               key={media.id}
               alt="Foto do post"
               src={media.media}
-              className="object-cover w-full h-72 border-r border-r-black"
+              className="object-cover w-full h-72 border-r border-r-neutral-400"
             />
           ))}
         </div>
         <div
-          className={clsx("p-2 bg-black", {
+          className={clsx("p-2 bg-neutral-400", {
             "bg-gradient-to-r to-fuchsia-600 via-indigo-700 from-cyan-600": isPremium,
           })}
         >
@@ -75,7 +75,7 @@ export const Post: React.FC<Props> = ({ postProps, className, ...rest }) => {
               {cents}
             </span>
           </div>
-          <div className="bg-black h-5 w-[1px] mx-3" />
+          <div className="bg-neutral-400 h-5 w-[1px] mx-3" />
           <div className="flex items-center text-sm">
             <Eye
               width={16}
@@ -84,7 +84,7 @@ export const Post: React.FC<Props> = ({ postProps, className, ...rest }) => {
             <p className="ml-1">5 pessoas já deram um lance</p>
           </div>
           <div className="ml-auto">
-            <button className="py-1.5 rounded-lg pr-6 pl-4 bg-black text-white flex items-center">
+            <button className="py-1.5 rounded-lg pr-6 pl-4 bg-neutral-400 text-white flex items-center">
               <Poll
                 width={16}
                 height={16}

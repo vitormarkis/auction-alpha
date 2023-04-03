@@ -11,7 +11,7 @@ export default function SignIn() {
 
   const handleSignIn = (provider: string) => () => {
     try {
-      signIn(provider, { redirect: true, callbackUrl: "/testing" })
+      signIn(provider, { redirect: true, callbackUrl: "/" })
     } catch (e) {
       console.log(e)
     }
@@ -20,7 +20,7 @@ export default function SignIn() {
   const submitHandler: SubmitHandler<IUserLogin> = async formData => {
     try {
       const { email, password } = userLoginSchema.parse(formData)
-      await signIn("credentials", { email, password, callbackUrl: "/testing", redirect: false })
+      await signIn("credentials", { email, password, callbackUrl: "/", redirect: true })
     } catch (error) {
       console.log(error)
     }
