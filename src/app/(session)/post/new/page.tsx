@@ -6,6 +6,7 @@ import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { Plus } from "@styled-icons/boxicons-regular/Plus"
 import { Minus } from "@styled-icons/boxicons-regular/Minus"
+import clsx from "clsx"
 
 type MediaString = Record<string, string>
 
@@ -174,7 +175,10 @@ const RowButton: React.FC<RowButtonProps> = ({ onClickHandle, mediaString, actio
     <button
       type="button"
       onClick={() => (mediaString ? onClickHandle(mediaString) : onClickHandle())}
-      className="p-2 rounded-lg bg-neutral-300 text-neutral-600 flex items-center leading-none justify-center"
+      className={clsx("p-2 rounded-lg flex items-center leading-none justify-center", {
+        "bg-emerald-100 text-emerald-500": isAdd,
+        "bg-red-100 text-red-500": !isAdd,
+      })}
     >
       <p className="my-auto">{icon[action]}</p>
     </button>
