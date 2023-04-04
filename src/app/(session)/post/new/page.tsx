@@ -8,10 +8,12 @@ import { Plus } from "@styled-icons/boxicons-regular/Plus"
 import { Minus } from "@styled-icons/boxicons-regular/Minus"
 import clsx from "clsx"
 import { useLimitedInput } from "./hook"
+import { z } from "zod"
 
 type MediaString = Record<string, string>
 
 const NewPost: React.FC = () => {
+  const [error, setError] = useState<string | null>("")
   const [price, handlePrice] = useLimitedInput("", 2)
   const { register, handleSubmit } = useForm<TNewPostBody>()
   const [mediaInput, setMediaInput] = useState<MediaString[]>([
@@ -21,10 +23,20 @@ const NewPost: React.FC = () => {
   ])
 
   const submitHandler: SubmitHandler<TNewPostBody> = async formData => {
-    const arrMediasURL = mediaInput.map(inp => Object.values(inp)[0])
-    const { medias_url, text, title, price } = newPostSchema.parse({ ...formData, medias_url: arrMediasURL })
-    // await api.post("/posts", { medias_url, text, title, price })
-    console.log({ medias_url, text, title, price })
+    try {
+      const arrMediasURL = mediaInput.map(inp => Object.values(inp)[0])
+      const { medias_url, text, title, price, announcement_date } = newPostSchema.parse({
+        ...formData,
+        medias_url: arrMediasURL,
+      })
+      // await api.post("/posts", { medias_url, text, title, price })
+      console.log({ medias_url, text, title, price, announcement_date })
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const [issue] = error.issues
+        setError(issue.message)
+      }
+    }
   }
 
   const maxInputs = 5
@@ -48,28 +60,27 @@ const NewPost: React.FC = () => {
     )
   }
 
-  const handleClick = () => {
-    api.get("/me").then(res => console.log(res.data))
-  }
-
   return (
     <div className="w-full max-w-[560px] h-full bg-white border-x border-x-neutral-400 mx-auto">
       <div className="p-6 border-b border-neutral-400 flex items-center justify-between">
-        <button className="py-1.5 rounded-lg pr-6 pl-4 bg-black text-white flex items-center ">
-          {/* <Poll
-            width={16}
-            height={16}
-          /> */}
-          <p className="ml-2">Voltar</p>
+        <button className="py-1.5 rounded-lg px-5 bg-black text-white flex items-center justify-center">
+          <span>Voltar</span>
         </button>
         <button
-          className="py-1.5 rounded-lg pr-6 pl-4 bg-emerald-500 text-white flex items-center "
+          className="py-1.5 rounded-lg px-5 bg-emerald-500 text-white flex items-center justify-center"
           type="submit"
           form="new_post_form"
         >
-          Publicar
+          <span>Publicar</span>
         </button>
       </div>
+      {error && (
+        <div className="p-6 border-b border-neutral-400 flex items-center justify-center">
+          <p className="p-3 rounded-lg border font-semibold border-red-300 bg-red-200 text-red-500">
+            {error}
+          </p>
+        </div>
+      )}
       <form
         onSubmit={handleSubmit(submitHandler)}
         className="flex flex-col gap-3 p-6 border-b border-neutral-400"
@@ -150,10 +161,16 @@ const NewPost: React.FC = () => {
             {...register("price")}
             value={price}
             onChange={handlePrice}
-            placeholder="R$299,90"
+            placeholder="299,90"
             className="border-none outline-none w-full h-full"
           />
         </div>
+        <input
+          className="mb-2 bg-white border border-neutral-400 px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double"
+          type="date"
+          {...register("announcement_date")}
+          // placeholder="Insira o título do seu post aqui..."
+        />
       </form>
     </div>
   )
