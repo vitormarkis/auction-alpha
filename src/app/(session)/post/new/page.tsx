@@ -7,10 +7,12 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import { Plus } from "@styled-icons/boxicons-regular/Plus"
 import { Minus } from "@styled-icons/boxicons-regular/Minus"
 import clsx from "clsx"
+import { useLimitedInput } from "./hook"
 
 type MediaString = Record<string, string>
 
 const NewPost: React.FC = () => {
+  const [price, handlePrice] = useLimitedInput("", 2)
   const { register, handleSubmit } = useForm<TNewPostBody>()
   const [mediaInput, setMediaInput] = useState<MediaString[]>([
     {
@@ -21,7 +23,7 @@ const NewPost: React.FC = () => {
   const submitHandler: SubmitHandler<TNewPostBody> = async formData => {
     const arrMediasURL = mediaInput.map(inp => Object.values(inp)[0])
     const { medias_url, text, title, price } = newPostSchema.parse({ ...formData, medias_url: arrMediasURL })
-    await api.post("/posts", { medias_url, text, title, price })
+    // await api.post("/posts", { medias_url, text, title, price })
     console.log({ medias_url, text, title, price })
   }
 
@@ -111,41 +113,47 @@ const NewPost: React.FC = () => {
                   className="w-full bg-white border border-neutral-400 px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double"
                 />
                 <div className="flex justify-center gap-2">
-                {mediaInput.length === 1 && lastInput.length === 0 ? (
-                  <></>
-                ) : lastInput?.length > 0 && mediaInput.length !== maxInputs ? (
-                  <>
-                    <RowButton
-                      mediaString={obj}
-                      onClickHandle={handleNewMediaInputRow}
-                      action="add"
-                    />
-                    {mediaInput.length > 1 && mediaInput.length <= maxInputs && (
+                  {mediaInput.length === 1 && lastInput.length === 0 ? (
+                    <></>
+                  ) : lastInput?.length > 0 && mediaInput.length !== maxInputs ? (
+                    <>
                       <RowButton
                         mediaString={obj}
-                        onClickHandle={handleDeleteMediaInputRow}
-                        action="remove"
+                        onClickHandle={handleNewMediaInputRow}
+                        action="add"
                       />
-                    )}
-                  </>
-                ) : (
-                  <RowButton
-                    mediaString={obj}
-                    onClickHandle={handleDeleteMediaInputRow}
-                    action="remove"
-                  />
-                )}
+                      {mediaInput.length > 1 && mediaInput.length <= maxInputs && (
+                        <RowButton
+                          mediaString={obj}
+                          onClickHandle={handleDeleteMediaInputRow}
+                          action="remove"
+                        />
+                      )}
+                    </>
+                  ) : (
+                    <RowButton
+                      mediaString={obj}
+                      onClickHandle={handleDeleteMediaInputRow}
+                      action="remove"
+                    />
+                  )}
                 </div>
               </div>
             )
           })}
         </div>
-        <input
-          type="number"
-          step="0.01"
-          {...register("price")}
-          placeholder="price"
-        />
+        <div className="w-full bg-white border border-neutral-400 px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double flex gap-2 items-center leading-none">
+          <span className="text-neutral-500">R$</span>
+          <input
+            type="number"
+            step="0.01"
+            {...register("price")}
+            value={price}
+            onChange={handlePrice}
+            placeholder="R$299,90"
+            className="border-none outline-none w-full h-full"
+          />
+        </div>
       </form>
     </div>
   )
