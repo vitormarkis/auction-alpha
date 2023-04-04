@@ -1,5 +1,7 @@
 import { IPostFeed } from "@/schemas/posts"
-import { Eye, MoreHorizontal, Poll } from "@styled-icons/fluentui-system-regular"
+import { Eye } from "@styled-icons/fluentui-system-regular/Eye"
+import { MoreHorizontal } from "@styled-icons/fluentui-system-regular/MoreHorizontal"
+import { Poll } from "@styled-icons/fluentui-system-regular/Poll"
 import clsx from "clsx"
 import moment from "moment"
 import "moment/locale/pt-br"
@@ -21,7 +23,7 @@ export const Post: React.FC<Props> = ({ postProps, className, ...rest }) => {
   return (
     <div
       {...rest}
-      className={`${className} p-6 border-b border-b-neutral-500`}
+      className={`${className ?? ""} p-6 border-b border-neutral-400`}
     >
       <div className="flex">
         <div>
@@ -30,7 +32,7 @@ export const Post: React.FC<Props> = ({ postProps, className, ...rest }) => {
             alt={`Foto de ${author.name}`}
             width={56}
             height={56}
-            className="rounded-full border border-neutral-400 shrink-0 object-cover"
+            className="rounded-full shrink-0 object-cover"
           />
         </div>
         <div className="leading-4 ml-3">
@@ -49,7 +51,7 @@ export const Post: React.FC<Props> = ({ postProps, className, ...rest }) => {
       <div className="mt-3">
         <p>{text}</p>
       </div>
-      <div className="mt-3 rounded-lg flex flex-col border border-neutral-400 overflow-hidden cursor-pointer">
+      <div className="mt-3 rounded-lg flex flex-col border border-black overflow-hidden cursor-pointer">
         <div className="flex">
           {post_media.map(media => (
             <img
@@ -61,7 +63,7 @@ export const Post: React.FC<Props> = ({ postProps, className, ...rest }) => {
           ))}
         </div>
         <div
-          className={clsx("p-2 bg-neutral-400", {
+          className={clsx("p-2 bg-black", {
             "bg-gradient-to-r to-fuchsia-600 via-indigo-700 from-cyan-600": isPremium,
           })}
         >
@@ -84,7 +86,7 @@ export const Post: React.FC<Props> = ({ postProps, className, ...rest }) => {
             <p className="ml-1">5 pessoas já deram um lance</p>
           </div>
           <div className="ml-auto">
-            <button className="py-1.5 rounded-lg pr-6 pl-4 bg-neutral-400 text-white flex items-center">
+            <button className="py-1.5 rounded-lg pr-6 pl-4 bg-black text-white flex items-center">
               <Poll
                 width={16}
                 height={16}

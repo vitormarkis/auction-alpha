@@ -1,30 +1,26 @@
 "use client"
 
-import { signIn, signOut } from "next-auth/react"
-import { HTMLAttributes } from "react"
+import React, { HTMLAttributes } from "react"
+import { Logout } from "@styled-icons/material/Logout"
+import { signOut } from "next-auth/react"
 
-interface Props extends HTMLAttributes<HTMLButtonElement> {
-  action: "sign_out" | "sign_in"
-}
-
-function AuthButton({ className, onClick, action, ...rest }: Props) {
-  const actionLiteral = {
-    sign_out: () => signOut(),
-    sign_in: () => signIn(),
-  }
-
+const LogoutButton: React.FC<HTMLAttributes<HTMLButtonElement>> = ({ className, onClick, ...rest }) => {
   return (
     <button
       onClick={e => {
-        actionLiteral[action]()
+        signOut()
         if (onClick) onClick(e)
       }}
-      className={`py-1.5 px-6 rounded-lg bg-black text-white ${className}`}
+      className={`${className ?? ""} p-1.5 bg-red-100 rounded-lg leading-none`}
       {...rest}
     >
-      {action === "sign_in" ? "Entrar" : "Sair"}
+      <Logout
+        width={18}
+        height={18}
+        className="text-red-500"
+      />
     </button>
   )
 }
 
-export default AuthButton
+export default LogoutButton

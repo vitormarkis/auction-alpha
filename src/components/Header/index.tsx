@@ -2,8 +2,10 @@ import { Inter } from "next/font/google"
 import { Session } from "next-auth"
 import Image from "next/image"
 import Link from "next/link"
-import AuthButton from "../LogoutButton"
-import { headers } from 'next/headers'
+import AuthButton from "../AuthButton"
+import { headers } from "next/headers"
+import { Logout } from "@styled-icons/material/Logout"
+import LogoutButton from "../LogoutButton"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -43,7 +45,9 @@ export default async function () {
   // }
 
   return (
-    <div className={`flex justify-center border-b border-b-neutral-400 bg-white ${inter.className}`}>
+    <div
+      className={`flex sticky top-0 justify-center border-b border-b-neutral-400 bg-white ${inter.className}`}
+    >
       <header className="flex items-center max-w-[1280px] w-full justify-between px-4 py-2">
         <div>
           <div>
@@ -66,7 +70,16 @@ export default async function () {
                 />
               </div>
             )}
-            <div>{session ? <AuthButton action="sign_out" /> : <AuthButton action="sign_in" />}</div>
+            <div>
+              {session ? (
+                <>
+                  {/* <AuthButton action="sign_out" /> */}
+                  <LogoutButton />
+                </>
+              ) : (
+                <AuthButton action="sign_in" />
+              )}
+            </div>
           </div>
         </div>
       </header>

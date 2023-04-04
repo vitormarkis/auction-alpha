@@ -1,5 +1,5 @@
 import { Post } from "@/components/Post"
-import { SaveCopy } from "@styled-icons/fluentui-system-regular"
+import { SaveCopy } from "@styled-icons/fluentui-system-regular/SaveCopy"
 
 import { postFeedSchema } from "@/schemas/posts"
 import { api } from "@/services/api"

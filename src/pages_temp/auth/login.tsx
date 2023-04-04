@@ -1,5 +1,6 @@
 import { IUserLogin, userLoginSchema } from "@/schemas/users"
-import { Github, Google } from "@styled-icons/boxicons-logos"
+import { Google } from "@styled-icons/boxicons-logos/Google"
+import { Github } from "@styled-icons/boxicons-logos/Github"
 import { GetServerSideProps } from "next"
 import { getCsrfToken, signIn } from "next-auth/react"
 import Link from "next/link"

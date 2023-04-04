@@ -1,7 +1,10 @@
 "use client"
 
 import { IUserLogin, userLoginSchema } from "@/schemas/users"
-import { Github, Google } from "@styled-icons/boxicons-logos"
+import { Google } from "@styled-icons/boxicons-logos/Google"
+import { Github } from "@styled-icons/boxicons-logos/Github"
+// import moduleName from '@styled-icons/fluentui-system-regular';
+// import moduleName from '@styled-icons/material';
 import { signIn } from "next-auth/react"
 import Link from "next/link"
 import { SubmitHandler, useForm } from "react-hook-form"

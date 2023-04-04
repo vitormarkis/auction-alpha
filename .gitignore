@@ -33,6 +33,7 @@ about_project
 
 # vercel
 .vercel
+.turbo
 
 # typescript
 *.tsbuildinfo
