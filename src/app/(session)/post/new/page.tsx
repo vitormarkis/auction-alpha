@@ -9,31 +9,52 @@ import { Minus } from "@styled-icons/boxicons-regular/Minus"
 import clsx from "clsx"
 import { useLimitedInput } from "./hook"
 import { z } from "zod"
+import { devNull } from "os"
+import { useMutation } from "@tanstack/react-query"
+import { queryClient } from "@/services/queryClient"
 
 type MediaString = Record<string, string>
 
 const NewPost: React.FC = () => {
-  const [error, setError] = useState<string | null>("")
-  const [price, handlePrice] = useLimitedInput("", 2)
-  const { register, handleSubmit } = useForm<TNewPostBody>()
+  const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState<string | null>(null)
+  const [price, setPrice, handlePrice] = useLimitedInput("", 2)
+  const { register, handleSubmit, reset } = useForm<TNewPostBody>()
   const [mediaInput, setMediaInput] = useState<MediaString[]>([
     {
       initial: "",
     },
   ])
 
+  const { mutate } = useMutation({
+    mutationFn: (newPostData: TNewPostBody) => api.post("/posts", newPostData),
+    onSuccess: () => queryClient.invalidateQueries(["posts"]),
+  })
+
   const submitHandler: SubmitHandler<TNewPostBody> = async formData => {
     try {
       const arrMediasURL = mediaInput.map(inp => Object.values(inp)[0])
-      const { medias_url, text, title, price, announcement_date } = newPostSchema.parse({
+      const fullFormData = {
         ...formData,
         medias_url: arrMediasURL,
-      })
-      // await api.post("/posts", { medias_url, text, title, price })
-      console.log({ medias_url, text, title, price, announcement_date })
+      }
+      newPostSchema.parse(fullFormData)
+      mutate(fullFormData)
+      reset()
+      setMediaInput([
+        {
+          initial: "",
+        },
+      ])
+      setPrice("")
+      setError(null)
+      setSuccess(
+        "Seu post foi criado com sucesso, ele foi enviado para ser aprovado por algum administrador e logo estará no ar."
+      )
     } catch (error) {
       if (error instanceof z.ZodError) {
         const [issue] = error.issues
+        setSuccess(null)
         setError(issue.message)
       }
     }
@@ -74,13 +95,19 @@ const NewPost: React.FC = () => {
           <span>Publicar</span>
         </button>
       </div>
-      {error && (
+      {error ? (
         <div className="p-6 border-b border-neutral-400 flex items-center justify-center">
           <p className="p-3 rounded-lg border font-semibold border-red-300 bg-red-200 text-red-500">
             {error}
           </p>
         </div>
-      )}
+      ) : success ? (
+        <div className="p-6 border-b border-neutral-400 flex items-center justify-center">
+          <p className="p-3 rounded-lg border font-semibold border-emerald-200 bg-emerald-100 text-emerald-500">
+            {success}
+          </p>
+        </div>
+      ) : null}
       <form
         onSubmit={handleSubmit(submitHandler)}
         className="flex flex-col gap-3 p-6 border-b border-neutral-400"

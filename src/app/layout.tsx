@@ -11,7 +11,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="en">
       <body>
         <Providers>
-          <div className="min-h-screen bg-neutral-100 overflow-y-scroll">
+          <div className="min-h-screen bg-neutral-100">
           {children}
           </div>
         </Providers>

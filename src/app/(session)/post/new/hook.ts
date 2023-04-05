@@ -1,6 +1,9 @@
-import { useCallback, useState } from "react"
+import { Dispatch, SetStateAction, useCallback, useState } from "react"
 
-export const useLimitedInput = (initialValue: string, step: number): [string, (event: any) => void] => {
+export const useLimitedInput = (
+  initialValue: string,
+  step: number
+): [string, Dispatch<SetStateAction<string>>, (event: any) => void] => {
   const [price, setPrice] = useState(initialValue)
 
   const handlePrice = useCallback(
@@ -21,5 +24,5 @@ export const useLimitedInput = (initialValue: string, step: number): [string, (e
     [initialValue, step]
   )
 
-  return [price, handlePrice]
+  return [price, setPrice, handlePrice]
 }
