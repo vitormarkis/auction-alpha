@@ -6,6 +6,7 @@ import clsx from "clsx"
 import moment from "moment"
 import "moment/locale/pt-br"
 import Image from "next/image"
+import Link from "next/link"
 import { HTMLAttributes } from "react"
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
@@ -13,7 +14,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 }
 
 export const Post: React.FC<Props> = ({ postProps, className, ...rest }) => {
-  const { author_id, created_at, id, post_media, price, text, title, author } = postProps
+  const { author_id, created_at, id, post_media, price, text, title, author, slug } = postProps
 
   const [leftPrice, rightPrice] = String(price).split(".")
 
@@ -86,6 +87,7 @@ export const Post: React.FC<Props> = ({ postProps, className, ...rest }) => {
             <p className="ml-1">5 pessoas já deram um lance</p>
           </div>
           <div className="ml-auto">
+            <Link href={`/post/${slug}`}>
             <button className="py-1.5 rounded-lg pr-6 pl-4 bg-black text-white flex items-center">
               <Poll
                 width={16}
@@ -93,6 +95,7 @@ export const Post: React.FC<Props> = ({ postProps, className, ...rest }) => {
               />
               <p className="ml-2">Ver mais</p>
             </button>
+            </Link>
           </div>
         </div>
       </div>

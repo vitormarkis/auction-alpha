@@ -14,6 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         title: true,
         text: true,
         price: true,
+        slug: true,
         author_id: true,
         author: {
           select: {

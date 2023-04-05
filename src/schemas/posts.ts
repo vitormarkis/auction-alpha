@@ -5,6 +5,7 @@ export const postFeedSchema = z.object({
   created_at: z.string(),
   title: z.string(),
   text: z.string(),
+  slug: z.string(),
   price: z.number(),
   author_id: z.string(),
   author: z.object({

@@ -4,7 +4,6 @@ import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import { NextApiRequest, NextApiResponse } from "next"
 import { getServerSession } from "next-auth"
-import { getSession } from "next-auth/react"
 import { authOptions } from "../auth/[...nextauth]"
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
