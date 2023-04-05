@@ -37,6 +37,7 @@ model Post {
   title             String
   text              String      @db.Text
   price             Float
+  slug              String      @unique
   announcement_date DateTime
   author_id         String
   author            User        @relation(fields: [author_id], references: [id], onDelete: Cascade)

@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next"
 import { newPostSchema } from "./schemas"
 import { getServerSession } from "next-auth"
 import { authOptions } from "../auth/[...nextauth]"
+import slugify from "react-slugify"
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
@@ -39,14 +40,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method === "POST") {
     try {
       const session = await getServerSession(req, res, authOptions)
-      if (!session) return res.status(401).send("Usuário não autenticado.")
+      if (!session || !session.user) return res.status(401).send("Usuário não autenticado.")
       const { announcement_date, medias_url, price, text, title } = newPostSchema.parse(req.body)
+
+      const random = () => parseInt(String(Math.random() * 10 ** 10))
+
+      const uniqueSlug = `${slugify(title)}-${random()}`
 
       await prisma.post.create({
         data: {
           announcement_date,
           price,
           text,
+          slug: uniqueSlug,
           title,
           author_id: session.user.sub,
           // author_id: "clg2w56uw0000venkgevzab52",
