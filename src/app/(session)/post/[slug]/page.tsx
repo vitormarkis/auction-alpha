@@ -5,6 +5,7 @@ import "moment/locale/pt-br"
 import { getServerSession } from "next-auth"
 import { headers } from "next/headers"
 import { getSession } from "@/components/Header"
+import clsx from "clsx"
 
 export default async function PostPage({ params }: { params: { slug: string } }) {
   const session = await getSession(headers().get("cookie") ?? "")
@@ -19,14 +20,22 @@ export default async function PostPage({ params }: { params: { slug: string } })
   }).then(async res => postFeedSchema.parse(await res.json()))
 
   const isAuthor = post.author_id === user.id
+  const hasBids = post._count.saved_by > 0
 
   const installment_price = String((post.price / 12).toFixed(2)).replace(".", ",")
 
   return (
     <div className="w-full max-w-[1280px] h-full bg-white border-x border-b border-neutral-400 mx-auto">
       <div className="flex">
-        <div className="p-6 border-r border-neutral-400 basis-0 grow-[3]">
-          <Carousell postMedias={post.post_media} />
+        <div className="p-6 border-r flex flex-col border-neutral-400 basis-0 grow-[3]">
+          <Carousell
+            postMedias={post.post_media}
+            className="mb-3"
+          />
+          <div className="p-6">
+            <h3 className="font-semibold text-neutral-700">Descrição</h3>
+            <p className="text-neutral-600">{post.text}</p>
+          </div>
         </div>
         <div className="p-6 basis-0 grow-[2]">
           <h1 className="text-2xl font-semibold mb-0.5">{post.title}</h1>
@@ -46,7 +55,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
               </div>
             </div>
           </div>
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 mb-3">
             <button className="bg-black py-3 text-white rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-500 focus:outline-double border border-black">
               Fazer uma proposta
             </button>
@@ -54,7 +63,16 @@ export default async function PostPage({ params }: { params: { slug: string } })
               Fazer uma pergunta
             </button>
           </div>
-          {isAuthor && JSON.stringify(session, null, 2)}
+          <div>
+            <p
+              className={clsx("py-1 px-1.5 text-sm rounded-lg", {
+                "bg-red-100 text-red-500": hasBids,
+                "bg-indigo-100 text-indigo-500": !hasBids,
+              })}
+            >
+              {hasBids ? `${post._count.saved_by} lances no momento` : "Sem lances no momento"}
+            </p>
+          </div>
         </div>
       </div>
     </div>

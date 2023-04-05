@@ -1,20 +1,23 @@
 "use client"
 
 import clsx from "clsx"
-import { useState } from "react"
+import { HTMLAttributes, useState } from "react"
 
-export function Carousell({
-  postMedias,
-}: {
+interface Props extends HTMLAttributes<HTMLDivElement> {
   postMedias: {
     id: string
     media: string
   }[]
-}) {
+}
+
+export function Carousell({ postMedias, className, ...rest }: Props) {
   const [image, setImage] = useState(postMedias[0].media)
 
   return (
-    <div className="flex">
+    <div
+      className={`flex ${className}`}
+      {...rest}
+    >
       <div className="flex flex-col gap-2 p-2">
         {postMedias.map(({ id: img_id, media }) => (
           <img
