@@ -18,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           announcement_date: true,
           _count: {
             select: {
-              saved_by: true,
+              bids: true,
             },
           },
           author_id: true,
@@ -33,6 +33,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             select: {
               id: true,
               media: true,
+            },
+          },
+          bids: {
+            select: {
+              id: true,
+              created_at: true,
+              value: true,
+              post_id: true,
+              user: {
+                select: {
+                  id: true,
+                  image: true,
+                  name: true,
+                },
+              },
             },
           },
         },

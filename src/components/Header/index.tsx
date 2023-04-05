@@ -66,7 +66,7 @@ export default async function () {
                   alt={`Imagem de perfil de ${user?.name}`}
                   width={36}
                   height={36}
-                  className="shadow-md shadow-black/40 rounded-full"
+                  className="rounded-full"
                 />
               </div>
             )}

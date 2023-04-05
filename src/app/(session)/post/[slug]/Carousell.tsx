@@ -25,7 +25,7 @@ export function Carousell({ postMedias, className, ...rest }: Props) {
             src={media}
             alt=""
             onClick={() => setImage(media)}
-            className={clsx("w-12 cursor-pointer aspect-square bg-neutral-300 object-cover rounded-lg", {
+            className={clsx("w-12 cursor-pointer aspect-square bg-neutral-300 object-contain rounded-lg", {
               "outline-1 outline outline-offset-2 outline-blue-500": image === media,
             })}
           />
@@ -35,7 +35,7 @@ export function Carousell({ postMedias, className, ...rest }: Props) {
         <img
           src={image}
           alt=""
-          className="w-[420px] aspect-square bg-neutral-300 object-cover rounded-lg shadow-md shadow-black/40"
+          className="w-[420px] aspect-square bg-neutral-300 object-contain rounded-lg"
         />
       </div>
     </div>

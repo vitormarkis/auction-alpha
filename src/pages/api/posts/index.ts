@@ -18,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         announcement_date: true,
         _count: {
           select: {
-            saved_by: true,
+            bids: true,
           },
         },
         author_id: true,
@@ -35,6 +35,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             media: true,
           },
         },
+        bids: {
+          select: {
+            post_id: true,
+            id: true,
+            created_at: true,
+            value: true,
+            user: {
+              select: {
+                id: true,
+                image: true,
+                name: true,
+              },
+            },
+          },
+        },
       },
       orderBy: {
         created_at: "desc",
@@ -47,7 +62,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method === "POST") {
     try {
       const session = await getServerSession(req, res, authOptions)
-      if (!session || !session.user) return res.status(401).send("Usuário não autenticado.")
+      if (!session || !session.user || !session.user.sub) return res.status(401).send("Usuário não autenticado.")
       const { announcement_date, medias_url, price, text, title } = newPostSchema.parse(req.body)
 
       const random = () => parseInt(String(Math.random() * 10 ** 10))

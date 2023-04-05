@@ -88,13 +88,13 @@ export const Post: React.FC<Props> = ({ postProps, className, ...rest }) => {
           </div>
           <div className="ml-auto">
             <Link href={`/post/${slug}`}>
-            <button className="py-1.5 rounded-lg pr-6 pl-4 bg-black text-white flex items-center">
-              <Poll
-                width={16}
-                height={16}
-              />
-              <p className="ml-2">Ver mais</p>
-            </button>
+              <button className="py-1.5 rounded-lg pr-6 pl-4 bg-black text-white flex items-center">
+                <Poll
+                  width={16}
+                  height={16}
+                />
+                <p className="ml-2">Ver mais</p>
+              </button>
             </Link>
           </div>
         </div>

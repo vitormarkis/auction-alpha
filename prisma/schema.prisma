@@ -23,6 +23,7 @@ model User {
   saved_posts   SavedPost[]
   accounts      Account[]
   sessions      Session[]
+  Bids          Bids[]
 }
 
 enum Role {
@@ -43,6 +44,7 @@ model Post {
   author            User        @relation(fields: [author_id], references: [id], onDelete: Cascade)
   saved_by          SavedPost[]
   post_media        PostMedia[]
+  bids              Bids[]
 }
 
 model PostMedia {
@@ -62,6 +64,19 @@ model SavedPost {
   user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   saved_post String
   saved      Post     @relation(fields: [saved_post], references: [id], onDelete: Cascade)
+}
+
+model Bids {
+  id         String   @id @default(cuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  value      Float
+  user_id    String
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  post_id    String
+  post       Post     @relation(fields: [post_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, post_id])
 }
 
 model Account {

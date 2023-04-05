@@ -19,8 +19,8 @@ export default async function PostPage({ params }: { params: { slug: string } })
     },
   }).then(async res => postFeedSchema.parse(await res.json()))
 
-  const isAuthor = post.author_id === user.id
-  const hasBids = post._count.saved_by > 0
+  const isAuthor = post.author_id === user?.id
+  const hasBids = post._count.bids > 0
 
   const installment_price = String((post.price / 12).toFixed(2)).replace(".", ",")
 
@@ -70,9 +70,10 @@ export default async function PostPage({ params }: { params: { slug: string } })
                 "bg-indigo-100 text-indigo-500": !hasBids,
               })}
             >
-              {hasBids ? `${post._count.saved_by} lances no momento` : "Sem lances no momento"}
+              {hasBids ? `${post._count.bids} lances no momento` : "Sem lances no momento"}
             </p>
           </div>
+          {isAuthor && JSON.stringify(post.bids)}
         </div>
       </div>
     </div>
