@@ -11,7 +11,7 @@ const inter = Inter({
   subsets: ["latin"],
 })
 
-async function getSession(cookie: string): Promise<Session> {
+export async function getSession(cookie: string): Promise<Session> {
   const response = await fetch("http://localhost:3000/api/auth/session", {
     headers: {
       cookie,

@@ -12,7 +12,7 @@ export default function () {
 
   const handleSignIn = (provider: string) => () => {
     try {
-      signIn(provider, { redirect: true, callbackUrl: "/testing" })
+      signIn(provider, { redirect: true, callbackUrl: "/" })
     } catch (e) {
       console.log(e)
     }

@@ -54,3 +54,4 @@ export const newPostSchema = z.object({
 })
 
 export type TNewPostBody = z.input<typeof newPostSchema>
+export type TNewPostBodyOutput = z.output<typeof newPostSchema>

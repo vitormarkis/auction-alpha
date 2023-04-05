@@ -7,7 +7,11 @@ export const postFeedSchema = z.object({
   text: z.string(),
   slug: z.string(),
   price: z.number(),
+  announcement_date: z.string(),
   author_id: z.string(),
+  _count: z.object({
+    saved_by: z.number(),
+  }),
   author: z.object({
     name: z.string(),
     role: z.enum(["USER", "ADMIN"]),
