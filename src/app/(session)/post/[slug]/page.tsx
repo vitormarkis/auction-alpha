@@ -63,7 +63,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
               Fazer uma pergunta
             </button>
           </div>
-          <div>
+          <div className="mb-3">
             <p
               className={clsx("py-1 px-1.5 text-sm rounded-lg", {
                 "bg-red-100 text-red-500": hasBids,
@@ -73,7 +73,27 @@ export default async function PostPage({ params }: { params: { slug: string } })
               {hasBids ? `${post._count.bids} lances no momento` : "Sem lances no momento"}
             </p>
           </div>
-          {isAuthor && JSON.stringify(post.bids)}
+          {isAuthor && (
+            <div className="p-2 rounded-lg bg-neutral-100 flex flex-col gap-2">
+              {post.bids.map(bid => (
+                <div
+                  key={bid.id}
+                  className="flex items-center"
+                >
+                  <img
+                    src={bid.user.image}
+                    alt={`Foto de perfil de ${bid.user.name}`}
+                    className="w-8 h-8 rounded-lg mr-2"
+                  />
+                  <p className="text-neutral-800 text-sm">{bid.user.name}</p>
+                  <p className="ml-auto font-semibold mr-2">R$ {bid.value}</p>
+                  <button className="py-1.5 px-2.5 bg-green-600 text-white rounded-lg leading-none text-xs">
+                    Premiar
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

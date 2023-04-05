@@ -1,3 +1,5 @@
+"use client"
+
 import { IPostFeed } from "@/schemas/posts"
 import { Eye } from "@styled-icons/fluentui-system-regular/Eye"
 import { MoreHorizontal } from "@styled-icons/fluentui-system-regular/MoreHorizontal"
