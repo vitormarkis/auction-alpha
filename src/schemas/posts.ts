@@ -38,4 +38,11 @@ export const postFeedSchema = z.object({
   ),
 })
 
+export const bidSchema = z.object({
+  post_id: z.string(),
+  value: z.coerce.number(),
+})
+
+export type IBidBody = z.infer<typeof bidSchema>
+
 export type IPostFeed = z.infer<typeof postFeedSchema>

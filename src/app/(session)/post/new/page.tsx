@@ -180,7 +180,9 @@ const NewPost: React.FC = () => {
             )
           })}
         </div>
-        <div className="w-full bg-white border border-neutral-400 px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double flex gap-2 items-center leading-none">
+        <div 
+        className="w-full bg-white border border-neutral-400 px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double flex gap-2 items-center leading-none"
+        >
           <span className="text-neutral-500">R$</span>
           <input
             type="number"
