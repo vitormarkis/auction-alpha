@@ -56,12 +56,14 @@ export default async function PostPage({ params }: { params: { slug: string } })
               </div>
             </div>
           </div>
-          <div className="flex flex-col gap-3 mb-3">
-            <MakeBidButton postId={post.id} />
-            <button className="bg-neutral-100 py-3 text-neutral-500 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-100 focus:outline-double border border-neutral-500">
-              Fazer uma pergunta
-            </button>
-          </div>
+          {isAuthor ? null : (
+            <div className="flex flex-col gap-3 mb-3">
+              <MakeBidButton postId={post.id} />
+              <button className="bg-neutral-100 py-3 text-neutral-500 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-100 focus:outline-double border border-neutral-500">
+                Fazer uma pergunta
+              </button>
+            </div>
+          )}
           <div className="mb-3">
             <p
               className={clsx("py-1 px-1.5 text-sm rounded-lg", {
@@ -69,10 +71,12 @@ export default async function PostPage({ params }: { params: { slug: string } })
                 "bg-indigo-100 text-indigo-500": (isAuthor && hasBids) || (!isAuthor && !hasBids),
               })}
             >
-              {hasBids ? `${post._count.bids} lances no momento` : "Sem lances no momento"}
+              {hasBids
+                ? `${post._count.bids} lance${post._count.bids > 1 ? "s" : ""} no momento`
+                : "Sem lances no momento"}
             </p>
           </div>
-          {isAuthor && (
+          {isAuthor && hasBids ? (
             <div className="p-2 rounded-lg bg-neutral-200 flex flex-col gap-2">
               {post.bids.map(bid => (
                 <div
@@ -92,7 +96,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
                 </div>
               ))}
             </div>
-          )}
+          ) : null}
         </div>
       </div>
     </div>

@@ -86,3 +86,31 @@ export function MakeBidButton() {
 ```
 
 > Importante o uso do asChild no elemento Trigger, para que ele use o próprio elemento como trigger, caso não seja usado, o javascript dele, quando carregado, criará um button por volta do seu elemento, e isso dará incompatibilidade com o HTML enviado pelo server e o HTML que está presente no código, porque agora possui um botão a mais
+
+## Criando validações no ZOD com valores dinâmicos
+
+Cria-se uma função que retorna um schema.
+
+```tsx
+const apiRes = {
+  price: 500,
+}
+
+function createSchema(bidPrice: number) {
+  return z.object({
+    price: z.coerce
+      .number()
+      .refine(price => bidPrice < price, "O preço precisa ser maior que o preço original."),
+  })
+}
+
+const submitHandler: SubmitHandler<{ price: number }> = async formData => {
+  const schema = createSchema(apiRes.price)
+  const res = schema.safeParse(formData)
+  if (res.success) {
+    console.log("Aprovado")
+  } else {
+    console.log("Reprovado")
+  }
+}
+```
