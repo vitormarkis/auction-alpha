@@ -6,6 +6,7 @@ import { getServerSession } from "next-auth"
 import { headers } from "next/headers"
 import { getSession } from "@/components/Header"
 import clsx from "clsx"
+import { MakeBidButton } from "./MakeBidButton"
 
 export default async function PostPage({ params }: { params: { slug: string } }) {
   const session = await getSession(headers().get("cookie") ?? "")
@@ -56,9 +57,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
             </div>
           </div>
           <div className="flex flex-col gap-3 mb-3">
-            <button className="bg-black py-3 text-white rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-500 focus:outline-double border border-black">
-              Fazer uma proposta
-            </button>
+          <MakeBidButton />
             <button className="bg-neutral-100 py-3 text-neutral-500 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-100 focus:outline-double border border-neutral-500">
               Fazer uma pergunta
             </button>

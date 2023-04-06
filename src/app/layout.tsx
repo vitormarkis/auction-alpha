@@ -18,6 +18,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body className="overflow-y-scroll">
         <Providers>
           <div className={`min-h-screen bg-neutral-100 ${roboto.className}`}>{children}</div>
+          <div id="portal"></div>
         </Providers>
       </body>
     </html>

@@ -53,3 +53,36 @@ Para passar uma propriedade especifica agora é facil, basta pegar ela do user e
 ## Erro Unauthorized 401 fazendo chamadas dentro do authorize
 
 Um dos motivos era porque a minha api estava lançando erros sem ser pegos em lugar algum, eu imaginei que dentro de um bloco try catch, lançando um erro dentro do try ele seria capturado pelo catch, mas estava enganado.
+
+## Target Container is not a DOM Element quando usado createPortal e Radix
+
+Aparentemente document ainda não foi criado no primeiro ciclo de vida do componente, então o portal não consegue encontrar a div por meio dos métodos do document de encontro de elemento.
+
+A solução é criar o portal de forma condicional, enquanto document não está disponível, mostrar null, e isso pode ser feito com useEffect.
+
+```tsx
+export function MakeBidButton() {
+  const [hasDocument, setHasDocument] = React.useState(false)
+
+  React.useEffect(() => {
+    setHasDocument(true)
+  })
+
+  return (
+    <Dialog.Root>
+      <Dialog.Trigger asChild>// elemento trigger com asChild</Dialog.Trigger>
+      {hasDocument
+        ? ReactDOM.createPortal(
+            <Dialog.Content>
+              <Dialog.Overlay className="w-screen h-screen inset-0 bg-black/40" />
+              // elemento a ser mostrado
+            </Dialog.Content>,
+            document.getElementById("portal")!
+          )
+        : null}
+    </Dialog.Root>
+  )
+}
+```
+
+> Importante o uso do asChild no elemento Trigger, para que ele use o próprio elemento como trigger, caso não seja usado, o javascript dele, quando carregado, criará um button por volta do seu elemento, e isso dará incompatibilidade com o HTML enviado pelo server e o HTML que está presente no código, porque agora possui um botão a mais
