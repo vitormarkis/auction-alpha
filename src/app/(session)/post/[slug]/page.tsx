@@ -65,15 +65,15 @@ export default async function PostPage({ params }: { params: { slug: string } })
           <div className="mb-3">
             <p
               className={clsx("py-1 px-1.5 text-sm rounded-lg", {
-                "bg-red-100 text-red-500": hasBids,
-                "bg-indigo-100 text-indigo-500": !hasBids,
+                "bg-red-100 text-red-500": (!isAuthor && hasBids) || (isAuthor && !hasBids),
+                "bg-indigo-100 text-indigo-500": (isAuthor && hasBids) || (!isAuthor && !hasBids),
               })}
             >
               {hasBids ? `${post._count.bids} lances no momento` : "Sem lances no momento"}
             </p>
           </div>
           {isAuthor && (
-            <div className="p-2 rounded-lg bg-neutral-100 flex flex-col gap-2">
+            <div className="p-2 rounded-lg bg-neutral-200 flex flex-col gap-2">
               {post.bids.map(bid => (
                 <div
                   key={bid.id}
