@@ -6,13 +6,14 @@ import { headers } from "next/headers"
 import { getSession } from "@/components/Header"
 import clsx from "clsx"
 import { MakeBidButton } from "./MakeBidButton"
+import { api_url } from "@/CONSTANTS"
 
 export default async function PostPage({ params }: { params: { slug: string } }) {
   const session = await getSession(headers().get("cookie") ?? "")
   const { user } = session ?? {}
 
   const { slug } = params
-  const post = await fetch(`http://localhost:3000/api/posts/single?post_slug=${slug}`, {
+  const post = await fetch(`${api_url}/api/posts/single?post_slug=${slug}`, {
     cache: "no-store",
     next: {
       revalidate: 10,

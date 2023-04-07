@@ -6,13 +6,14 @@ import AuthButton from "../AuthButton"
 import { headers } from "next/headers"
 import { Logout } from "@styled-icons/material/Logout"
 import LogoutButton from "../LogoutButton"
+import { api_url } from "@/CONSTANTS"
 
 const inter = Inter({
   subsets: ["latin"],
 })
 
 export async function getSession(cookie: string): Promise<Session> {
-  const response = await fetch("http://localhost:3000/api/auth/session", {
+  const response = await fetch(`${api_url}/api/auth/session`, {
     headers: {
       cookie,
     },

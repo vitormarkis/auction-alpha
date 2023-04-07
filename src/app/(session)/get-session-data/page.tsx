@@ -1,5 +1,7 @@
+import { api_url } from "@/CONSTANTS"
+
 async function GetSessionData() {
-  const sessionUser = fetch("http://localhost:3000/api/get-session-data", {
+  const sessionUser = fetch(`${api_url}/api/get-session-data`, {
     cache: "no-store",
   }).then(r => r.json())
 
