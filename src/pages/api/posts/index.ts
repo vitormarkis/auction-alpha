@@ -62,7 +62,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method === "POST") {
     try {
       const session = await getServerSession(req, res, authOptions)
-      if (!session || !session.user || !session.user.sub) return res.status(401).send("Usuário não autenticado.")
+      if (!session || !session.user || !session.user.sub)
+        return res.status(401).send("Usuário não autenticado.")
       const { announcement_date, medias_url, price, text, title } = newPostSchema.parse(req.body)
 
       const random = () => parseInt(String(Math.random() * 10 ** 10))
@@ -86,9 +87,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         },
       })
 
-      return res.json({
-        msg: "Post criado com sucesso",
-      })
+      return res.status(201)
     } catch (error) {
       return res.json(error)
     }
