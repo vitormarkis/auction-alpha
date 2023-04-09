@@ -88,9 +88,9 @@ export default function Register() {
           </button>
 
           <div className="flex gap-3 text-gray-700 my-3">
-            <div className="h-[1px] w-full my-3 border-b border-b-gray-400" />
+            <div className="h-[1px] w-full my-3" />
             <p className="whitespace-nowrap">Ou faça login com</p>
-            <div className="h-[1px] w-full my-3 border-b border-b-gray-400" />
+            <div className="h-[1px] w-full my-3" />
           </div>
 
           <div className="text-gray-700 flex gap-3">

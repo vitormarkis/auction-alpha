@@ -26,7 +26,7 @@ export const Post: React.FC<Props> = ({ postProps, className, ...rest }) => {
   return (
     <div
       {...rest}
-      className={`${className ?? ""} p-6 border-b border-neutral-400`}
+      className={`${className ?? ""} p-6`}
     >
       <div className="flex">
         <div>

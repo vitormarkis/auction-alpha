@@ -10,8 +10,8 @@ export default async function () {
   const { user } = session ?? {}
 
   return (
-    <aside className="flex flex-col border-r border-neutral-400 text-sm w-[200px] shrink-0 text-stone-500 whitespace-nowrap">
-      <div className="pb-3 border-b p-3 border-neutral-400">
+    <aside className="flex flex-col text-base w-60 shrink-0 text-stone-500 whitespace-nowrap">
+      <div className="py-6 px-3.5 ">
         <div className="flex flex-col">
           {user && (
             <div className="items-center flex leading-none mb-2 gap-2 text-stone-800">
@@ -26,16 +26,22 @@ export default async function () {
             </div>
           )}
           <div className="flex flex-col gap-2">
-            <button className="py-1.5 rounded-lg px-5 justify-center bg-black text-white flex items-center">
+            <Link
+              href="/post/new"
+              className="py-1.5 rounded-lg px-5 justify-center bg-black text-white flex items-center"
+            >
+              <p>Novo post</p>
+            </Link>
+            <Link
+              href="/post/new"
+              className="py-1.5 rounded-lg px-5 justify-center bg-neutral-200 text-stone-800 flex items-center"
+            >
               <p>Ver perfil</p>
-            </button>
-            <button className="py-1.5 rounded-lg px-5 justify-center bg-neutral-200 text-stone-500 flex items-center">
-              <p>Mais opções</p>
-            </button>
+            </Link>
           </div>
         </div>
       </div>
-      <div className="p-3">
+      <div className="py-6 px-3.5">
         <ul className="flex flex-col gap-2">
           <li className="px-3 py-1 grow rounded-lg bg-blue-600 text-white font-medium flex items-center gap-2">
             <Link
@@ -104,7 +110,7 @@ export default async function () {
           </li>
         </ul>
       </div>
-      <div className="mt-auto p-3 border-t border-neutral-400">
+      <div className="mt-auto py-6 px-3.5 ">
         <button className=" flex items-center gap-2 px-3 py-1 grow rounded-lg bg-zinc-100 text-zinc-800 font-medium">
           <Icon
             icon="Settings"

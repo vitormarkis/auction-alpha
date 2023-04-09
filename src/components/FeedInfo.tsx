@@ -9,7 +9,7 @@ export const FeedInfo: React.FC<Props> = ({ className, children, ...rest }) => {
   return (
     <div
       {...rest}
-      className={`${className} p-6 border-b border-b-neutral-500 bg-white`}
+      className={`${className} p-6 bg-white`}
     >
       <div
       // className="mt-3"

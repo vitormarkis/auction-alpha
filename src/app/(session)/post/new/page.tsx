@@ -99,8 +99,8 @@ const NewPost: React.FC = () => {
   }
 
   return (
-    <div className="w-full max-w-[560px] h-full bg-white border-x border-x-neutral-400 mx-auto">
-      <div className="p-6 border-b border-neutral-400 flex items-center justify-between">
+    <div className="w-full max-w-[560px] h-full bg-white mx-auto">
+      <div className="p-6 flex items-center justify-between">
         <button className="py-1.5 rounded-lg px-5 bg-black text-white flex items-center justify-center">
           <span>Voltar</span>
         </button>
@@ -113,31 +113,31 @@ const NewPost: React.FC = () => {
         </button>
       </div>
       {error ? (
-        <div className="p-6 border-b border-neutral-400 flex items-center justify-center">
-          <p className="p-3 rounded-lg border font-semibold border-red-300 bg-red-200 text-red-500">
+        <div className="p-6 flex items-center justify-center">
+          <p className="p-3 rounded-lg font-semibold d-300 bg-red-200 text-red-500">
             {error}
           </p>
         </div>
       ) : success ? (
-        <div className="p-6 border-b border-neutral-400 flex items-center justify-center">
-          <p className="p-3 rounded-lg border font-semibold border-emerald-200 bg-emerald-100 text-emerald-500">
+        <div className="p-6 flex items-center justify-center">
+          <p className="p-3 rounded-lg font-semibold erald-200 bg-emerald-100 text-emerald-500">
             {success}
           </p>
         </div>
       ) : null}
       <form
         onSubmit={handleSubmit(submitHandler)}
-        className="flex flex-col gap-3 p-6 border-b border-neutral-400"
+        className="flex flex-col gap-3 p-6"
         id="new_post_form"
       >
         <input
-          className="mb-2 bg-white border border-neutral-400 px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double"
+          className="mb-2 bg-white px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double"
           type="title"
           {...register("title")}
           placeholder="Insira o título do seu post aqui..."
         />
         <textarea
-          className="mb-2 bg-white border border-neutral-400 px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double"
+          className="mb-2 bg-white px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double"
           {...register("text")}
           placeholder="Descrição do seu post..."
         />
@@ -165,7 +165,7 @@ const NewPost: React.FC = () => {
                       old.map(oldObj => (key in oldObj ? { ...oldObj, [key]: e.target.value } : oldObj))
                     )
                   }
-                  className="w-full bg-white border border-neutral-400 px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double"
+                  className="w-full bg-white px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double"
                 />
                 <div className="flex justify-center gap-2">
                   {mediaInput.length === 1 && lastInput.length === 0 ? (
@@ -197,7 +197,7 @@ const NewPost: React.FC = () => {
             )
           })}
         </div>
-        <div className="w-full bg-white border border-neutral-400 px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double flex gap-2 items-center leading-none">
+        <div className="w-full bg-white px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double flex gap-2 items-center leading-none">
           <span className="text-neutral-500">R$</span>
           <input
             type="number"
@@ -210,7 +210,7 @@ const NewPost: React.FC = () => {
           />
         </div>
         <input
-          className="mb-2 bg-white border border-neutral-400 px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double"
+          className="mb-2 bg-white px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double"
           type="date"
           {...register("announcement_date")}
           // placeholder="Insira o título do seu post aqui..."

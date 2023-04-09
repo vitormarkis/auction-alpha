@@ -28,7 +28,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
   return (
     <div className=" bg-white grow">
       <div className="flex min-h-full">
-        <div className="p-6 border-r flex flex-col border-neutral-400 min-w-[420px] grow">
+        <div className="p-6 flex flex-col min-w-[420px] grow">
           <Carousell
             postMedias={post.post_media}
             className="mb-3"
@@ -59,7 +59,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
           {isAuthor ? null : (
             <div className="flex flex-col gap-3 mb-3">
               <MakeBidButton postId={post.id} />
-              <button className="bg-neutral-100 py-3 text-neutral-500 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-100 focus:outline-double border border-neutral-500">
+              <button className="bg-neutral-100 py-3 text-neutral-500 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-100 focus:outline-double">
                 Fazer uma pergunta
               </button>
             </div>

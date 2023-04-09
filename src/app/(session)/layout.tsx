@@ -12,15 +12,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <>
       {/* @ts-expect-error */}
       <Navbar />
-      <div className="flex h-full w-full max-w-[1280px] grow border-x border-b border-neutral-400 mx-auto border-l border-l-neutral-400 bg-white">
+      <div className="flex h-full w-full max-w-[1280px] grow mx-auto bg-white">
         <div className="flex">
           {/* @ts-expect-error */}
           <Sidebar />
         </div>
         {children}
-        <div className="flex basis-[199px] shrink-0 bg-teal-400">
-          {/* <div className="h-full"></div> */}
-        </div>
+        <div className="flex basis-[240px] shrink-[999]">{/* <div className="h-full"></div> */}</div>
       </div>
     </>
   )

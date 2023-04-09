@@ -47,7 +47,7 @@ export default async function () {
 
   return (
     <div
-      className={`flex sticky top-0 justify-center border-b border-b-neutral-400 bg-white ${inter.className}`}
+      className={`flex sticky top-0 justify-center bg-white ${inter.className}`}
     >
       <header className="flex items-center max-w-[1280px] w-full justify-between px-4 py-2">
         <div>
