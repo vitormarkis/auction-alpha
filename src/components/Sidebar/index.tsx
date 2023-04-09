@@ -56,6 +56,19 @@ export default async function () {
               <span>Início</span>
             </Link>
           </li>
+          <li className="px-3 py-1 grow rounded-lg bg-zinc-100 text-zinc-800 font-medium flex items-center gap-2">
+            <Link
+              href="/"
+              className="flex items-center gap-2"
+            >
+              <Icon
+                icon="Payment"
+                width={16}
+                height={16}
+              />
+              <span>Minhas compras</span>
+            </Link>
+          </li>
           <li className="px-3 py-1 grow rounded-lg bg-zinc-100 text-zinc-800 font-medium">
             <Link
               href="/"

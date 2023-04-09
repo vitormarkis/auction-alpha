@@ -1,4 +1,3 @@
-import { Inter } from "next/font/google"
 import { Session } from "next-auth"
 import Image from "next/image"
 import Link from "next/link"
@@ -49,29 +48,59 @@ export default async function () {
           </div>
         </div>
         <div>
-          <div className="flex gap-2 items-center font-semibold">
-            <p>{user?.name}</p>
-            {session && (
-              <div>
-                <Image
-                  src={user?.image ?? ""}
-                  alt={`Imagem de perfil de ${user?.name}`}
-                  width={36}
-                  height={36}
-                  className="rounded-full"
+          <div className="flex gap-2 items-center">
+            <div>
+              <div className="leading-none rounded-lg bg-neutral-100 border border-neutral-400 w-full max-w-xs flex items-center gap-2 px-2 py-1">
+                <Icon
+                  icon="Search"
+                  width={24}
+                  height={24}
+                  className="text-stone-800"
+                />
+                <input
+                  type="text"
+                  placeholder="Faça uma pesquisa..."
+                  className="w-full bg-transparent focus:outline-none"
                 />
               </div>
-            )}
-            <div>
+            </div>
+            <div className="flex gap-2 [&>button]:transition-all [&>button]:duration-200">
+              <button className="p-1.5 leading-none rounded-lg hover:bg-neutral-200">
+                <Icon
+                  icon="NotificationsNone"
+                  width={24}
+                  height={24}
+                  className="text-stone-800"
+                />
+              </button>
+              {/* <button className="p-1.5 leading-none rounded-lg hover:bg-neutral-200">
+                <Icon
+                  icon="MoreVert"
+                  width={24}
+                  height={24}
+                  className="text-stone-800"
+                />
+              </button> */}
+              {session && (
+                <div className="">
+                  <Image
+                    src={user?.image ?? ""}
+                    alt={`Imagem de perfil de ${user?.name ?? "convidado"}`}
+                    width={36}
+                    height={36}
+                    className="rounded-full"
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* <div>
               {session ? (
-                <>
-                  {/* <AuthButton action="sign_out" /> */}
                   <LogoutButton />
-                </>
               ) : (
                 <AuthButton action="sign_in" />
               )}
-            </div>
+            </div> */}
           </div>
         </div>
       </header>
