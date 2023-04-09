@@ -29,10 +29,10 @@ export default function () {
   }
 
   return (
-    <div className="border-x border-neutral-500 max-w-[560px] w-full mx-auto">
+    <div className="border-x border-neutral-400 max-w-[560px] w-full mx-auto">
       <form
         onSubmit={handleSubmit(submitHandler)}
-        className="flex flex-col gap-3 p-6 border-b border-neutral-500"
+        className="flex flex-col gap-3 p-6 border-b border-neutral-400"
       >
         <input
           type="number"

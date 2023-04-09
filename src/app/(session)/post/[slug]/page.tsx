@@ -26,9 +26,9 @@ export default async function PostPage({ params }: { params: { slug: string } })
   const installment_price = String((post.price / 12).toFixed(2)).replace(".", ",")
 
   return (
-    <div className="w-full max-w-[1280px] h-full bg-white border-x border-b border-neutral-400 mx-auto">
-      <div className="flex">
-        <div className="p-6 border-r flex flex-col border-neutral-400 basis-0 grow-[3]">
+    <div className=" bg-white grow">
+      <div className="flex min-h-full">
+        <div className="p-6 border-r flex flex-col border-neutral-400 min-w-[420px] grow">
           <Carousell
             postMedias={post.post_media}
             className="mb-3"
@@ -38,8 +38,8 @@ export default async function PostPage({ params }: { params: { slug: string } })
             <p className="text-neutral-600">{post.text}</p>
           </div>
         </div>
-        <div className="p-6 basis-0 grow-[2]">
-          <h1 className="text-2xl font-semibold mb-0.5">{post.title}</h1>
+        <div className="basis-[400px] p-6 whitespace-nowrap">
+          <h1 className="text-2xl font-semibold mb-0.5 whitespace-normal">{post.title}</h1>
           <p className="text-neutral-400 text-xs mb-3">
             <span>Publicado </span>
             <span className="font-semibold">{moment(post.created_at).locale("pt-br").fromNow()}</span>

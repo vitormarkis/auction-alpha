@@ -6,20 +6,33 @@ import React, { HTMLAttributes } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { IBidBody, bidSchema } from "@/schemas/posts"
 import { api } from "@/services/api"
+import { flattenDiagnosticMessageText } from "typescript"
 
 interface Props extends HTMLAttributes<HTMLButtonElement> {
   postId: string
 }
 
 export function MakeBidButton({ postId, className, ...rest }: Props) {
+  const [isPriceModalOpen, setIsPriceModalOpen] = React.useState(false)
   const { register, reset, handleSubmit } = useForm<IBidBody>()
   const [hasDocument, setHasDocument] = React.useState(false)
 
   const submitHandler: SubmitHandler<IBidBody> = async formData => {
     const { post_id, value } = bidSchema.parse({ ...formData, post_id: postId })
 
-    await api.post("/posts/bids", { post_id, value })
+    const headers = new Headers()
+    headers.append("Content-Type", "application/json")
+
+    await fetch(`http://localhost:3000/api/posts/bids`, {
+      headers,
+      method: "POST",
+      body: JSON.stringify({ post_id, value }),
+    })
+
+    setIsPriceModalOpen(false)
+
     reset()
+
     alert("Lance feito com sucesso.")
   }
 
@@ -28,7 +41,10 @@ export function MakeBidButton({ postId, className, ...rest }: Props) {
   })
 
   return (
-    <Dialog.Root>
+    <Dialog.Root
+      open={isPriceModalOpen}
+      onOpenChange={setIsPriceModalOpen}
+    >
       <Dialog.Trigger asChild>
         <button
           className={`bg-black py-3 text-white rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-500 focus:outline-double border border-black ${className}`}

@@ -4,7 +4,7 @@ import { Suspense } from "react"
 
 export default async function () {
   return (
-    <div>
+    <div className="grow">
       <div className="w-full max-w-[560px] h-full bg-white border-x border-x-neutral-400 mx-auto">
         <div className="flex flex-col">
           <div className="p-6 border-b border-neutral-400 flex items-center justify-center">

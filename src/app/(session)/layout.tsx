@@ -1,5 +1,6 @@
 import Navbar from "@/components/Header"
 import "../../styles/globals.css"
+import Sidebar from "@/components/Sidebar"
 
 export const metadata = {
   title: "Auction",
@@ -11,7 +12,16 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <>
       {/* @ts-expect-error */}
       <Navbar />
-      {children}
+      <div className="flex h-full w-full max-w-[1280px] grow border-x border-b border-neutral-400 mx-auto border-l border-l-neutral-400 bg-white">
+        <div className="flex">
+          {/* @ts-expect-error */}
+          <Sidebar />
+        </div>
+        {children}
+        <div className="flex basis-[199px] shrink-0 bg-teal-400">
+          {/* <div className="h-full"></div> */}
+        </div>
+      </div>
     </>
   )
 }

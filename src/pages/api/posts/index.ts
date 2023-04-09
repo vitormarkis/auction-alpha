@@ -62,23 +62,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method === "POST") {
     try {
       const session = await getServerSession(req, res, authOptions)
-      if (!session || !session.user || !session.user.sub)
+      if (!session || !session.user || !session.user.sub) {
         return res.status(401).send("Usuário não autenticado.")
+      }
+
       const { announcement_date, medias_url, price, text, title } = newPostSchema.parse(req.body)
 
       const random = () => parseInt(String(Math.random() * 10 ** 10))
+      const slug = `${slugify(title)}-${random()}`
 
-      const uniqueSlug = `${slugify(title)}-${random()}`
-
-      await prisma.post.create({
+      const db_response = await prisma.post.create({
         data: {
           announcement_date,
           price,
           text,
-          slug: uniqueSlug,
+          slug,
           title,
           author_id: session.user.sub,
-          // author_id: "clg2w56uw0000venkgevzab52",
           post_media: {
             create: medias_url.map(media => ({
               media,
@@ -87,7 +87,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         },
       })
 
-      return res.status(201)
+      return res.status(201).json(db_response)
     } catch (error) {
       return res.json(error)
     }

@@ -12,6 +12,7 @@ import { z } from "zod"
 import { devNull } from "os"
 import { useMutation } from "@tanstack/react-query"
 import { queryClient } from "@/services/queryClient"
+import { api_endpoint } from "@/CONSTANTS"
 
 type MediaString = Record<string, string>
 
@@ -26,10 +27,37 @@ const NewPost: React.FC = () => {
     },
   ])
 
-  const { mutate } = useMutation({
-    mutationFn: (newPostData: TNewPostBody) => api.post("/posts", newPostData),
-    onSuccess: () => queryClient.invalidateQueries(["posts"]),
+  const { mutate, status, isLoading } = useMutation({
+    mutationFn: async (newPostData: TNewPostBody) => {
+      const headers = new Headers()
+      headers.append("Content-Type", "application/json")
+
+      const res = await fetch(`http://localhost:3000/api/posts`, {
+        headers,
+        method: "POST",
+        body: JSON.stringify(newPostData),
+      })
+      return res
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["posts"])
+      // reset()
+      // setMediaInput([
+      //   {
+      //     initial: "",
+      //   },
+      // ])
+      // setPrice("")
+      // setError(null)
+      setSuccess(
+        "Seu post foi criado com sucesso, ele foi enviado para ser aprovado por algum administrador e logo estará no ar."
+      )
+    },
   })
+
+  console.log({ status })
+
+  console.log({ isLoading })
 
   const submitHandler: SubmitHandler<TNewPostBody> = async formData => {
     try {
@@ -40,17 +68,6 @@ const NewPost: React.FC = () => {
       }
       newPostSchema.parse(fullFormData)
       mutate(fullFormData)
-      reset()
-      setMediaInput([
-        {
-          initial: "",
-        },
-      ])
-      setPrice("")
-      setError(null)
-      setSuccess(
-        "Seu post foi criado com sucesso, ele foi enviado para ser aprovado por algum administrador e logo estará no ar."
-      )
     } catch (error) {
       if (error instanceof z.ZodError) {
         const [issue] = error.issues
@@ -180,9 +197,7 @@ const NewPost: React.FC = () => {
             )
           })}
         </div>
-        <div 
-        className="w-full bg-white border border-neutral-400 px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double flex gap-2 items-center leading-none"
-        >
+        <div className="w-full bg-white border border-neutral-400 px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double flex gap-2 items-center leading-none">
           <span className="text-neutral-500">R$</span>
           <input
             type="number"
