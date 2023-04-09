@@ -4,12 +4,14 @@ import Image from "next/image"
 import Link from "next/link"
 import AuthButton from "../AuthButton"
 import { headers } from "next/headers"
-import { Logout } from "@styled-icons/material/Logout"
 import LogoutButton from "../LogoutButton"
 import { api_endpoint } from "@/CONSTANTS"
+import { Icon } from "../Icon"
+import { Josefin_Sans } from "next/font/google"
 
-const inter = Inter({
+const josefins_sans = Josefin_Sans({
   subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700"],
 })
 
 export async function getSession(cookie: string): Promise<Session> {
@@ -25,35 +27,24 @@ export async function getSession(cookie: string): Promise<Session> {
 export default async function () {
   const session = await getSession(headers().get("cookie") ?? "")
 
-  // const session = true
-
   const { user } = session ?? {}
 
-  // const user = {
-  //   id: "clg03hdf00000vec83vahr4q4",
-  //   name: "Vitor Markis",
-  //   email: "vitormarkis2369@gmail.com",
-  //   emailVerified: null,
-  //   password: null,
-  //   image: "https://avatars.githubusercontent.com/u/121525239?v=4",
-  //   repos_amount: 30,
-  //   role: "USER",
-  //   picture: "https://avatars.githubusercontent.com/u/121525239?v=4",
-  //   sub: "clg03hdf00000vec83vahr4q4",
-  //   iat: 1680490398,
-  //   exp: 1683082398,
-  //   jti: "32cf6be2-1ec4-4b77-82c6-2a6dc2ff3d3d",
-  // }
-
   return (
-    <div
-      className={`flex sticky top-0 justify-center bg-white ${inter.className}`}
-    >
+    <div className="flex sticky top-0 justify-center bg-white shadow-lg shadow-black/10">
       <header className="flex items-center max-w-[1280px] w-full justify-between px-4 py-2">
         <div>
-          <div>
-            <Link href="/">
-              <h1 className="font-bold text-xl">Auction</h1>
+          <div className="leading-none">
+            <Link
+              href="/"
+              className="flex gap-[3px] items-center"
+            >
+              <Icon
+                icon="Grain"
+                width={28}
+                height={28}
+                className="text-cyan-500"
+              />
+              <h1 className={`font-bold translate-y-[1px] text-xl ${josefins_sans.className}`}>Auction.</h1>
             </Link>
           </div>
         </div>

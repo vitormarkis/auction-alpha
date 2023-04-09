@@ -38,7 +38,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
             <p className="text-neutral-600">{post.text}</p>
           </div>
         </div>
-        <div className="basis-[400px] p-6 whitespace-nowrap">
+        <div className="basis-[400px] p-6 whitespace-nowrap grow shrink-0">
           <h1 className="text-2xl font-semibold mb-0.5 whitespace-normal">{post.title}</h1>
           <p className="text-neutral-400 text-xs mb-3">
             <span>Publicado </span>
