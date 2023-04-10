@@ -5,14 +5,15 @@ import ReactDOM from "react-dom"
 import React, { HTMLAttributes } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { IBidBody, bidSchema } from "@/schemas/posts"
-import { api } from "@/services/api"
-import { flattenDiagnosticMessageText } from "typescript"
+import { useRouter } from "next/navigation"
+import { signIn } from "next-auth/react"
 
 interface Props extends HTMLAttributes<HTMLButtonElement> {
   postId: string
+  userId?: string | undefined
 }
 
-export function MakeBidButton({ postId, className, ...rest }: Props) {
+export function MakeBidButton({ postId, className, userId, ...rest }: Props) {
   const [isPriceModalOpen, setIsPriceModalOpen] = React.useState(false)
   const { register, reset, handleSubmit } = useForm<IBidBody>()
   const [hasDocument, setHasDocument] = React.useState(false)
@@ -30,9 +31,7 @@ export function MakeBidButton({ postId, className, ...rest }: Props) {
     })
 
     setIsPriceModalOpen(false)
-
     reset()
-
     alert("Lance feito com sucesso.")
   }
 
@@ -42,11 +41,14 @@ export function MakeBidButton({ postId, className, ...rest }: Props) {
 
   return (
     <Dialog.Root
-      open={isPriceModalOpen}
+      open={Boolean(userId && isPriceModalOpen)}
       onOpenChange={setIsPriceModalOpen}
     >
       <Dialog.Trigger asChild>
         <button
+          onClick={() => {
+            if (!userId) signIn()
+          }}
           className={`bg-black py-3 text-white rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-500 focus:outline-double border border-black ${className}`}
           {...rest}
         >
