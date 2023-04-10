@@ -5,29 +5,24 @@ import Image from "next/image"
 import { Icon } from "../Icon"
 import { userBidsSchema } from "@/schemas/users"
 import { z } from "zod"
-import { getActiveUserBids } from "./getActiveUserBids"
+import { getUserActiveBids } from "./getActiveUserBids"
 
 export default async function () {
   const cookie = headers().get("cookie")
-  const session = await getSession(cookie ?? "")
+  const customHeaders = new Headers()
+  if (cookie) customHeaders.append("cookie", cookie)
 
+  const session = await getSession(cookie ?? "")
   const { user } = session ?? {}
 
-  const [parseUserBids, sessionInfo] = await Promise.all([
-    fetch("http://localhost:3000/api/users/get-bids", { cache: "no-store", headers: { cookie } })
+  const [parseUserBids] = await Promise.all([
+    fetch("http://localhost:3000/api/users/get-bids", { cache: "no-store", headers: customHeaders })
       .then(res => res.json())
       .then(data => z.array(userBidsSchema).safeParseAsync(data)),
-    fetch("http://localhost:3000/api/users/get-bids/test", {
-      headers: {
-        cookie,
-      },
-    }).then(res => res.json()),
   ])
 
   const userBids = parseUserBids.success ? parseUserBids.data : null
-
-  const activeUserBids = userBids ? getActiveUserBids(userBids) : null
-  // const activeUserBids = ["q", "dfk"]
+  const userActiveBids = userBids ? getUserActiveBids(userBids) : null
 
   return (
     <aside className="flex flex-col text-base w-60 shrink-0 text-stone-500 whitespace-nowrap">
@@ -126,9 +121,11 @@ export default async function () {
                 height={16}
               />
               <span>Lances</span>
-              <p className="p-1 rounded-full text-sm text-white w-6 h-6 leading-4 text-center ml-auto bg-rose-500 font-medium">
-                {activeUserBids && activeUserBids.length}
-              </p>
+              {user && (
+                <p className="p-1 rounded-full text-sm text-white w-6 h-6 leading-4 text-center ml-auto bg-rose-500 font-medium">
+                  {userActiveBids && userActiveBids.length}
+                </p>
+              )}
             </Link>
           </li>
           <li className="px-3 py-1 grow rounded-lg bg-zinc-100 text-zinc-800 font-medium">
