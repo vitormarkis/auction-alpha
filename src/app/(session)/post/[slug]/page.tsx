@@ -27,8 +27,8 @@ export default async function PostPage({ params }: { params: { slug: string } })
 
   return (
     <div className=" bg-white grow">
-      <div className="flex min-h-full">
-        <div className="p-6 flex flex-col min-w-[420px] grow">
+      <div className="flex min-h-full h-[calc(100vh_-_52px)]">
+        <div className="p-6 flex flex-col min-w-[420px] grow overflow-y-scroll">
           <Carousell
             postMedias={post.post_media}
             className="mb-3"
@@ -77,7 +77,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
             </p>
           </div>
           {isAuthor && hasBids ? (
-            <div className="p-2 rounded-lg bg-neutral-200 flex flex-col gap-2">
+            <div className="p-2 rounded-lg bg-white border border-stone-300 shadow-lg flex flex-col gap-2">
               {post.bids.map(bid => (
                 <div
                   key={bid.id}

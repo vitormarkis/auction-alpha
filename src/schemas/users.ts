@@ -37,7 +37,17 @@ export const sessionUserSchema = z.object({
   image: userSchema.shape.image,
 })
 
+export const userBidsSchema = z.object({
+  id: z.string(),
+  value: z.number(),
+  post_id: z.string(),
+  post: z.object({
+    announcement_date: z.string(),
+  }),
+})
+
 export type IUserSession = z.infer<typeof userSchema>
 export type IUserRegisterInput = z.input<typeof userRegisterSchemaClient>
 export type IUserRegister = z.output<typeof userRegisterSchemaClient>
 export type IUserLogin = z.output<typeof userLoginSchema>
+export type IUserBids = z.output<typeof userBidsSchema>

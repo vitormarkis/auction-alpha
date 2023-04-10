@@ -15,7 +15,7 @@ export const metadata = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="overflow-y-scroll">
+      <body className="overflow-y-hidden">
         <Providers>
           <div className={`min-h-screen flex flex-col ${roboto.className}`}>{children}</div>
           <div id="portal"></div>
