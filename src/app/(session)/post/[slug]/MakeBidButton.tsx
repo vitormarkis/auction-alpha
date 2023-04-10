@@ -25,7 +25,7 @@ export function MakeBidButton({ postId, className, userId, ...rest }: Props) {
     const headers = new Headers()
     headers.append("Content-Type", "application/json")
 
-    await fetch(`${api_endpoint}/api/posts/bids`, {
+    await fetch(`/api/posts/bids`, {
       headers,
       method: "POST",
       body: JSON.stringify({ post_id, value }),
