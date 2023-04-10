@@ -2,6 +2,7 @@
 
 import { Home } from "@styled-icons/material-sharp/Home"
 import { Feed } from "@styled-icons/material-sharp/Feed"
+import { Flag } from "@styled-icons/material-sharp/Flag"
 import { Grain } from "@styled-icons/material-sharp/Grain"
 import { Search } from "@styled-icons/material-sharp/Search"
 import { Payment } from "@styled-icons/material-sharp/Payment"
@@ -26,6 +27,7 @@ type PossibleIcons =
   | "MoreVert"
   | "Search"
   | "Payment"
+  | "Flag"
 
 type TStyledIconBase = typeof StyledIconBase
 
@@ -40,6 +42,7 @@ export function Icon({ icon, ...props }: Props) {
   const iconSchema: Record<PossibleIcons, React.ReactNode> = {
     Home: <Home {...props} />,
     Feed: <Feed {...props} />,
+    Flag: <Flag {...props} />,
     Grain: <Grain {...props} />,
     Search: <Search {...props} />,
     Payment: <Payment {...props} />,

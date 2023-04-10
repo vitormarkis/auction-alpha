@@ -7,6 +7,7 @@ import { getSession } from "@/components/Header"
 import clsx from "clsx"
 import { MakeBidButton } from "./MakeBidButton"
 import { api_endpoint } from "@/CONSTANTS"
+import { Icon } from "@/components/Icon"
 
 export default async function PostPage({ params }: { params: { slug: string } }) {
   const session = await getSession(headers().get("cookie") ?? "")
@@ -24,6 +25,8 @@ export default async function PostPage({ params }: { params: { slug: string } })
   const hasBids = post._count.bids > 0
 
   const installment_price = String((post.price / 12).toFixed(2)).replace(".", ",")
+
+  const orderedUserBids = post.bids.sort((a, b) => (a.value > b.value ? -1 : a.value < b.value ? 1 : 0))
 
   return (
     <div className=" bg-white grow">
@@ -58,7 +61,10 @@ export default async function PostPage({ params }: { params: { slug: string } })
           </div>
           {isAuthor ? null : (
             <div className="flex flex-col gap-3 mb-3">
-              <MakeBidButton postId={post.id} userId={user?.id} />
+              <MakeBidButton
+                postId={post.id}
+                userId={user?.id}
+              />
               <button className="bg-neutral-100 py-3 text-neutral-500 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-100 focus:outline-double">
                 Fazer uma pergunta
               </button>
@@ -78,7 +84,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
           </div>
           {isAuthor && hasBids ? (
             <div className="p-2 rounded-lg bg-white border border-stone-300 shadow-lg flex flex-col gap-2">
-              {post.bids.map(bid => (
+              {orderedUserBids.map((bid, idx) => (
                 <div
                   key={bid.id}
                   className="flex items-center"
@@ -89,9 +95,15 @@ export default async function PostPage({ params }: { params: { slug: string } })
                     className="w-8 h-8 rounded-lg mr-2"
                   />
                   <p className="text-neutral-800 text-sm">{bid.user.name}</p>
-                  <p className="ml-auto font-semibold mr-2">R$ {bid.value}</p>
-                  <button className="py-1.5 px-2.5 bg-green-600 text-white rounded-lg leading-none text-xs">
-                    Premiar
+                  <p className={clsx("ml-auto mr-2 text-sm", { "font-extrabold": idx === 0 })}>
+                    R$ {bid.value}
+                  </p>
+                  <button className="p-1 rounded-lg bg-emerald-500 leading-none text-white">
+                    <Icon
+                      width={18}
+                      height={18}
+                      icon="Flag"
+                    />
                   </button>
                 </div>
               ))}
