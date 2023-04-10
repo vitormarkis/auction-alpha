@@ -32,7 +32,7 @@ const NewPost: React.FC = () => {
       const headers = new Headers()
       headers.append("Content-Type", "application/json")
 
-      const res = await fetch(`http://localhost:3000/api/posts`, {
+      const res = await fetch(`/api/posts`, {
         headers,
         method: "POST",
         body: JSON.stringify(newPostData),
@@ -99,7 +99,7 @@ const NewPost: React.FC = () => {
   }
 
   return (
-    <div className="w-full max-w-[560px] h-full bg-white mx-auto">
+    <div className="w-full max-w-[560px] h-[calc(100vh_-_52px)] overflow-y-scroll bg-white mx-auto">
       <div className="p-6 flex items-center justify-between">
         <button className="py-1.5 rounded-lg px-5 bg-black text-white flex items-center justify-center">
           <span>Voltar</span>
@@ -114,15 +114,11 @@ const NewPost: React.FC = () => {
       </div>
       {error ? (
         <div className="p-6 flex items-center justify-center">
-          <p className="p-3 rounded-lg font-semibold d-300 bg-red-200 text-red-500">
-            {error}
-          </p>
+          <p className="p-3 rounded-lg font-semibold d-300 bg-red-200 text-red-500">{error}</p>
         </div>
       ) : success ? (
         <div className="p-6 flex items-center justify-center">
-          <p className="p-3 rounded-lg font-semibold erald-200 bg-emerald-100 text-emerald-500">
-            {success}
-          </p>
+          <p className="p-3 rounded-lg font-semibold erald-200 bg-emerald-100 text-emerald-500">{success}</p>
         </div>
       ) : null}
       <form
@@ -131,13 +127,13 @@ const NewPost: React.FC = () => {
         id="new_post_form"
       >
         <input
-          className="mb-2 bg-white px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double"
+          className="border-neutral-500 border mb-2 bg-white px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double"
           type="title"
           {...register("title")}
           placeholder="Insira o título do seu post aqui..."
         />
         <textarea
-          className="mb-2 bg-white px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double"
+          className="border-neutral-500 border mb-2 bg-white px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double"
           {...register("text")}
           placeholder="Descrição do seu post..."
         />
@@ -165,7 +161,7 @@ const NewPost: React.FC = () => {
                       old.map(oldObj => (key in oldObj ? { ...oldObj, [key]: e.target.value } : oldObj))
                     )
                   }
-                  className="w-full bg-white px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double"
+                  className="border-neutral-500 border w-full bg-white px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double"
                 />
                 <div className="flex justify-center gap-2">
                   {mediaInput.length === 1 && lastInput.length === 0 ? (
@@ -197,7 +193,7 @@ const NewPost: React.FC = () => {
             )
           })}
         </div>
-        <div className="w-full bg-white px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double flex gap-2 items-center leading-none">
+        <div className="border-neutral-500 border w-full bg-white px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double flex gap-2 items-center leading-none">
           <span className="text-neutral-500">R$</span>
           <input
             type="number"
@@ -210,7 +206,7 @@ const NewPost: React.FC = () => {
           />
         </div>
         <input
-          className="mb-2 bg-white px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double"
+          className="border-neutral-500 border mb-2 bg-white px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double"
           type="date"
           {...register("announcement_date")}
           // placeholder="Insira o título do seu post aqui..."

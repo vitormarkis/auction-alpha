@@ -7,6 +7,7 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import { IBidBody, bidSchema } from "@/schemas/posts"
 import { useRouter } from "next/navigation"
 import { signIn } from "next-auth/react"
+import { api_endpoint } from "@/CONSTANTS"
 
 interface Props extends HTMLAttributes<HTMLButtonElement> {
   postId: string
@@ -24,7 +25,7 @@ export function MakeBidButton({ postId, className, userId, ...rest }: Props) {
     const headers = new Headers()
     headers.append("Content-Type", "application/json")
 
-    await fetch(`http://localhost:3000/api/posts/bids`, {
+    await fetch(`${api_endpoint}/api/posts/bids`, {
       headers,
       method: "POST",
       body: JSON.stringify({ post_id, value }),

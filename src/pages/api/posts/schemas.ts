@@ -24,7 +24,7 @@ export const newPostSchema = z.object({
       invalid_type_error: "Insira uma descrição válida.",
     })
     .min(10, "Preencha o campo descrição com mais informações.")
-    .max(260, "Limite de caracteres excedido no campo descrição."),
+    .max(5000, "Limite de caracteres excedido no campo descrição."),
   medias_url: mediasPostSchema,
   price: z
     .string({

@@ -6,6 +6,7 @@ import { Icon } from "../Icon"
 import { userBidsSchema } from "@/schemas/users"
 import { z } from "zod"
 import { getUserActiveBids } from "./getActiveUserBids"
+import { api_endpoint } from "@/CONSTANTS"
 
 export default async function () {
   const cookie = headers().get("cookie")
@@ -16,7 +17,7 @@ export default async function () {
   const { user } = session ?? {}
 
   const [parseUserBids] = await Promise.all([
-    fetch("http://localhost:3000/api/users/get-bids", { cache: "no-store", headers: customHeaders })
+    fetch(`${api_endpoint}/api/users/get-bids`, { cache: "no-store", headers: customHeaders })
       .then(res => res.json())
       .then(data => z.array(userBidsSchema).safeParseAsync(data)),
   ])
