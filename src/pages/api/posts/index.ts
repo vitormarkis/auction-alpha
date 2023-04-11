@@ -4,6 +4,7 @@ import { newPostSchema } from "./schemas"
 import { getServerSession } from "next-auth"
 import { authOptions } from "../auth/[...nextauth]"
 import slugify from "react-slugify"
+import { z } from "zod"
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
@@ -91,5 +92,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     } catch (error) {
       return res.json(error)
     }
+  }
+
+  if (req.method === "DELETE") {
+    const session = await getServerSession(req, res, authOptions)
+    if (!session || !session.user || !session.user.id) {
+      return res.status(401).json({ redirect: { path: "/signin" } })
+    }
+
+    const { postId } = z.object({ postId: z.string() }).parse(req.body)
+
+    const userId = session.user.id
+
+    const { author_id } = await prisma.post.findUniqueOrThrow({
+      where: {
+        id: postId,
+      },
+    })
+
+    if (userId !== author_id) {
+      return res.status(401).json({ message: "Apenas o autor de um post pode excluí-lo." })
+    }
+
+    await prisma.post.delete({
+      where: {
+        id: postId,
+      },
+    })
+
+    return res.status(202).json({ message: "Post excluido com sucesso." })
   }
 }
