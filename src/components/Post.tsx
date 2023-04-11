@@ -75,7 +75,7 @@ export const Post: React.FC<Props> = ({ postProps, className, ...rest }) => {
         </div>
         <div className="px-4 py-3 flex items-center">
           <div>
-            <span className="font-semibold text-2xl">{currency(price)}</span>
+            <span className="font-semibold text-2xl">{currency(price, { trailZero: true })}</span>
             {/* <span className="text-xs text-neutral-500">
               
               {rightPrice && ","}
