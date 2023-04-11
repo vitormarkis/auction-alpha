@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.scroll-thin::-webkit-scrollbar {
+  width: 10px;
+}
+
+.scroll-thin::-webkit-scrollbar-thumb {
+  @apply bg-zinc-300
+}

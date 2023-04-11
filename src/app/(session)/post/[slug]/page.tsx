@@ -8,6 +8,7 @@ import clsx from "clsx"
 import { MakeBidButton } from "./MakeBidButton"
 import { api_endpoint } from "@/CONSTANTS"
 import { Icon } from "@/components/Icon"
+import { currency } from "@/utils/currencyConverter"
 
 export default async function PostPage({ params }: { params: { slug: string } }) {
   const session = await getSession(headers().get("cookie") ?? "")
@@ -31,7 +32,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
   return (
     <div className=" bg-white grow">
       <div className="flex min-h-full h-[calc(100vh_-_52px)]">
-        <div className="p-6 flex flex-col min-w-[420px] grow overflow-y-scroll">
+        <div className="p-6 flex flex-col min-w-[420px] grow overflow-y-scroll scroll-thin">
           <Carousell
             postMedias={post.post_media}
             className="mb-3"
@@ -53,7 +54,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
           </p>
           <div>
             <div className="mb-3 flex">
-              <p className="text-3xl mr-4 text-black inline-block">R$ {post.price}</p>
+              <p className="text-3xl mr-4 text-black inline-block">{currency(post.price)}</p>
               <div className="flex items-end">
                 <p className="text-neutral-500 text-sm">ou 12x de R${installment_price}</p>
               </div>
@@ -96,7 +97,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
                   />
                   <p className="text-neutral-800 text-sm">{bid.user.name}</p>
                   <p className={clsx("ml-auto mr-2 text-sm", { "font-extrabold": idx === 0 })}>
-                    R$ {bid.value}
+                    {currency(bid.value)}
                   </p>
                   <button className="p-1 rounded-lg bg-emerald-500 leading-none text-white">
                     <Icon

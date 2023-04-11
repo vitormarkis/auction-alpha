@@ -6,3 +6,5 @@ export const api_urls: Record<IEnvironmentApiUrl, string> = {
 }
 
 export const api_endpoint = api_urls[process.env.ENVIRONMENT_SET as IEnvironmentApiUrl]
+
+export const useURL = (path: string) => api_endpoint.concat(path)

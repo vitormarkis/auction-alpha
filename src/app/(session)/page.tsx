@@ -5,7 +5,7 @@ import { Suspense } from "react"
 export default async function () {
   return (
     <div className="grow h-[calc(100vh_-_52px)]">
-      <div className="w-full max-w-[560px] min-w-[500px] h-full bg-white mx-auto overflow-y-scroll">
+      <div className="w-full max-w-[560px] min-w-[500px] h-full bg-white mx-auto overflow-y-scroll scroll-thin">
         <div className="flex flex-col">
           <Suspense
             fallback={

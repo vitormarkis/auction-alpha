@@ -1,6 +1,7 @@
 "use client"
 
 import { IPostFeed } from "@/schemas/posts"
+import { currency } from "@/utils/currencyConverter"
 import { Eye } from "@styled-icons/fluentui-system-regular/Eye"
 import { MoreHorizontal } from "@styled-icons/fluentui-system-regular/MoreHorizontal"
 import { Poll } from "@styled-icons/fluentui-system-regular/Poll"
@@ -74,11 +75,12 @@ export const Post: React.FC<Props> = ({ postProps, className, ...rest }) => {
         </div>
         <div className="px-4 py-3 flex items-center">
           <div>
-            <span className="font-semibold text-2xl">R${leftPrice}</span>
-            <span className="text-xs text-neutral-500">
+            <span className="font-semibold text-2xl">{currency(price)}</span>
+            {/* <span className="text-xs text-neutral-500">
+              
               {rightPrice && ","}
               {cents}
-            </span>
+            </span> */}
           </div>
           <div className="bg-neutral-400 h-5 w-[1px] mx-3" />
           <div className="flex items-center text-sm">
