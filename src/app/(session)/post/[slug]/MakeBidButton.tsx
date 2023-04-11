@@ -8,6 +8,7 @@ import { IBidBody, bidSchema } from "@/schemas/posts"
 import { useRouter } from "next/navigation"
 import { signIn } from "next-auth/react"
 import { api_endpoint } from "@/CONSTANTS"
+import clsx from "clsx"
 
 interface Props extends HTMLAttributes<HTMLButtonElement> {
   postId: string
@@ -18,6 +19,7 @@ export function MakeBidButton({ postId, className, userId, ...rest }: Props) {
   const [isPriceModalOpen, setIsPriceModalOpen] = React.useState(false)
   const { register, reset, handleSubmit } = useForm<IBidBody>()
   const [hasDocument, setHasDocument] = React.useState(false)
+  const [isSubmitting, setIsSubmitting] = React.useState(false)
 
   const submitHandler: SubmitHandler<IBidBody> = async formData => {
     const { post_id, value } = bidSchema.parse({ ...formData, post_id: postId })
@@ -25,15 +27,19 @@ export function MakeBidButton({ postId, className, userId, ...rest }: Props) {
     const headers = new Headers()
     headers.append("Content-Type", "application/json")
 
-    await fetch(`/api/posts/bids`, {
-      headers,
-      method: "POST",
-      body: JSON.stringify({ post_id, value }),
-    })
+    try {
+      setIsSubmitting(true)
+      await fetch(`/api/posts/bids`, {
+        headers,
+        method: "POST",
+        body: JSON.stringify({ post_id, value }),
+      })
 
-    setIsPriceModalOpen(false)
-    reset()
-    alert("Lance feito com sucesso.")
+      setIsPriceModalOpen(false)
+      reset()
+      alert("Lance feito com sucesso.")
+    } catch (error) {}
+    setIsSubmitting(false)
   }
 
   React.useEffect(() => {
@@ -94,9 +100,13 @@ export function MakeBidButton({ postId, className, userId, ...rest }: Props) {
                     </Dialog.Close>
                     <button
                       type="submit"
-                      className="py-3 rounded-lg px-5 bg-emerald-500 text-white flex items-center justify-center"
+                      disabled={isSubmitting}
+                      className={clsx(
+                        "py-3 rounded-lg px-5 bg-emerald-500 text-white flex items-center justify-center",
+                        { "bg-emerald-600 text-neutral-300": isSubmitting }
+                      )}
                     >
-                      Enviar
+                      {isSubmitting ? "Enviando" : "Enviar"}
                     </button>
                   </div>
                 </form>

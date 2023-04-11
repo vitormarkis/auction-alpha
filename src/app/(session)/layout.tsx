@@ -18,7 +18,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Sidebar />
         </div>
         {children}
-        <div className="flex basis-[240px] shrink-[999]">{/* <div className="h-full"></div> */}</div>
       </div>
     </>
   )
