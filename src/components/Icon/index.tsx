@@ -4,6 +4,7 @@ import { Home } from "@styled-icons/material-sharp/Home"
 import { Feed } from "@styled-icons/material-sharp/Feed"
 import { Flag } from "@styled-icons/material-sharp/Flag"
 import { Grain } from "@styled-icons/material-sharp/Grain"
+import { Close } from "@styled-icons/material-sharp/Close"
 import { Search } from "@styled-icons/material-sharp/Search"
 import { Payment } from "@styled-icons/material-sharp/Payment"
 import { Settings } from "@styled-icons/material-sharp/Settings"
@@ -28,6 +29,7 @@ type PossibleIcons =
   | "Search"
   | "Payment"
   | "Flag"
+  | "Close"
 
 type TStyledIconBase = typeof StyledIconBase
 
@@ -44,6 +46,7 @@ export function Icon({ icon, ...props }: Props) {
     Feed: <Feed {...props} />,
     Flag: <Flag {...props} />,
     Grain: <Grain {...props} />,
+    Close: <Close {...props} />,
     Search: <Search {...props} />,
     Payment: <Payment {...props} />,
     MoreVert: <MoreVert {...props} />,

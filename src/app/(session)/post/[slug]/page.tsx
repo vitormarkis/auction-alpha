@@ -12,7 +12,7 @@ import { currency } from "@/utils/currencyConverter"
 
 export default async function PostPage({ params }: { params: { slug: string } }) {
   const session = await getSession(headers().get("cookie") ?? "")
-  const { user } = session ?? {}
+  const user = session.user ?? null
 
   const { slug } = params
   const post = await fetch(`${api_endpoint}/api/posts/single?post_slug=${slug}`, {
@@ -28,6 +28,8 @@ export default async function PostPage({ params }: { params: { slug: string } })
   const installment_price = String((post.price / 12).toFixed(2)).replace(".", ",")
 
   const orderedUserBids = post.bids.sort((a, b) => (a.value > b.value ? -1 : a.value < b.value ? 1 : 0))
+
+  const userBid = user?.id ? post.bids.find(post => user.id === post.user.id) : null
 
   return (
     <div className=" bg-white grow">
@@ -74,7 +76,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
           <div className="mb-3">
             <p
               className={clsx("py-1 px-1.5 text-sm rounded-lg", {
-                "bg-red-100 text-red-500": (!isAuthor && hasBids) || (isAuthor && !hasBids),
+                "bg-orange-300 text-black": (!isAuthor && hasBids) || (isAuthor && !hasBids),
                 "bg-indigo-100 text-indigo-500": (isAuthor && hasBids) || (!isAuthor && !hasBids),
               })}
             >
@@ -108,6 +110,33 @@ export default async function PostPage({ params }: { params: { slug: string } })
                   </button>
                 </div>
               ))}
+            </div>
+          ) : null}
+
+          {userBid ? (
+            <div className="p-2 rounded-lg bg-white border border-stone-300 shadow-lg flex flex-col gap-2">
+              <div>
+                <p className="text-sm font-semibold text-stone-800">Seu lance</p>
+              </div>
+              <div className="flex items-center">
+                <img
+                  src={userBid.user.image}
+                  alt={`Foto de perfil de ${userBid.user.name}`}
+                  className="w-8 h-8 rounded-lg mr-2"
+                />
+                <p className="text-neutral-800 text-sm">{userBid.user.name}</p>
+                <p className="ml-auto mr-2 text-sm font-extrabold mt-[1px]">{currency(userBid.value)}</p>
+                <button
+                  className="p-1 rounded-lg bg-red-500 leading-none text-white"
+                  title="Remover seu lance desse post"
+                >
+                  <Icon
+                    width={18}
+                    height={18}
+                    icon="Close"
+                  />
+                </button>
+              </div>
             </div>
           ) : null}
         </div>
