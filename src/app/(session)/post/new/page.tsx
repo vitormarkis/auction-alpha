@@ -1,7 +1,6 @@
 "use client"
 
 import { newPostSchema, TNewPostBody } from "@/pages/api/posts/schemas"
-import { api } from "@/services/api"
 import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { Plus } from "@styled-icons/boxicons-regular/Plus"
@@ -9,10 +8,8 @@ import { Minus } from "@styled-icons/boxicons-regular/Minus"
 import clsx from "clsx"
 import { useLimitedInput } from "./hook"
 import { z } from "zod"
-import { devNull } from "os"
 import { useMutation } from "@tanstack/react-query"
 import { queryClient } from "@/services/queryClient"
-import { api_endpoint } from "@/CONSTANTS"
 
 type MediaString = Record<string, string>
 
@@ -41,23 +38,19 @@ const NewPost: React.FC = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["posts"])
-      // reset()
-      // setMediaInput([
-      //   {
-      //     initial: "",
-      //   },
-      // ])
-      // setPrice("")
-      // setError(null)
+      reset()
+      setMediaInput([
+        {
+          initial: "",
+        },
+      ])
+      setPrice("")
+      setError(null)
       setSuccess(
         "Seu post foi criado com sucesso, ele foi enviado para ser aprovado por algum administrador e logo estará no ar."
       )
     },
   })
-
-  console.log({ status })
-
-  console.log({ isLoading })
 
   const submitHandler: SubmitHandler<TNewPostBody> = async formData => {
     try {
@@ -105,11 +98,17 @@ const NewPost: React.FC = () => {
           <span>Voltar</span>
         </button>
         <button
-          className="py-1.5 rounded-lg px-5 bg-emerald-500 text-white flex items-center justify-center"
+          className={clsx(
+            "py-1.5 rounded-lg px-5 bg-emerald-500 text-white flex items-center justify-center",
+            {
+              "bg-emerald-600 text-neutral-300": isLoading,
+            }
+          )}
           type="submit"
           form="new_post_form"
+          disabled={isLoading}
         >
-          <span>Publicar</span>
+          <span>{isLoading ? "Publicando" : "Publicar"}</span>
         </button>
       </div>
       {error ? (
