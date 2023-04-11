@@ -20,6 +20,7 @@ export function MakeBidButton({ postId, className, userId, ...rest }: Props) {
   const { register, reset, handleSubmit } = useForm<IBidBody>()
   const [hasDocument, setHasDocument] = React.useState(false)
   const [isSubmitting, setIsSubmitting] = React.useState(false)
+  const router = useRouter()
 
   const submitHandler: SubmitHandler<IBidBody> = async formData => {
     const { post_id, value } = bidSchema.parse({ ...formData, post_id: postId })
@@ -37,6 +38,7 @@ export function MakeBidButton({ postId, className, userId, ...rest }: Props) {
 
       setIsPriceModalOpen(false)
       reset()
+      router.refresh()
       alert("Lance feito com sucesso.")
     } catch (error) {}
     setIsSubmitting(false)
