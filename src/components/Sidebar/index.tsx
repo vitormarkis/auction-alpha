@@ -122,11 +122,11 @@ export default async function () {
                 height={16}
               />
               <span>Lances</span>
-              {user && (
-                <p className="p-1 rounded-full text-sm text-white w-6 h-6 leading-4 text-center ml-auto bg-rose-500 font-medium">
-                  {userActiveBids && userActiveBids.length}
+              {user && userActiveBids && userActiveBids.length !== 0 ? (
+                <p className="p-[3px] rounded-full text-[10px] text-white min-w-4 h-4 leading-none text-center ml-auto bg-rose-500 font-medium">
+                  {userActiveBids.length}
                 </p>
-              )}
+              ) : null}
             </Link>
           </li>
           <li className="px-3 py-1 grow rounded-lg bg-zinc-100 text-zinc-800 font-medium">
