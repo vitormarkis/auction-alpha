@@ -5,6 +5,7 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import { MoreHorizontal } from "@styled-icons/fluentui-system-regular/MoreHorizontal"
 import DeletePostDialog from "../DeletePostDialog"
 import { IPostFeed } from "@/schemas/posts"
+import { useState } from "react"
 
 interface Props {
   authorId: string
@@ -13,10 +14,11 @@ interface Props {
 }
 
 const PostMenu: React.FC<Props> = ({ authorId, user, post }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const isAuthor = user ? (authorId === user?.id ? true : false) : false
 
   return (
-    <DropdownMenu.Root>
+    <DropdownMenu.Root open={isModalOpen} onOpenChange={setIsModalOpen}>
       <DropdownMenu.Trigger asChild>
         <p className="h-fit p-1.5 leading-none rounded-lg hover:bg-neutral-200 cursor-pointer">
           <MoreHorizontal
@@ -42,7 +44,7 @@ const PostMenu: React.FC<Props> = ({ authorId, user, post }) => {
                 </button>
               </DropdownMenu.Item>
               <DropdownMenu.Item asChild>
-                <DeletePostDialog post={post}>
+                <DeletePostDialog post={post} setIsModalOpen={setIsModalOpen}>
                   <button className="text-left py-1 px-6 rounded-md outline-none cursor-pointer hover:bg-gray-200 text-neutral-600">
                     Excluir
                   </button>
