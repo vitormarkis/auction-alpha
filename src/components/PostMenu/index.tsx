@@ -3,13 +3,15 @@
 import { User } from "@/types/interfaces"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import { MoreHorizontal } from "@styled-icons/fluentui-system-regular/MoreHorizontal"
+import DeletePostDialog from "../DeletePostDialog"
 
 interface Props {
   authorId: string
   user: User | null
+  postId: string
 }
 
-const PostMenu: React.FC<Props> = ({ authorId, user }) => {
+const PostMenu: React.FC<Props> = ({ authorId, user, postId }) => {
   const isAuthor = user ? (authorId === user?.id ? true : false) : false
 
   return (
@@ -33,11 +35,17 @@ const PostMenu: React.FC<Props> = ({ authorId, user }) => {
           {isAuthor && (
             <>
               <DropdownMenu.Separator className="h-[1px] bg-stone-300 m-1" />
-              <DropdownMenu.Item className="text-left py-1 px-6 rounded-md outline-none cursor-pointer hover:bg-gray-200 text-neutral-600 ">
-                Editar
+              <DropdownMenu.Item asChild>
+                <button className="text-left py-1 px-6 rounded-md outline-none cursor-pointer hover:bg-gray-200 text-neutral-600">
+                  Editar
+                </button>
               </DropdownMenu.Item>
-              <DropdownMenu.Item className="text-left py-1 px-6 rounded-md outline-none cursor-pointer hover:bg-gray-200 text-neutral-600 ">
-                Excluir
+              <DropdownMenu.Item asChild>
+                <DeletePostDialog postId={postId}>
+                  <button className="text-left py-1 px-6 rounded-md outline-none cursor-pointer hover:bg-gray-200 text-neutral-600">
+                    Excluir
+                  </button>
+                </DeletePostDialog>
               </DropdownMenu.Item>
             </>
           )}
