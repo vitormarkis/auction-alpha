@@ -3,7 +3,6 @@
 import { IPostFeed } from "@/schemas/posts"
 import { currency } from "@/utils/currencyConverter"
 import { Eye } from "@styled-icons/fluentui-system-regular/Eye"
-import { MoreHorizontal } from "@styled-icons/fluentui-system-regular/MoreHorizontal"
 import { Poll } from "@styled-icons/fluentui-system-regular/Poll"
 import clsx from "clsx"
 import moment from "moment"
@@ -11,12 +10,15 @@ import "moment/locale/pt-br"
 import Image from "next/image"
 import Link from "next/link"
 import { HTMLAttributes } from "react"
+import PostMenu from "./PostMenu"
+import { User } from "@/types/interfaces"
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   postProps: IPostFeed
+  user: User | null
 }
 
-export const Post: React.FC<Props> = ({ postProps, className, ...rest }) => {
+export const Post: React.FC<Props> = ({ postProps, className, user, ...rest }) => {
   const { author_id, created_at, id, post_media, price, text, title, author, slug } = postProps
 
   const [leftPrice, rightPrice] = String(price).split(".")
@@ -44,12 +46,10 @@ export const Post: React.FC<Props> = ({ postProps, className, ...rest }) => {
           <span className="text-sm text-neutral-500">{moment(created_at).locale("pt-br").fromNow()}</span>
         </div>
         <div className="ml-auto flex">
-          <p className="">
-            <MoreHorizontal
-              width={24}
-              height={24}
-            />
-          </p>
+          <PostMenu
+            authorId={author_id}
+            user={user}
+          />
         </div>
       </div>
       <div className="mt-3">
