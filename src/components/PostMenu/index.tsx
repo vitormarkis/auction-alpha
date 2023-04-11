@@ -4,14 +4,15 @@ import { User } from "@/types/interfaces"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import { MoreHorizontal } from "@styled-icons/fluentui-system-regular/MoreHorizontal"
 import DeletePostDialog from "../DeletePostDialog"
+import { IPostFeed } from "@/schemas/posts"
 
 interface Props {
   authorId: string
   user: User | null
-  postId: string
+  post: IPostFeed
 }
 
-const PostMenu: React.FC<Props> = ({ authorId, user, postId }) => {
+const PostMenu: React.FC<Props> = ({ authorId, user, post }) => {
   const isAuthor = user ? (authorId === user?.id ? true : false) : false
 
   return (
@@ -41,7 +42,7 @@ const PostMenu: React.FC<Props> = ({ authorId, user, postId }) => {
                 </button>
               </DropdownMenu.Item>
               <DropdownMenu.Item asChild>
-                <DeletePostDialog postId={postId}>
+                <DeletePostDialog post={post}>
                   <button className="text-left py-1 px-6 rounded-md outline-none cursor-pointer hover:bg-gray-200 text-neutral-600">
                     Excluir
                   </button>

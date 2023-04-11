@@ -47,7 +47,7 @@ export const Post: React.FC<Props> = ({ postProps, className, user, ...rest }) =
         </div>
         <div className="ml-auto flex">
           <PostMenu
-            postId={id}
+            post={postProps}
             authorId={author_id}
             user={user}
           />
