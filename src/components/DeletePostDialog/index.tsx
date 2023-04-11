@@ -5,6 +5,7 @@ import ReactDOM from "react-dom"
 import { IPostFeed } from "@/schemas/posts"
 import { useMutation } from "@tanstack/react-query"
 import clsx from "clsx"
+import { useRouter } from "next/navigation"
 
 const DeletePostDialog: React.FC<{
   children: React.ReactNode
@@ -13,6 +14,7 @@ const DeletePostDialog: React.FC<{
 }> = ({ children, post, setIsModalOpen }) => {
   const headers = new Headers()
   headers.append("Content-Type", "application/json")
+  const router = useRouter()
 
   const [hasDocument, setHasDocument] = React.useState(false)
 
@@ -26,6 +28,7 @@ const DeletePostDialog: React.FC<{
     },
     onSuccess: () => {
       setIsModalOpen(false)
+      router.refresh()
       alert("Post excluido com sucesso.")
     },
   })
