@@ -9,6 +9,7 @@ import { MakeBidButton } from "./MakeBidButton"
 import { api_endpoint } from "@/CONSTANTS"
 import { Icon } from "@/components/Icon"
 import { currency } from "@/utils/currencyConverter"
+import PostMenu from "@/components/PostMenu"
 
 export default async function PostPage({ params }: { params: { slug: string } }) {
   const session = await getSession(headers().get("cookie") ?? "")
@@ -45,6 +46,17 @@ export default async function PostPage({ params }: { params: { slug: string } })
           </div>
         </div>
         <div className="basis-[400px] p-6 whitespace-nowrap grow shrink-0">
+          <div className="flex justify-between mb-1">
+            <div></div>
+            <div>
+              <PostMenu
+                authorId={post.author_id}
+                post={post}
+                user={user}
+                redirect="/"
+              />
+            </div>
+          </div>
           <h1 className="text-2xl font-semibold mb-0.5 whitespace-normal">{post.title}</h1>
           <p className="text-neutral-400 text-xs mb-3">
             <span>Publicado </span>

@@ -11,9 +11,10 @@ interface Props {
   authorId: string
   user: User | null
   post: IPostFeed
+  redirect?: string | undefined
 }
 
-const PostMenu: React.FC<Props> = ({ authorId, user, post }) => {
+const PostMenu: React.FC<Props> = ({ authorId, user, post, redirect }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const isAuthor = user ? (authorId === user?.id ? true : false) : false
 
@@ -44,7 +45,7 @@ const PostMenu: React.FC<Props> = ({ authorId, user, post }) => {
                 </button>
               </DropdownMenu.Item>
               <DropdownMenu.Item asChild>
-                <DeletePostDialog post={post} setIsModalOpen={setIsModalOpen}>
+                <DeletePostDialog post={post} setIsModalOpen={setIsModalOpen} redirect={redirect}>
                   <button className="text-left py-1 px-6 rounded-md outline-none cursor-pointer hover:bg-gray-200 text-neutral-600">
                     Excluir
                   </button>

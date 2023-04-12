@@ -7,11 +7,14 @@ import { useMutation } from "@tanstack/react-query"
 import clsx from "clsx"
 import { useRouter } from "next/navigation"
 
-const DeletePostDialog: React.FC<{
+interface Props {
   children: React.ReactNode
   post: IPostFeed
   setIsModalOpen: Dispatch<SetStateAction<boolean>>
-}> = ({ children, post, setIsModalOpen }) => {
+  redirect?: string | undefined
+}
+
+const DeletePostDialog: React.FC<Props> = ({ children, post, setIsModalOpen, redirect }) => {
   const headers = new Headers()
   headers.append("Content-Type", "application/json")
   const router = useRouter()
@@ -27,8 +30,12 @@ const DeletePostDialog: React.FC<{
       })
     },
     onSuccess: () => {
+      if (redirect) {
+        router.push(redirect)
+      } else {
+        router.refresh()
+      }
       setIsModalOpen(false)
-      router.refresh()
       alert("Post excluido com sucesso.")
     },
   })

@@ -19,7 +19,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 }
 
 export const Post: React.FC<Props> = ({ postProps, className, user, ...rest }) => {
-  const { author_id, created_at, id, post_media, price, text, title, author, slug } = postProps
+  const { author_id, created_at, id, post_media, price, text, title, author, slug, _count } = postProps
 
   const [leftPrice, rightPrice] = String(price).split(".")
 
@@ -89,7 +89,11 @@ export const Post: React.FC<Props> = ({ postProps, className, user, ...rest }) =
               width={16}
               height={16}
             />
-            <p className="ml-1">5 pessoas já deram um lance</p>
+            {_count.bids > 1 ? (
+              <p className="ml-1">{_count.bids} pessoas já fizeram um lance</p>
+            ) : (
+              <p className="ml-1">{_count.bids} pessoa já fez um lance</p>
+            )}
           </div>
           <div className="ml-auto">
             <Link href={`/post/${slug}`}>
