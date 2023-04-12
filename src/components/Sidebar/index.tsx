@@ -44,13 +44,13 @@ export default async function () {
           <div className="flex flex-col gap-2">
             <Link
               href="/post/new"
-              className="py-1.5 rounded-lg px-5 justify-center bg-black text-white flex items-center"
+              className="py-1.5 rounded-lg px-5 bg-black text-white flex justify-center items-center"
             >
               <p>Novo post</p>
             </Link>
             <Link
               href="/post/new"
-              className="py-1.5 rounded-lg px-5 justify-center bg-neutral-200 text-stone-800 flex items-center"
+              className="py-1.5 rounded-lg bg-white text-neutral-500 border border-stone-300 shadow-lg flex justify-center items-center"
             >
               <p>Ver perfil</p>
             </Link>
@@ -58,8 +58,8 @@ export default async function () {
         </div>
       </div>
       <div className="py-6 px-3.5">
-        <ul className="flex flex-col gap-2">
-          <li className="px-3 py-1 grow rounded-lg bg-blue-600 text-white font-medium flex items-center gap-2">
+        <ul className="flex flex-col">
+          <li className="px-3 py-1.5 grow rounded-lg bg-blue-600 text-white font-medium ">
             <Link
               href="/"
               className="flex items-center gap-2"
@@ -72,7 +72,7 @@ export default async function () {
               <span>Início</span>
             </Link>
           </li>
-          <li className="px-3 py-1 grow rounded-lg bg-zinc-100 text-zinc-800 font-medium flex items-center gap-2">
+          <li className="px-3 py-1.5 grow rounded-lg text-zinc-800 transition-all duration-200 hover:bg-zinc-200 cursor-pointer">
             <Link
               href="/"
               className="flex items-center gap-2"
@@ -85,7 +85,7 @@ export default async function () {
               <span>Minhas compras</span>
             </Link>
           </li>
-          <li className="px-3 py-1 grow rounded-lg bg-zinc-100 text-zinc-800 font-medium">
+          <li className="px-3 py-1.5 grow rounded-lg text-zinc-800 transition-all duration-200 hover:bg-zinc-200 cursor-pointer">
             <Link
               href="/"
               className="flex items-center gap-2"
@@ -98,7 +98,7 @@ export default async function () {
               <span>Meus posts</span>
             </Link>
           </li>
-          <li className="px-3 py-1 grow rounded-lg bg-zinc-100 text-zinc-800 font-medium">
+          <li className="px-3 py-1.5 grow rounded-lg text-zinc-800 transition-all duration-200 hover:bg-zinc-200 cursor-pointer">
             <Link
               href="/"
               className="flex items-center gap-2"
@@ -111,7 +111,7 @@ export default async function () {
               <span>Notificações</span>
             </Link>
           </li>
-          <li className="px-3 py-1 grow rounded-lg bg-zinc-100 text-zinc-800 font-medium">
+          <li className="px-3 py-1.5 grow rounded-lg text-zinc-800 transition-all duration-200 hover:bg-zinc-200 cursor-pointer">
             <Link
               href="/"
               className="flex items-center gap-2"
@@ -123,13 +123,13 @@ export default async function () {
               />
               <span>Lances</span>
               {user && userActiveBids && userActiveBids.length !== 0 ? (
-                <p className="p-[3px] rounded-full text-[10px] text-white min-w-4 h-4 leading-none text-center ml-auto bg-rose-500 font-medium">
+                <p className="p-[3px] rounded-full text-[10px] text-white min-w-[1rem] h-4 leading-none text-center ml-auto bg-rose-500 font-medium">
                   {userActiveBids.length}
                 </p>
               ) : null}
             </Link>
           </li>
-          <li className="px-3 py-1 grow rounded-lg bg-zinc-100 text-zinc-800 font-medium">
+          <li className="px-3 py-1.5 grow rounded-lg text-zinc-800 transition-all duration-200 hover:bg-zinc-200 cursor-pointer">
             <Link
               href="/"
               className="flex items-center gap-2"
@@ -145,13 +145,15 @@ export default async function () {
         </ul>
       </div>
       <div className="mt-auto py-6 px-3.5 ">
-        <button className=" flex items-center gap-2 px-3 py-1 grow rounded-lg bg-zinc-100 text-zinc-800 font-medium">
-          <Icon
-            icon="Settings"
-            width={16}
-            height={16}
-          />
-          <span>Configuração</span>
+        <button className="px-3 py-1.5 grow rounded-lg text-zinc-800 transition-all duration-200 hover:bg-zinc-200 cursor-pointer w-full">
+          <div className="flex items-center gap-2">
+            <Icon
+              icon="Settings"
+              width={16}
+              height={16}
+            />
+            <span>Configuração</span>
+          </div>
         </button>
       </div>
     </aside>

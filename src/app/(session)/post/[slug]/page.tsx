@@ -13,7 +13,7 @@ import PostMenu from "@/components/PostMenu"
 
 export default async function PostPage({ params }: { params: { slug: string } }) {
   const session = await getSession(headers().get("cookie") ?? "")
-  const user = session.user ?? null
+  const user = session?.user ?? null
 
   const { slug } = params
   const post = await fetch(`${api_endpoint}/api/posts/single?post_slug=${slug}`, {
@@ -30,7 +30,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
 
   const orderedUserBids = post.bids.sort((a, b) => (a.value > b.value ? -1 : a.value < b.value ? 1 : 0))
 
-  const userBid = user?.id ? post.bids.find(post => user.id === post.user.id) : null
+  const userBid = user?.id ? post.bids.find(post => user?.id === post.user.id) : null
 
   return (
     <div className=" bg-white grow">
@@ -80,7 +80,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
                 postId={post.id}
                 userId={user?.id}
               />
-              <button className="bg-neutral-100 py-3 text-neutral-500 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-100 focus:outline-double">
+              <button className="py-3 rounded-lg bg-white text-neutral-500 border border-stone-300 shadow-lg">
                 Fazer uma pergunta
               </button>
             </div>
