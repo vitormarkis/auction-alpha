@@ -26,7 +26,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
   const isAuthor = post.author_id === user?.id
   const hasBids = post._count.bids > 0
 
-  const installment_price = String((post.price / 12).toFixed(2)).replace(".", ",")
+  const installment_price = currency(post.price / 12, { trailZero: true })
 
   const orderedUserBids = post.bids.sort((a, b) => (a.value > b.value ? -1 : a.value < b.value ? 1 : 0))
 
@@ -74,7 +74,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
               </div>
             </div>
           </div>
-          {isAuthor ? null : (
+          {isAuthor || userBid ? null : (
             <div className="flex flex-col gap-3 mb-3">
               <MakeBidButton
                 postId={post.id}
