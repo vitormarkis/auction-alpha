@@ -33,7 +33,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
   const userBid = user?.id ? post.bids.find(post => user?.id === post.user.id) : null
 
   return (
-    <div className=" bg-white grow">
+    <div className="bg-white grow">
       <div className="flex min-h-full h-[calc(100vh_-_52px)]">
         <div className="p-6 flex flex-col min-w-[420px] grow overflow-y-scroll scroll-thin">
           <Carousell
@@ -58,7 +58,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
             </div>
           </div>
           <h1 className="text-2xl font-semibold mb-0.5 whitespace-normal">{post.title}</h1>
-          <p className="text-neutral-400 text-xs mb-3">
+          <p className="mb-3 text-xs text-neutral-400">
             <span>Publicado </span>
             <span className="font-semibold">{moment(post.created_at).locale("pt-br").fromNow()}</span>
             {" - encerra em "}
@@ -67,10 +67,10 @@ export default async function PostPage({ params }: { params: { slug: string } })
             </span>
           </p>
           <div>
-            <div className="mb-3 flex">
-              <p className="text-3xl mr-4 text-black inline-block">{currency(post.price)}</p>
+            <div className="flex mb-3">
+              <p className="inline-block mr-4 text-3xl text-black">{currency(post.price)}</p>
               <div className="flex items-end">
-                <p className="text-neutral-500 text-sm">ou 12x de R${installment_price}</p>
+                <p className="text-sm text-neutral-500">ou 12x de R${installment_price}</p>
               </div>
             </div>
           </div>
@@ -80,7 +80,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
                 postId={post.id}
                 userId={user?.id}
               />
-              <button className="py-3 rounded-lg bg-white text-neutral-500 border border-stone-300 shadow-lg">
+              <button className="py-3 bg-white border rounded-lg shadow-lg text-neutral-500 border-stone-300">
                 Fazer uma pergunta
               </button>
             </div>
@@ -98,7 +98,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
             </p>
           </div>
           {isAuthor && hasBids ? (
-            <div className="p-2 rounded-lg bg-white border border-stone-300 shadow-lg flex flex-col gap-2">
+            <div className="flex flex-col gap-2 p-2 bg-white border rounded-lg shadow-lg border-stone-300">
               {orderedUserBids.map((bid, idx) => (
                 <div
                   key={bid.id}
@@ -107,13 +107,13 @@ export default async function PostPage({ params }: { params: { slug: string } })
                   <img
                     src={bid.user.image}
                     alt={`Foto de perfil de ${bid.user.name}`}
-                    className="w-8 h-8 rounded-lg mr-2"
+                    className="w-8 h-8 mr-2 rounded-lg"
                   />
-                  <p className="text-neutral-800 text-sm">{bid.user.name}</p>
+                  <p className="text-sm text-neutral-800">{bid.user.name}</p>
                   <p className={clsx("ml-auto mr-2 text-sm", { "font-extrabold": idx === 0 })}>
                     {currency(bid.value)}
                   </p>
-                  <button className="p-1 rounded-lg bg-emerald-500 leading-none text-white">
+                  <button className="p-1 leading-none text-white rounded-lg bg-emerald-500">
                     <Icon
                       width={18}
                       height={18}
@@ -126,7 +126,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
           ) : null}
 
           {userBid ? (
-            <div className="p-2 rounded-lg bg-white border border-stone-300 shadow-lg flex flex-col gap-2">
+            <div className="flex flex-col gap-2 p-2 bg-white border rounded-lg shadow-lg border-stone-300">
               <div>
                 <p className="text-sm font-semibold text-stone-800">Seu lance</p>
               </div>
@@ -134,12 +134,12 @@ export default async function PostPage({ params }: { params: { slug: string } })
                 <img
                   src={userBid.user.image}
                   alt={`Foto de perfil de ${userBid.user.name}`}
-                  className="w-8 h-8 rounded-lg mr-2"
+                  className="w-8 h-8 mr-2 rounded-lg"
                 />
-                <p className="text-neutral-800 text-sm">{userBid.user.name}</p>
+                <p className="text-sm text-neutral-800">{userBid.user.name}</p>
                 <p className="ml-auto mr-2 text-sm font-extrabold mt-[1px]">{currency(userBid.value)}</p>
                 <button
-                  className="p-1 rounded-lg bg-red-500 leading-none text-white"
+                  className="p-1 leading-none text-white bg-red-500 rounded-lg"
                   title="Remover seu lance desse post"
                 >
                   <Icon

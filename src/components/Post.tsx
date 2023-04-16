@@ -29,7 +29,7 @@ export const Post: React.FC<Props> = ({ postProps, className, user, ...rest }) =
   return (
     <div
       {...rest}
-      className={`${className ?? ""} p-6`}
+      className={`${className ?? ""} p-6 whitespace-nowrap`}
     >
       <div className="flex">
         <div>
@@ -53,7 +53,7 @@ export const Post: React.FC<Props> = ({ postProps, className, user, ...rest }) =
           />
         </div>
       </div>
-      <div className="mt-3">
+      <div className="mt-3 whitespace-normal">
         <p>{text}</p>
       </div>
       <div className="mt-3 rounded-lg flex flex-col border border-black overflow-hidden cursor-pointer">
@@ -72,7 +72,7 @@ export const Post: React.FC<Props> = ({ postProps, className, user, ...rest }) =
             "bg-gradient-to-r to-fuchsia-600 via-indigo-700 from-cyan-600": isPremium,
           })}
         >
-          <h2 className="text-white font-semibold">{title}</h2>
+          <h2 className="text-white font-semibold whitespace-normal">{title}</h2>
         </div>
         <div className="px-4 py-3 flex items-center">
           <div>
@@ -84,7 +84,7 @@ export const Post: React.FC<Props> = ({ postProps, className, user, ...rest }) =
             </span> */}
           </div>
           <div className="bg-neutral-400 h-5 w-[1px] mx-3" />
-          <div className="flex items-center text-sm">
+          <div className="hidden whitespace-normal sm:flex items-center text-sm">
             <Eye
               width={16}
               height={16}

@@ -26,7 +26,7 @@ export default async function () {
   const userActiveBids = userBids ? getUserActiveBids(userBids) : null
 
   return (
-    <aside className="flex flex-col text-base w-60 shrink-0 text-stone-500 whitespace-nowrap">
+    <aside className="hidden sm:flex flex-col text-base w-60 shrink-0 text-stone-500 whitespace-nowrap">
       <div className="py-6 px-3.5 ">
         <div className="flex flex-col">
           {user && (
