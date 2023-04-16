@@ -92,7 +92,7 @@ const NewPost: React.FC = () => {
   }
 
   return (
-    <div className="w-full max-w-[560px] h-[calc(100vh_-_52px)] overflow-y-scroll bg-white mx-auto scroll-thin">
+    <div className="w-full max-w-[560px] h-[calc(100dvh_-_52px)] overflow-y-scroll bg-white mx-auto scroll-thin">
       <div className="p-6 flex items-center justify-between">
         <button className="py-1.5 rounded-lg px-5 bg-black text-white flex items-center justify-center">
           <span>Voltar</span>

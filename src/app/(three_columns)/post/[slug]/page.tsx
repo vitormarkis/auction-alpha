@@ -34,7 +34,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
 
   return (
     <div className="bg-white grow">
-      <div className="flex min-h-full h-[calc(100vh_-_52px)] flex-col scroll-thin md:flex-row overflow-y-scroll md:overflow-y-visible ">
+      <div className="flex min-h-full h-[calc(100dvh_-_52px)] flex-col scroll-thin md:flex-row overflow-y-scroll md:overflow-y-visible ">
         <div className="pt-6 flex flex-col grow scroll-thin md:overflow-y-scroll overflow-y-visible ">
           <Carousell
             postMedias={post.post_media}

@@ -47,7 +47,7 @@ export default async function () {
 
   return (
     <div className="sticky top-0 h-[3.25rem] justify-center bg-white shadow-lg shadow-black/10 flex flex-col">
-      <header className="flex items-center max-w-[1280px] w-full justify-between px-4 py-2">
+      <header className="flex items-center max-w-[1280px] w-full justify-between px-4 py-2 mx-auto">
         <div className="hidden sm:block">
           <div className="leading-none">
             <Link
