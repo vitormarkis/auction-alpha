@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { PostsSection } from "./PostsSection"
 import { Suspense } from "react"
+import Sidebar from "@/components/Sidebar"
 
 export default async function () {
   return (
@@ -21,7 +22,7 @@ export default async function () {
           </div>
         </div>
       </div>
-      <div className="hidden sm:flex basis-[240px] shrink-[999]" />
+      <div className="hidden sm:flex basis-[64px] lg:basis-[240px] shrink-[999]" />
     </>
   )
 }

@@ -34,19 +34,19 @@ export default async function PostPage({ params }: { params: { slug: string } })
 
   return (
     <div className="bg-white grow">
-      <div className="flex min-h-full h-[calc(100vh_-_52px)]">
-        <div className="p-6 flex flex-col min-w-[420px] grow overflow-y-scroll scroll-thin">
+      <div className="flex min-h-full h-[calc(100vh_-_52px)] flex-col scroll-thin md:flex-row overflow-y-scroll md:overflow-y-visible ">
+        <div className="pt-6 flex flex-col grow scroll-thin md:overflow-y-scroll overflow-y-visible ">
           <Carousell
             postMedias={post.post_media}
-            className="mb-3"
+            className="lg:mb-3"
           />
-          <div className="p-6">
+          <div className="p-6 hidden md:block">
             <h3 className="font-semibold text-neutral-700">Descrição</h3>
             <p className="text-neutral-600">{post.text}</p>
           </div>
         </div>
-        <div className="basis-[400px] p-6 whitespace-nowrap grow shrink-0">
-          <div className="flex justify-between mb-1">
+        <div className="basis-[400px] p-6 whitespace-nowrap grow">
+          <div className="md:flex hidden justify-between mb-1">
             <div></div>
             <div>
               <PostMenu
@@ -67,7 +67,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
             </span>
           </p>
           <div>
-            <div className="flex mb-3">
+            <div className="flex mb-3 flex-col mdx:flex-row">
               <p className="inline-block mr-4 text-3xl text-black">{currency(post.price)}</p>
               <div className="flex items-end">
                 <p className="text-sm text-neutral-500">ou 12x de R${installment_price}</p>

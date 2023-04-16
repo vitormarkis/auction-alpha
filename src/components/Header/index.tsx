@@ -45,9 +45,8 @@ export default async function () {
   const userBids = parseUserBids.success ? parseUserBids.data : null
   const userActiveBids = userBids ? getUserActiveBids(userBids) : null
 
-
   return (
-    <div className="sticky top-0 justify-center bg-white shadow-lg shadow-black/10">
+    <div className="sticky top-0 h-[3.25rem] justify-center bg-white shadow-lg shadow-black/10 flex flex-col">
       <header className="flex items-center max-w-[1280px] w-full justify-between px-4 py-2">
         <div className="hidden sm:block">
           <div className="leading-none">
@@ -65,8 +64,7 @@ export default async function () {
             </Link>
           </div>
         </div>
-        <div className="sm:hidden flex">
-          </div>
+        <div className="sm:hidden flex"></div>
         <div className="sm:hidden flex">
           <div className="leading-none">
             <Link

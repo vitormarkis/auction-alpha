@@ -15,10 +15,10 @@ export function Carousell({ postMedias, className, ...rest }: Props) {
 
   return (
     <div
-      className={`flex ${className}`}
+      className={`flex mdx:flex-row flex-col-reverse gap-5 mdx:gap-0 ${className}`}
       {...rest}
     >
-      <div className="flex flex-col gap-2 p-2">
+      <div className="flex mdx:flex-col gap-2 p-2 px-7 mdx:px-2">
         {postMedias.map(({ id: img_id, media }) => (
           <img
             key={img_id}
@@ -31,11 +31,11 @@ export function Carousell({ postMedias, className, ...rest }: Props) {
           />
         ))}
       </div>
-      <div className="p-2 flex justify-center grow">
+      <div className="py-2 flex justify-center grow px-7">
         <img
           src={image}
           alt=""
-          className="w-[420px] aspect-square bg-neutral-200 object-contain rounded-lg"
+          className="md:w-[420px] aspect-square bg-neutral-200 object-contain rounded-lg"
         />
       </div>
     </div>
