@@ -3,11 +3,13 @@ import Image from "next/image"
 import { Icon } from "../Icon"
 
 import { User } from "@/types/interfaces"
-import { IUserBids } from "@/schemas/users"
+import { IUserBid } from "@/schemas/users"
+import { signOut } from "next-auth/react"
+import AuthButton from "../AuthButton"
 
 interface Props {
   user: User | undefined
-  userBids: IUserBids[] | null
+  userBids: IUserBid[] | null
   setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -18,7 +20,7 @@ export function SidebarMenuContent({ user, userBids, setIsMenuOpen }: Props) {
     <aside className="flex flex-col grow text-base shrink-0 text-stone-500 whitespace-nowrap">
       <div className="py-6 px-3.5 ">
         <div className="flex flex-col">
-          {user && (
+          {user ? (
             <div className="items-center flex leading-none mb-2 gap-2 text-stone-800">
               <Image
                 src={user.image ?? ""}
@@ -29,7 +31,7 @@ export function SidebarMenuContent({ user, userBids, setIsMenuOpen }: Props) {
               />
               <p className="font-semibold text-base">{user.name}</p>
             </div>
-          )}
+          ) : null}
           <div className="flex flex-col gap-2">
             <Link
               href="/post/new"
@@ -45,6 +47,25 @@ export function SidebarMenuContent({ user, userBids, setIsMenuOpen }: Props) {
             >
               <p>Ver perfil</p>
             </Link>
+            {user ? (
+              <AuthButton
+              action="sign_out"
+              background="white"
+              textColor="red"
+              border="red"
+              weight="medium"
+              shadow
+            />
+            ) : (
+              <AuthButton
+                action="sign_in"
+                background="white"
+                textColor="black"
+                border="black"
+                weight="medium"
+                shadow
+              />
+            )}
           </div>
         </div>
       </div>

@@ -1,32 +1,22 @@
 import Link from "next/link"
-import { headers } from "next/headers"
 import { getSession } from "../Header"
 import Image from "next/image"
 import { Icon } from "../Icon"
-import { userBidsSchema } from "@/schemas/users"
-import { z } from "zod"
-import { getUserActiveBids } from "./getActiveUserBids"
-import { api_endpoint } from "@/CONSTANTS"
 import { HTMLAttributes } from "react"
+import { useHeaders } from "@/factories/headers"
+import { createUser } from "@/factories/user"
 
 interface Props extends HTMLAttributes<HTMLDivElement> {}
 
 export default async function ({ className, ...rest }: Props) {
-  const cookie = headers().get("cookie")
-  const customHeaders = new Headers()
-  if (cookie) customHeaders.append("cookie", cookie)
+  const { headers, cookie } = useHeaders()
 
   const session = await getSession(cookie ?? "")
-  const { user } = session ?? {}
+  const user = session?.user ?? null
 
-  const [parseUserBids] = await Promise.all([
-    fetch(`${api_endpoint}/api/users/get-bids`, { cache: "no-store", headers: customHeaders })
-      .then(res => res.json())
-      .then(data => z.array(userBidsSchema).safeParseAsync(data)),
-  ])
-
-  const userBids = parseUserBids.success ? parseUserBids.data : null
-  const userActiveBids = userBids ? getUserActiveBids(userBids) : null
+  const User = createUser(user)
+  await User.getUserBids().fetchUserBids("/users/get-bids", headers)
+  const { userActiveBids } = await User.getUserBids().getUserActiveBids()
 
   return (
     <>
@@ -165,7 +155,7 @@ export default async function ({ className, ...rest }: Props) {
           </ul>
         </div>
         <div className="mt-auto py-6 px-3.5 ">
-          <button className="lg:px-3 lg:py-1.5 grow flex w-9 justify-center lg:justify-start lg:w-auto h-9 rounded-lg text-zinc-800 transition-all duration-200 hover:bg-zinc-200 cursor-pointer w-full">
+          <button className="lg:px-3 lg:py-1.5 grow flex justify-center lg:justify-start lg:w-auto h-9 rounded-lg text-zinc-800 transition-all duration-200 hover:bg-zinc-200 cursor-pointer w-full">
             <div className="flex items-center gap-2">
               <Icon
                 icon="Settings"

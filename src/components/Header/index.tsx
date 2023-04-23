@@ -134,7 +134,19 @@ export default async function () {
               )}
             </div>
 
-            <div>{session ? <LogoutButton /> : <AuthButton action="sign_in" />}</div>
+            <div>
+              {session ? (
+                <LogoutButton />
+              ) : (
+                <AuthButton
+                  action="sign_in"
+                  background="black"
+                  textColor="white"
+                  border="black"
+                  weight="normal"
+                />
+              )}
+            </div>
           </div>
         </div>
       </header>

@@ -50,4 +50,4 @@ export type IUserSession = z.infer<typeof userSchema>
 export type IUserRegisterInput = z.input<typeof userRegisterSchemaClient>
 export type IUserRegister = z.output<typeof userRegisterSchemaClient>
 export type IUserLogin = z.output<typeof userLoginSchema>
-export type IUserBids = z.output<typeof userBidsSchema>
+export type IUserBid = z.output<typeof userBidsSchema>

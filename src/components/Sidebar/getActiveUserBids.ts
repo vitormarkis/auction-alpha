@@ -1,6 +1,6 @@
-import { IUserBids } from "@/schemas/users"
+import { IUserBid } from "@/schemas/users"
 import dayjs from "dayjs"
 
-export function getUserActiveBids(userBids: IUserBids[]) {
+export function getUserActiveBids(userBids: IUserBid[]) {
   return userBids.filter(bid => dayjs().isBefore(bid.post.announcement_date))
 }

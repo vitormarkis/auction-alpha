@@ -6,13 +6,13 @@ import ReactDOM from "react-dom"
 import twColors from "tailwindcss/colors"
 import { SidebarMenuContent } from "../SidebarMenuContent"
 import { User } from "@/types/interfaces"
-import { IUserBids } from "@/schemas/users"
+import { IUserBid } from "@/schemas/users"
 import { useRouter } from "next/router"
 import { usePathname } from "next/navigation"
 
 interface Props {
   user: User | undefined
-  userBids: IUserBids[] | null
+  userBids: IUserBid[] | null
 }
 
 const SidebarMenu: React.FC<Props> = ({ user, userBids }) => {
