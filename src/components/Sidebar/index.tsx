@@ -15,8 +15,8 @@ export default async function ({ className, ...rest }: Props) {
   const user = session?.user ?? null
 
   const User = createUser(user)
-  await User.getUserBids().fetchUserBids("/users/get-bids", headers)
-  const { userActiveBids } = await User.getUserBids().getUserActiveBids()
+  const { userBids } = await User.getUserBids().fetchUserBids("/api/users/get-bids", headers)
+  const { userActiveBids } = User.getUserBids().getUserActiveBids(userBids)
 
   return (
     <>

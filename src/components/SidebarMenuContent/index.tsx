@@ -14,7 +14,6 @@ interface Props {
 }
 
 export function SidebarMenuContent({ user, userBids, setIsMenuOpen }: Props) {
-  console.log(window.location)
 
   return (
     <aside className="flex flex-col grow text-base shrink-0 text-stone-500 whitespace-nowrap">
