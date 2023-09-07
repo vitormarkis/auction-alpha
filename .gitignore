@@ -3,6 +3,7 @@
 /notes
 /_temp
 
+*_legacy
 # dependencies
 /node_modules
 /.pnp

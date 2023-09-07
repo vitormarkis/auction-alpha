@@ -4,14 +4,8 @@ const nextConfig = {
   images: {
     domains: ["avatars.githubusercontent.com", "lh3.googleusercontent.com"],
   },
-  experimental: {
-    serverActions: true,
-  },
-  // env: {
-  //   NEXTAUTH_URL: process.env.NEXTAUTH_URL
-  // }
-  experimental: {
-    appDir: true,
+  env: {
+    ENVIRONMENT_SET: process.env.ENVIRONMENT_SET,
   },
   // webpack(config) {
   //   config.infrastructureLogging = { debug: /PackFileCache/ }

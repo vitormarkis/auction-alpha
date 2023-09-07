@@ -1,7 +1,3 @@
-"use client"
-
-// import moduleName from '@styled-icons/fluentui-system-regular';
-// import moduleName from '@styled-icons/material';
 import { signIn } from "next-auth/react"
 import Link from "next/link"
 import { SubmitHandler, useForm } from "react-hook-form"

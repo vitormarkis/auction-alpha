@@ -1,5 +1,3 @@
-"use client"
-
 import clsx from "clsx"
 import moment from "moment"
 import "moment/locale/pt-br"
@@ -8,7 +6,7 @@ import { HTMLAttributes } from "react"
 import { Eye } from "@styled-icons/fluentui-system-regular/Eye"
 import { Poll } from "@styled-icons/fluentui-system-regular/Poll"
 import { currency } from "@/lib/utils/currencyConverter"
-import { ProfilePictureIcon } from "@/components/atoms"
+import { ProfileAvatarPicture } from "@/components/atoms/avatar-picture-profile/ProfileAvatarPicture"
 import { PostSession } from "@/requests/get-posts/getPosts"
 import { User } from "@/types/interfaces"
 import PostMenu from "./PostMenu"
@@ -34,18 +32,7 @@ export const Post: React.FC<Props> = ({ post: postProps, className, user, ...res
     >
       <div className="flex">
         <div>
-          <ProfilePictureIcon
-            size="big"
-            userName={author.name}
-            photoUrl={author.image}
-          />
-          {/* <Image
-            src={author.image}
-            alt={`Foto de ${author.name}`}
-            width={56}
-            height={56}
-            className="rounded-full shrink-0 object-cover"
-          /> */}
+          <ProfileAvatarPicture src={author.image} />
         </div>
         <div className="leading-4 ml-3">
           <p className="text-lg text-neutral-800">{author.name}</p>

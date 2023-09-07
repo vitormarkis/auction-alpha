@@ -1,6 +1,7 @@
+import { prisma } from "@/services/prisma"
+import { getUserBids } from "@/utils/get-user-bids/getUserBids"
 import { NextApiRequest, NextApiResponse } from "next"
 import { getServerSession } from "next-auth"
-import { prisma } from "@/services/prisma"
 import { authOptions } from "../../auth/[...nextauth]"
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -11,26 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.json({ redirect: { path: "/signin" } })
       }
 
-      const { Bids: user_bids } = await prisma.user.findFirstOrThrow({
-        where: {
-          id: session.user.id,
-          // id: "clg8nt53b0004ve4fft0ktsvf",
-        },
-        select: {
-          Bids: {
-            select: {
-              id: true,
-              post_id: true,
-              value: true,
-              post: {
-                select: {
-                  announcement_date: true,
-                },
-              },
-            },
-          },
-        },
-      })
+      const { user_bids } = await getUserBids(session.user.id, prisma)
 
       if (!user_bids) {
         return res.status(400).json({ message: "Usuário ainda não fez nenhum lance." })

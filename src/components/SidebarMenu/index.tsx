@@ -1,21 +1,15 @@
-"use client"
-
-import { usePathname } from "next/navigation"
-import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
 import ReactDOM from "react-dom"
 import twColors from "tailwindcss/colors"
 import * as Dialog from "@radix-ui/react-dialog"
-import { IUserBid } from "@/schemas/users"
 import { User } from "@/types/interfaces"
 import { SidebarMenuContent } from "../SidebarMenuContent"
 
 interface Props {
   user: User | undefined
-  userBids: IUserBid[] | null
 }
 
-const SidebarMenu: React.FC<Props> = ({ user, userBids }) => {
+const SidebarMenu: React.FC<Props> = ({ user }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [hasDocument, setHasDocument] = useState(false)
 
@@ -65,7 +59,6 @@ const SidebarMenu: React.FC<Props> = ({ user, userBids }) => {
               <div className="flex flex-col w-4/5 max-w-[20rem] bg-white relative">
                 <SidebarMenuContent
                   user={user}
-                  userBids={userBids}
                   setIsMenuOpen={setIsMenuOpen}
                 />
               </div>

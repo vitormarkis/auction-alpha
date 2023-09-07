@@ -1,18 +1,19 @@
-import { signOut } from "next-auth/react"
 import Image from "next/image"
 import Link from "next/link"
-import { IUserBid } from "@/schemas/users"
+import { useUser } from "@/hooks/use-user/useUser"
 import { User } from "@/types/interfaces"
 import AuthButton from "../AuthButton"
 import { Icon } from "../Icon"
 
 interface Props {
   user: User | undefined
-  userBids: IUserBid[] | null
   setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export function SidebarMenuContent({ user, userBids, setIsMenuOpen }: Props) {
+export function SidebarMenuContent({ user, setIsMenuOpen }: Props) {
+  const { userBidsQuery } = useUser()
+  const { data: userBids } = userBidsQuery
+
   return (
     <aside className="flex flex-col grow text-base shrink-0 text-stone-500 whitespace-nowrap">
       <div className="py-6 px-3.5 ">

@@ -1,39 +1,49 @@
-import Image from "next/image"
+import { useSession } from "next-auth/react"
 import Link from "next/link"
-import { HTMLAttributes } from "react"
-import { ProfilePictureIcon } from "@/components/atoms"
-import { useHeaders } from "@/factories/headers"
-import { createUser } from "@/factories/user"
-import { getSession } from "../Header"
+import React from "react"
+import { cn } from "@/lib/utils"
+import { ProfileAvatarPicture } from "@/components/atoms/avatar-picture-profile/ProfileAvatarPicture"
+import { IUserBid } from "@/schemas/users"
 import { Icon } from "../Icon"
 
-interface Props extends HTMLAttributes<HTMLDivElement> {}
+export type SidebarProps = React.ComponentPropsWithoutRef<"aside"> & {}
 
-export default async function ({ className, ...rest }: Props) {
-  const { headers, cookie } = useHeaders()
+export const Sidebar = React.forwardRef<React.ElementRef<"aside">, SidebarProps>(
+  function SidebarComponent({ ...props }, ref) {
+    const { data, status } = useSession()
+    const { user } = data ?? {}
 
-  const session = await getSession(cookie ?? "")
-  const user = session?.user ?? null
+    const userBids: IUserBid[] = [
+      {
+        id: "8hsidfjhsdf",
+        post: {
+          announcement_date: new Date().toISOString(),
+        },
+        post_id: "236426",
+        value: 200,
+      },
+    ]
 
-  const User = createUser(user)
-  const { userBids } = await User.getUserBids().fetchUserBids("/api/users/get-bids", headers)
-  const { userActiveBids } = User.getUserBids().getUserActiveBids(userBids)
+    const userActiveBids: IUserBid[] = userBids
 
-  return (
-    <>
+    return (
       <aside
-        className={`flex-col text-base lg:w-60 shrink-0 text-stone-500 whitespace-nowrap ${className}`}
-        {...rest}
+        {...props}
+        className={cn(
+          "flex-col text-base lg:w-60 shrink-0 text-stone-500 whitespace-nowrap",
+          props.className
+        )}
+        ref={ref}
       >
         <div className="pt-6 lg:pb-6 px-3.5">
           <div className="flex flex-col lg:items-stretch items-center border-b border-stone-300 pb-6 lg:pb-0 lg:border-none">
-            {user && (
+            {status !== "unauthenticated" && (
               <div className="items-center flex leading-none mb-2 gap-2 text-stone-800">
-                <ProfilePictureIcon
-                  userName={user.name}
-                  photoUrl={user.image}
+                <ProfileAvatarPicture
+                  size="small"
+                  src={user?.image}
                 />
-                <p className="hidden lg:block font-semibold text-base">{user.name}</p>
+                <p className="hidden lg:block font-semibold text-base">{user?.name}</p>
               </div>
             )}
             <div className="flex flex-col gap-2 lg:items-stretch items-center">
@@ -119,10 +129,10 @@ export default async function ({ className, ...rest }: Props) {
                 <span className="hidden lg:inline-block">Notificações</span>
               </Link>
             </li>
-            <li className="lg:px-3 lg:py-1.5 grow flex w-9 justify-center lg:justify-start lg:w-auto h-9 rounded-lg text-zinc-800 transition-all duration-200 hover:bg-zinc-200 cursor-pointer">
+            <li className="lg:px-3 lg:py-1.5 grow flex justify-center lg:justify-start lg:w-auto h-9 rounded-lg text-zinc-800 transition-all duration-200 hover:bg-zinc-200 cursor-pointer">
               <Link
                 href="/"
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 grow"
               >
                 <Icon
                   icon="AutoGraph"
@@ -131,7 +141,7 @@ export default async function ({ className, ...rest }: Props) {
                 />
                 <span className="hidden lg:inline-block">Lances</span>
                 {user && userActiveBids && userActiveBids.length !== 0 ? (
-                  <p className="p-[3px] rounded-full text-[10px] text-white min-w-[1rem] h-4 leading-none text-center ml-auto bg-rose-500 font-medium">
+                  <p className="hidden lg:block p-[3px] rounded-full text-[10px] text-white min-w-[1rem] h-4 leading-none text-center ml-auto bg-rose-500 font-medium">
                     {userActiveBids.length}
                   </p>
                 ) : null}
@@ -165,6 +175,8 @@ export default async function ({ className, ...rest }: Props) {
           </button>
         </div>
       </aside>
-    </>
-  )
-}
+    )
+  }
+)
+
+Sidebar.displayName = "Sidebar"

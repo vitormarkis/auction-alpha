@@ -14,6 +14,7 @@
     "@next-auth/prisma-adapter": "^1.0.5",
     "@next/bundle-analyzer": "^13.2.4",
     "@prisma/client": "^4.12.0",
+    "@radix-ui/react-avatar": "^1.0.3",
     "@radix-ui/react-dialog": "^1.0.3",
     "@radix-ui/react-dropdown-menu": "^2.0.4",
     "@tanstack/react-query": "^4.28.0",
@@ -32,7 +33,7 @@
     "react-hook-form": "^7.43.8",
     "react-slugify": "^3.0.2",
     "tailwind-merge": "^1.14.0",
-    "tailwind-variants": "^0.1.13",
+    "tailwind-variants": "^0.1.14",
     "typescript": "5.0.2",
     "zod": "^3.20.6"
   },

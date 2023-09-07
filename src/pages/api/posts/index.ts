@@ -1,13 +1,66 @@
+import { ownerId } from "@/CONSTANTS"
+import { prisma } from "@/services/prisma"
 import { NextApiRequest, NextApiResponse } from "next"
 import { getServerSession } from "next-auth"
 import slugify from "react-slugify"
 import { z } from "zod"
-import { ownerId } from "@/CONSTANTS"
-import { prisma } from "@/services/prisma"
 import { authOptions } from "../auth/[...nextauth]"
 import { newPostSchema } from "./schemas"
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method === "GET") {
+    const posts = await prisma.post.findMany({
+      select: {
+        id: true,
+        created_at: true,
+        title: true,
+        text: true,
+        price: true,
+        slug: true,
+        announcement_date: true,
+        _count: {
+          select: {
+            bids: true,
+          },
+        },
+        author_id: true,
+        author: {
+          select: {
+            name: true,
+            image: true,
+            role: true,
+          },
+        },
+        post_media: {
+          select: {
+            id: true,
+            media: true,
+          },
+        },
+        bids: {
+          select: {
+            post_id: true,
+            id: true,
+            created_at: true,
+            value: true,
+            user: {
+              select: {
+                id: true,
+                image: true,
+                name: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: {
+        created_at: "desc",
+      },
+    })
+
+    return res.json(posts)
+  }
+  
   if (req.method === "POST") {
     try {
       const session = await getServerSession(req, res, authOptions)
