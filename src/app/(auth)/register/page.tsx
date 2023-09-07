@@ -1,12 +1,12 @@
 "use client"
 
-import { IUserRegisterInput, userRegisterSchemaClient } from "@/schemas/users"
-import { api } from "@/services/api"
-import { Google } from "@styled-icons/boxicons-logos/Google"
-import { Github } from "@styled-icons/boxicons-logos/Github"
 import { signIn } from "next-auth/react"
 import Link from "next/link"
 import { SubmitHandler, useForm } from "react-hook-form"
+import { Github } from "@styled-icons/boxicons-logos/Github"
+import { Google } from "@styled-icons/boxicons-logos/Google"
+import { IUserRegisterInput, userRegisterSchemaClient } from "@/schemas/users"
+import { api } from "@/services/api"
 
 export default function Register() {
   const { handleSubmit, reset, register } = useForm<IUserRegisterInput>()

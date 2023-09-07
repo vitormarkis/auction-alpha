@@ -2,12 +2,10 @@
 
 import clsx from "clsx"
 import { HTMLAttributes, useState } from "react"
+import { PostSession } from "@/requests/get-posts/getPosts"
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
-  postMedias: {
-    id: string
-    media: string
-  }[]
+  postMedias: PostSession["post_media"]
 }
 
 export function Carousell({ postMedias, className, ...rest }: Props) {
@@ -22,18 +20,21 @@ export function Carousell({ postMedias, className, ...rest }: Props) {
         {postMedias.map(({ id: img_id, media }) => (
           <img
             key={img_id}
-            src={media}
+            src={media ?? ""}
             alt=""
             onClick={() => setImage(media)}
-            className={clsx("w-12 cursor-pointer aspect-square bg-neutral-200 object-contain rounded-lg", {
-              "outline-1 outline outline-offset-2 outline-blue-500": image === media,
-            })}
+            className={clsx(
+              "w-12 cursor-pointer aspect-square bg-neutral-200 object-contain rounded-lg",
+              {
+                "outline-1 outline outline-offset-2 outline-blue-500": image === media,
+              }
+            )}
           />
         ))}
       </div>
       <div className="py-2 flex justify-center grow px-7">
         <img
-          src={image}
+          src={image ?? ""}
           alt=""
           className="md:w-[420px] aspect-square bg-neutral-200 object-contain rounded-lg"
         />

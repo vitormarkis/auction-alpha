@@ -8,6 +8,4 @@ export default withAuth({
   secret: process.env.NEXT_SECRET,
 })
 
-export const config = { matcher: [
-  "/post/new",
-] }
+export const config = { matcher: ["/post/new"] }

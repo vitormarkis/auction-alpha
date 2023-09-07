@@ -7,5 +7,5 @@
 }
 
 .scroll-thin::-webkit-scrollbar-thumb {
-  @apply bg-zinc-300
+  @apply bg-zinc-300;
 }

@@ -1,10 +1,11 @@
-import Link from "next/link"
-import { getSession } from "../Header"
 import Image from "next/image"
-import { Icon } from "../Icon"
+import Link from "next/link"
 import { HTMLAttributes } from "react"
+import { ProfilePictureIcon } from "@/components/atoms"
 import { useHeaders } from "@/factories/headers"
 import { createUser } from "@/factories/user"
+import { getSession } from "../Header"
+import { Icon } from "../Icon"
 
 interface Props extends HTMLAttributes<HTMLDivElement> {}
 
@@ -28,12 +29,9 @@ export default async function ({ className, ...rest }: Props) {
           <div className="flex flex-col lg:items-stretch items-center border-b border-stone-300 pb-6 lg:pb-0 lg:border-none">
             {user && (
               <div className="items-center flex leading-none mb-2 gap-2 text-stone-800">
-                <Image
-                  src={user.image ?? ""}
-                  width={36}
-                  height={36}
-                  className="rounded-full shrink-0"
-                  alt={`Foto de perfil de ${user.name}`}
+                <ProfilePictureIcon
+                  userName={user.name}
+                  photoUrl={user.image}
                 />
                 <p className="hidden lg:block font-semibold text-base">{user.name}</p>
               </div>

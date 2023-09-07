@@ -1,9 +1,9 @@
-import { userRegisterSchema } from "@/schemas/users"
-import { prisma } from "@/services/prisma"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import { NextApiRequest, NextApiResponse } from "next"
 import { getServerSession } from "next-auth"
+import { userRegisterSchema } from "@/schemas/users"
+import { prisma } from "@/services/prisma"
 import { authOptions } from "../auth/[...nextauth]"
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -55,13 +55,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!session || !session.user?.sub) return res.status(400).send("Sem sessão.")
 
     const sub = session.user.sub
-
-    // if (!req.headers.authorization) return res.status(401).json({ message: "Usuário não autorizado." })
-    // const [type, token] = req.headers.authorization.split(" ")
-
-    // if (type.toLowerCase() !== "bearer") return res.status(401).json({ message: "Tipo de token inválido." })
-
-    // const { sub } = jwt.verify(token, process.env.SERVER_SECRET as string)
 
     const user = await prisma.user.findFirst({
       where: {

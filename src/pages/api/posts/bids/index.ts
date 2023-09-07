@@ -1,14 +1,10 @@
-import { prisma } from "@/services/prisma"
 import { NextApiRequest, NextApiResponse } from "next"
 import { getServerSession } from "next-auth"
-import slugify from "react-slugify"
-import { authOptions } from "../../auth/[...nextauth]"
 import { bidSchema } from "@/schemas/posts"
+import { prisma } from "@/services/prisma"
+import { authOptions } from "../../auth/[...nextauth]"
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === "GET") {
-    return res.status(404)
-  }
   if (req.method === "POST") {
     try {
       const session = await getServerSession(req, res, authOptions)

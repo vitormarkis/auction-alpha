@@ -1,40 +1,37 @@
-import { postFeedSchema } from "@/schemas/posts"
-import { Carousell } from "./Carousell"
+import clsx from "clsx"
 import moment from "moment"
 import "moment/locale/pt-br"
 import { headers } from "next/headers"
+import { currency } from "@/lib/utils/currencyConverter"
 import { getSession } from "@/components/Header"
-import clsx from "clsx"
-import { MakeBidButton } from "./MakeBidButton"
-import { api_endpoint } from "@/CONSTANTS"
 import { Icon } from "@/components/Icon"
-import { currency } from "@/utils/currencyConverter"
 import PostMenu from "@/components/PostMenu"
+import { api } from "@/requests/api"
+import { prisma } from "@/services/prisma"
+import { Carousell } from "./Carousell"
+import { MakeBidButton } from "./MakeBidButton"
 
 export default async function PostPage({ params }: { params: { slug: string } }) {
   const session = await getSession(headers().get("cookie") ?? "")
   const user = session?.user ?? null
 
   const { slug } = params
-  const post = await fetch(`${api_endpoint}/api/posts/single?post_slug=${slug}`, {
-    cache: "no-store",
-    next: {
-      revalidate: 10,
-    },
-  }).then(async res => postFeedSchema.parse(await res.json()))
+  const { post } = await api.getPost(slug, prisma)
 
   const isAuthor = post.author_id === user?.id
   const hasBids = post._count.bids > 0
 
   const installment_price = currency(post.price / 12, { trailZero: true })
 
-  const orderedUserBids = post.bids.sort((a, b) => (a.value > b.value ? -1 : a.value < b.value ? 1 : 0))
+  const orderedUserBids = post.bids.sort((a, b) =>
+    a.value > b.value ? -1 : a.value < b.value ? 1 : 0
+  )
 
   const userBid = user?.id ? post.bids.find(post => user?.id === post.user.id) : null
 
   return (
     <div className="bg-white grow">
-      <div className="flex min-h-full h-[calc(100dvh_-_52px)] flex-col scroll-thin md:flex-row overflow-y-scroll md:overflow-y-visible ">
+      <div className="flex min-h-full h-[calc(100dvh_-_52px)] flex-col scroll-thin md:flex-row overflow-y-scroll md:overflow-y-visible pb-24">
         <div className="pt-6 flex flex-col grow scroll-thin md:overflow-y-scroll overflow-y-visible ">
           <Carousell
             postMedias={post.post_media}
@@ -60,7 +57,9 @@ export default async function PostPage({ params }: { params: { slug: string } })
           <h1 className="text-2xl font-semibold mb-0.5 whitespace-normal">{post.title}</h1>
           <p className="mb-3 text-xs text-neutral-400">
             <span>Publicado </span>
-            <span className="font-semibold">{moment(post.created_at).locale("pt-br").fromNow()}</span>
+            <span className="font-semibold">
+              {moment(post.created_at).locale("pt-br").fromNow()}
+            </span>
             {" - encerra em "}
             <span className="font-semibold inline-block px-1.5 py-0.5 rounded-lg bg-indigo-100 text-indigo-500">
               {moment(post.announcement_date).locale("pt-br").toNow(true)}
@@ -105,7 +104,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
                   className="flex items-center"
                 >
                   <img
-                    src={bid.user.image}
+                    src={bid.user.image ?? ""}
                     alt={`Foto de perfil de ${bid.user.name}`}
                     className="w-8 h-8 mr-2 rounded-lg"
                   />
@@ -132,12 +131,14 @@ export default async function PostPage({ params }: { params: { slug: string } })
               </div>
               <div className="flex items-center">
                 <img
-                  src={userBid.user.image}
+                  src={userBid.user.image ?? ""}
                   alt={`Foto de perfil de ${userBid.user.name}`}
                   className="w-8 h-8 mr-2 rounded-lg"
                 />
                 <p className="text-sm text-neutral-800">{userBid.user.name}</p>
-                <p className="ml-auto mr-2 text-sm font-extrabold mt-[1px]">{currency(userBid.value)}</p>
+                <p className="ml-auto mr-2 text-sm font-extrabold mt-[1px]">
+                  {currency(userBid.value)}
+                </p>
                 <button
                   className="p-1 leading-none text-white bg-red-500 rounded-lg"
                   title="Remover seu lance desse post"

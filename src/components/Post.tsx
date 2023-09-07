@@ -1,25 +1,26 @@
 "use client"
 
-import { IPostFeed } from "@/schemas/posts"
-import { currency } from "@/utils/currencyConverter"
-import { Eye } from "@styled-icons/fluentui-system-regular/Eye"
-import { Poll } from "@styled-icons/fluentui-system-regular/Poll"
 import clsx from "clsx"
 import moment from "moment"
 import "moment/locale/pt-br"
-import Image from "next/image"
 import Link from "next/link"
 import { HTMLAttributes } from "react"
-import PostMenu from "./PostMenu"
+import { Eye } from "@styled-icons/fluentui-system-regular/Eye"
+import { Poll } from "@styled-icons/fluentui-system-regular/Poll"
+import { currency } from "@/lib/utils/currencyConverter"
+import { ProfilePictureIcon } from "@/components/atoms"
+import { PostSession } from "@/requests/get-posts/getPosts"
 import { User } from "@/types/interfaces"
+import PostMenu from "./PostMenu"
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
-  postProps: IPostFeed
+  post: PostSession
   user: User | null
 }
 
-export const Post: React.FC<Props> = ({ postProps, className, user, ...rest }) => {
-  const { author_id, created_at, id, post_media, price, text, title, author, slug, _count } = postProps
+export const Post: React.FC<Props> = ({ post: postProps, className, user, ...rest }) => {
+  const { author_id, created_at, id, post_media, price, text, title, author, slug, _count } =
+    postProps
 
   const [leftPrice, rightPrice] = String(price).split(".")
 
@@ -33,17 +34,24 @@ export const Post: React.FC<Props> = ({ postProps, className, user, ...rest }) =
     >
       <div className="flex">
         <div>
-          <Image
+          <ProfilePictureIcon
+            size="big"
+            userName={author.name}
+            photoUrl={author.image}
+          />
+          {/* <Image
             src={author.image}
             alt={`Foto de ${author.name}`}
             width={56}
             height={56}
             className="rounded-full shrink-0 object-cover"
-          />
+          /> */}
         </div>
         <div className="leading-4 ml-3">
           <p className="text-lg text-neutral-800">{author.name}</p>
-          <span className="text-sm text-neutral-500">{moment(created_at).locale("pt-br").fromNow()}</span>
+          <span className="text-sm text-neutral-500">
+            {moment(created_at).locale("pt-br").fromNow()}
+          </span>
         </div>
         <div className="ml-auto flex">
           <PostMenu
@@ -62,7 +70,7 @@ export const Post: React.FC<Props> = ({ postProps, className, user, ...rest }) =
             <img
               key={media.id}
               alt="Foto do post"
-              src={media.media}
+              src={media.media ?? ""}
               className="object-cover w-full h-72 border-r border-r-neutral-400"
             />
           ))}

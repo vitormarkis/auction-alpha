@@ -1,25 +1,31 @@
 "use client"
 
-import { User } from "@/types/interfaces"
+import { Session } from "next-auth"
+import { useState } from "react"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import { MoreHorizontal } from "@styled-icons/fluentui-system-regular/MoreHorizontal"
+import { PostSession } from "@/requests/get-posts/getPosts"
+import { User } from "@/types/interfaces"
 import DeletePostDialog from "../DeletePostDialog"
-import { IPostFeed } from "@/schemas/posts"
-import { useState } from "react"
 
 interface Props {
   authorId: string
   user: User | null
-  post: IPostFeed
+  post: PostSession
   redirect?: string | undefined
+  session?: Session
 }
 
-const PostMenu: React.FC<Props> = ({ authorId, user, post, redirect }) => {
+const PostMenu: React.FC<Props> = ({ authorId, user, post, redirect, session }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const isAuthor = user ? (authorId === user?.id ? true : false) : false
+  const isAuthor = authorId === user?.id ?? false
+  const isAdmin = user?.role === "ADMIN"
 
   return (
-    <DropdownMenu.Root open={isModalOpen} onOpenChange={setIsModalOpen}>
+    <DropdownMenu.Root
+      open={isModalOpen}
+      onOpenChange={setIsModalOpen}
+    >
       <DropdownMenu.Trigger asChild>
         <p className="h-fit p-1.5 leading-none rounded-lg hover:bg-neutral-200 cursor-pointer">
           <MoreHorizontal
@@ -36,7 +42,7 @@ const PostMenu: React.FC<Props> = ({ authorId, user, post, redirect }) => {
           <DropdownMenu.Item className="text-left py-1 px-6 rounded-md outline-none cursor-pointer hover:bg-gray-200 text-neutral-600 ">
             Salvar
           </DropdownMenu.Item>
-          {isAuthor && (
+          {(isAuthor || isAdmin) && (
             <>
               <DropdownMenu.Separator className="h-[1px] bg-stone-300 m-1" />
               <DropdownMenu.Item asChild>
@@ -45,7 +51,11 @@ const PostMenu: React.FC<Props> = ({ authorId, user, post, redirect }) => {
                 </button>
               </DropdownMenu.Item>
               <DropdownMenu.Item asChild>
-                <DeletePostDialog post={post} setIsModalOpen={setIsModalOpen} redirect={redirect}>
+                <DeletePostDialog
+                  post={post}
+                  setIsModalOpen={setIsModalOpen}
+                  redirect={redirect}
+                >
                   <button className="text-left py-1 px-6 rounded-md outline-none cursor-pointer hover:bg-gray-200 text-neutral-600">
                     Excluir
                   </button>

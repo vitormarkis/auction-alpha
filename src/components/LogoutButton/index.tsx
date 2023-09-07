@@ -1,10 +1,14 @@
 "use client"
 
+import { signOut } from "next-auth/react"
 import React, { HTMLAttributes } from "react"
 import { Logout } from "@styled-icons/material/Logout"
-import { signOut } from "next-auth/react"
 
-const LogoutButton: React.FC<HTMLAttributes<HTMLButtonElement>> = ({ className, onClick, ...rest }) => {
+const LogoutButton: React.FC<HTMLAttributes<HTMLButtonElement>> = ({
+  className,
+  onClick,
+  ...rest
+}) => {
   return (
     <button
       onClick={e => {

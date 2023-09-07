@@ -1,15 +1,16 @@
 "use client"
-import * as Dialog from "@radix-ui/react-dialog"
-import React, { Dispatch, SetStateAction } from "react"
-import ReactDOM from "react-dom"
-import { IPostFeed } from "@/schemas/posts"
-import { useMutation } from "@tanstack/react-query"
+
 import clsx from "clsx"
 import { useRouter } from "next/navigation"
+import React, { Dispatch, SetStateAction } from "react"
+import ReactDOM from "react-dom"
+import * as Dialog from "@radix-ui/react-dialog"
+import { useMutation } from "@tanstack/react-query"
+import { PostSession } from "@/requests/get-posts/getPosts"
 
 interface Props {
   children: React.ReactNode
-  post: IPostFeed
+  post: PostSession
   setIsModalOpen: Dispatch<SetStateAction<boolean>>
   redirect?: string | undefined
 }
@@ -22,12 +23,17 @@ const DeletePostDialog: React.FC<Props> = ({ children, post, setIsModalOpen, red
   const [hasDocument, setHasDocument] = React.useState(false)
 
   const { mutate, isLoading } = useMutation({
-    mutationFn: (postId: string) => {
-      return fetch("/api/posts", {
+    mutationFn: async (postId: string) => {
+      const response = await fetch("/api/posts", {
         headers,
         method: "DELETE",
         body: JSON.stringify({ postId }),
       })
+
+      if (!response.ok) throw new Error("Something went wrong during the deletion of the post.")
+
+      const data = await response.json()
+      return data
     },
     onSuccess: () => {
       if (redirect) {
@@ -37,6 +43,10 @@ const DeletePostDialog: React.FC<Props> = ({ children, post, setIsModalOpen, red
       }
       setIsModalOpen(false)
       alert("Post excluido com sucesso.")
+    },
+    onError: (...args) => {
+      setIsModalOpen(false)
+      alert("ERRO: Algo deu errado durante a exclusão do post.")
     },
   })
 
@@ -57,7 +67,9 @@ const DeletePostDialog: React.FC<Props> = ({ children, post, setIsModalOpen, red
                 <p className="mb-3 text-stone-600">
                   Tem certeza que deseja excluir seu post permanentemente?
                 </p>
-                <p className="bg-neutral-200 px-3 py-1.5 rounded-lg text-zinc-800 text-sm">{post.title}</p>
+                <p className="bg-neutral-200 px-3 py-1.5 rounded-lg text-zinc-800 text-sm">
+                  {post.title}
+                </p>
               </div>
               <div className="flex justify-between">
                 <Dialog.Close asChild>

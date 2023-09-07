@@ -3,9 +3,5 @@ export const metadata = {
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <section className="h-screen overflow-hidden">
-      {children}
-    </section>
-  )
+  return <section className="h-screen overflow-hidden">{children}</section>
 }

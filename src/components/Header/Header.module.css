@@ -1,0 +1,6 @@
+.colored_border {
+  border: 2px solid transparent;
+  background:
+    linear-gradient(45deg, black, transparent) padding-box,
+    linear-gradient(45deg, #7a24ff, #00ffe9) border-box;
+}

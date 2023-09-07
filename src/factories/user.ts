@@ -1,8 +1,8 @@
+import { z } from "zod"
 import { api_endpoint } from "@/CONSTANTS"
 import { IUserBid, userBidsSchema } from "@/schemas/users"
-import { z } from "zod"
-import { getUserActiveBids as getUserActiveBidsFunction } from "../components/Sidebar/getActiveUserBids"
 import { User } from "@/types/interfaces"
+import { getUserActiveBids as getUserActiveBidsFunction } from "../components/Sidebar/getActiveUserBids"
 
 export function createUser(user: User | null) {
   let _userBids: IUserBid[] = []

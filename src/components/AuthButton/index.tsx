@@ -1,8 +1,8 @@
 "use client"
 
+import clsx from "clsx"
 import { signIn, signOut } from "next-auth/react"
 import { HTMLAttributes } from "react"
-import clsx from "clsx"
 
 interface Props extends HTMLAttributes<HTMLButtonElement> {
   action: "sign_out" | "sign_in"
@@ -47,7 +47,7 @@ function AuthButton({
         "border-red-500": border === "red",
         "font-normal": weight === "normal",
         "font-medium": weight === "medium",
-        "border": !!border,
+        border: !!border,
       })}
       {...rest}
     >

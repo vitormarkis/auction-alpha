@@ -1,14 +1,13 @@
 "use client"
 
-import * as Dialog from "@radix-ui/react-dialog"
-import ReactDOM from "react-dom"
-import React, { HTMLAttributes } from "react"
-import { SubmitHandler, useForm } from "react-hook-form"
-import { IBidBody, bidSchema } from "@/schemas/posts"
-import { useRouter } from "next/navigation"
-import { signIn } from "next-auth/react"
-import { api_endpoint } from "@/CONSTANTS"
 import clsx from "clsx"
+import { signIn } from "next-auth/react"
+import { useRouter } from "next/navigation"
+import React, { HTMLAttributes } from "react"
+import ReactDOM from "react-dom"
+import { SubmitHandler, useForm } from "react-hook-form"
+import * as Dialog from "@radix-ui/react-dialog"
+import { IBidBody, bidSchema } from "@/schemas/posts"
 
 interface Props extends HTMLAttributes<HTMLButtonElement> {
   postId: string

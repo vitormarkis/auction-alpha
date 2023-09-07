@@ -1,6 +1,6 @@
 import Navbar from "@/components/Header"
-import "../../styles/globals.css"
 import Sidebar from "@/components/Sidebar"
+import "../../styles/globals.css"
 
 export const metadata = {
   title: "Auction",

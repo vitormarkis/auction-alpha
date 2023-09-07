@@ -1,11 +1,10 @@
-import Link from "next/link"
-import Image from "next/image"
-import { Icon } from "../Icon"
-
-import { User } from "@/types/interfaces"
-import { IUserBid } from "@/schemas/users"
 import { signOut } from "next-auth/react"
+import Image from "next/image"
+import Link from "next/link"
+import { IUserBid } from "@/schemas/users"
+import { User } from "@/types/interfaces"
 import AuthButton from "../AuthButton"
+import { Icon } from "../Icon"
 
 interface Props {
   user: User | undefined
@@ -14,7 +13,6 @@ interface Props {
 }
 
 export function SidebarMenuContent({ user, userBids, setIsMenuOpen }: Props) {
-
   return (
     <aside className="flex flex-col grow text-base shrink-0 text-stone-500 whitespace-nowrap">
       <div className="py-6 px-3.5 ">
@@ -48,13 +46,13 @@ export function SidebarMenuContent({ user, userBids, setIsMenuOpen }: Props) {
             </Link>
             {user ? (
               <AuthButton
-              action="sign_out"
-              background="white"
-              textColor="red"
-              border="red"
-              weight="medium"
-              shadow
-            />
+                action="sign_out"
+                background="white"
+                textColor="red"
+                border="red"
+                weight="medium"
+                shadow
+              />
             ) : (
               <AuthButton
                 action="sign_in"

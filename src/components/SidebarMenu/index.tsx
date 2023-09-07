@@ -1,14 +1,14 @@
 "use client"
 
-import * as Dialog from "@radix-ui/react-dialog"
+import { usePathname } from "next/navigation"
+import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
 import ReactDOM from "react-dom"
 import twColors from "tailwindcss/colors"
-import { SidebarMenuContent } from "../SidebarMenuContent"
-import { User } from "@/types/interfaces"
+import * as Dialog from "@radix-ui/react-dialog"
 import { IUserBid } from "@/schemas/users"
-import { useRouter } from "next/router"
-import { usePathname } from "next/navigation"
+import { User } from "@/types/interfaces"
+import { SidebarMenuContent } from "../SidebarMenuContent"
 
 interface Props {
   user: User | undefined

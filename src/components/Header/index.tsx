@@ -1,16 +1,19 @@
 import { Session } from "next-auth"
+import { Josefin_Sans } from "next/font/google"
+import { headers } from "next/headers"
 import Image from "next/image"
 import Link from "next/link"
-import AuthButton from "../AuthButton"
-import { headers } from "next/headers"
-import LogoutButton from "../LogoutButton"
-import { api_endpoint } from "@/CONSTANTS"
-import { Icon } from "../Icon"
-import { Josefin_Sans } from "next/font/google"
-import SidebarMenu from "../SidebarMenu"
-import { userBidsSchema } from "@/schemas/users"
 import { z } from "zod"
+import { cn } from "@/lib/utils"
+import { ProfilePictureIconDefault } from "@/components/quarks"
+import { api_endpoint } from "@/CONSTANTS"
+import { userBidsSchema } from "@/schemas/users"
+import AuthButton from "../AuthButton"
+import { Icon } from "../Icon"
+import LogoutButton from "../LogoutButton"
 import { getUserActiveBids } from "../Sidebar/getActiveUserBids"
+import SidebarMenu from "../SidebarMenu"
+import st from "./Header.module.css"
 
 const josefins_sans = Josefin_Sans({
   subsets: ["latin"],
@@ -60,7 +63,9 @@ export default async function () {
                 height={28}
                 className="text-cyan-500"
               />
-              <h1 className={`font-bold translate-y-[1px] text-xl ${josefins_sans.className}`}>Auction.</h1>
+              <h1 className={`font-bold translate-y-[1px] text-xl ${josefins_sans.className}`}>
+                Auction.
+              </h1>
             </Link>
           </div>
         </div>
@@ -77,7 +82,9 @@ export default async function () {
                 height={28}
                 className="text-cyan-500"
               />
-              <h1 className={`font-bold translate-y-[1px] text-xl ${josefins_sans.className}`}>Auction.</h1>
+              <h1 className={`font-bold translate-y-[1px] text-xl ${josefins_sans.className}`}>
+                Auction.
+              </h1>
             </Link>
           </div>
         </div>
@@ -122,14 +129,18 @@ export default async function () {
                 />
               </button> */}
               {session && (
-                <div className="">
-                  <Image
-                    src={user?.image ?? ""}
-                    alt={`Imagem de perfil de ${user?.name ?? "convidado"}`}
-                    width={36}
-                    height={36}
-                    className="rounded-full"
-                  />
+                <div className="rounded-full overflow-hidden w-9 h-9 relative">
+                  {user?.image && (
+                    <Image
+                      src={user?.image ?? ""}
+                      alt={`Imagem de perfil de ${user?.name ?? "convidado"}`}
+                      className={cn({ [st.colored_border]: user?.role === "ADMIN" })}
+                      fill
+                    />
+                  )}
+                  {!user?.image && (
+                    <ProfilePictureIconDefault>{user?.name?.charAt(0)}</ProfilePictureIconDefault>
+                  )}
                 </div>
               )}
             </div>

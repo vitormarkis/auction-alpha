@@ -1,8 +1,8 @@
 "use client"
 
-import { ReactQueryClientProvider } from "@/services/queryClient"
 import { SessionProvider } from "next-auth/react"
 import { ReactNode } from "react"
+import { ReactQueryClientProvider } from "@/services/queryClient"
 
 interface Props {
   children: ReactNode

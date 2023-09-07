@@ -1,8 +1,8 @@
-import { sessionUserSchema, userLoginSchema } from "@/schemas/users"
-import { prisma } from "@/services/prisma"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import { NextApiRequest, NextApiResponse } from "next"
+import { sessionUserSchema, userLoginSchema } from "@/schemas/users"
+import { prisma } from "@/services/prisma"
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
@@ -19,7 +19,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(400).json("E-mail não cadastrado.")
       }
       if (!user.password) {
-        return res.status(400).json("Não é possível fazer login com essa conta, faça login com seu provedor.")
+        return res
+          .status(400)
+          .json("Não é possível fazer login com essa conta, faça login com seu provedor.")
       }
 
       const passwordMatches = bcrypt.compareSync(password, user.password)

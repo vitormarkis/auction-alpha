@@ -1,7 +1,7 @@
+import { Roboto } from "next/font/google"
 import "../styles/globals.css"
 import { Providers } from "./providers"
 
-import { Roboto } from "next/font/google"
 const roboto = Roboto({
   subsets: ["latin"],
   weight: ["100", "300", "400", "500", "700", "900"],

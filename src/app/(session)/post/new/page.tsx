@@ -1,15 +1,14 @@
 "use client"
 
-import { newPostSchema, TNewPostBody } from "@/pages/api/posts/schemas"
+import clsx from "clsx"
 import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
-import { Plus } from "@styled-icons/boxicons-regular/Plus"
-import { Minus } from "@styled-icons/boxicons-regular/Minus"
-import clsx from "clsx"
-import { useLimitedInput } from "./hook"
 import { z } from "zod"
+import { Minus } from "@styled-icons/boxicons-regular/Minus"
+import { Plus } from "@styled-icons/boxicons-regular/Plus"
 import { useMutation } from "@tanstack/react-query"
-import { queryClient } from "@/services/queryClient"
+import { TNewPostBody, newPostSchema } from "@/pages/api/posts/schemas"
+import { useLimitedInput } from "./hook"
 
 type MediaString = Record<string, string>
 
@@ -26,18 +25,17 @@ const NewPost: React.FC = () => {
 
   const { mutate, status, isLoading } = useMutation({
     mutationFn: async (newPostData: TNewPostBody) => {
-      const headers = new Headers()
-      headers.append("Content-Type", "application/json")
-
-      const res = await fetch(`/api/posts`, {
-        headers,
+      const response = await fetch(`/api/posts`, {
         method: "POST",
         body: JSON.stringify(newPostData),
       })
-      return res
+
+      if (!response.ok) throw new Error("Something went wrong during the creation of the post.")
+
+      const data = await response.json()
+      return data
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries(["posts"])
+    onSuccess: async () => {
       reset()
       setMediaInput([
         {
@@ -117,7 +115,9 @@ const NewPost: React.FC = () => {
         </div>
       ) : success ? (
         <div className="p-6 flex items-center justify-center">
-          <p className="p-3 rounded-lg font-semibold erald-200 bg-emerald-100 text-emerald-500">{success}</p>
+          <p className="p-3 rounded-lg font-semibold erald-200 bg-emerald-100 text-emerald-500">
+            {success}
+          </p>
         </div>
       ) : null}
       <form
@@ -157,7 +157,9 @@ const NewPost: React.FC = () => {
                   value={value}
                   onChange={e =>
                     setMediaInput(old =>
-                      old.map(oldObj => (key in oldObj ? { ...oldObj, [key]: e.target.value } : oldObj))
+                      old.map(oldObj =>
+                        key in oldObj ? { ...oldObj, [key]: e.target.value } : oldObj
+                      )
                     )
                   }
                   className="border-neutral-500 border w-full bg-white px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double"

@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-export const postFeedSchema = z.object({
+export const postsSessionSchema = z.object({
   id: z.string(),
   created_at: z.string(),
   title: z.string(),
@@ -15,7 +15,7 @@ export const postFeedSchema = z.object({
   author: z.object({
     name: z.string(),
     role: z.enum(["USER", "ADMIN"]),
-    image: z.string(),
+    image: z.string().nullable(),
   }),
   post_media: z.array(
     z.object({
@@ -44,5 +44,4 @@ export const bidSchema = z.object({
 })
 
 export type IBidBody = z.infer<typeof bidSchema>
-
-export type IPostFeed = z.infer<typeof postFeedSchema>
+export type PostSession = z.infer<typeof postsSessionSchema>

@@ -1,11 +1,11 @@
-import { withAuth } from "next-auth/middleware";
-import { api } from "./services/api";
+import { withAuth } from "next-auth/middleware"
+import { api } from "./services/api"
 
 export default withAuth({
   callbacks: {
     authorized: async ({ token }) => {
       if (token?.accessToken) {
-        api.defaults.headers.common.Authorization = `Bearer ${token.accessToken}`;
+        api.defaults.headers.common.Authorization = `Bearer ${token.accessToken}`
       }
 
       // if (token) {
@@ -16,10 +16,10 @@ export default withAuth({
       // });
       // }
 
-      return !!token;
+      return !!token
     },
   },
   secret: process.env.NEXT_SECRET,
-});
+})
 
-export const config = { matcher: ["/admin", "/home"] };
+export const config = { matcher: ["/admin", "/home"] }

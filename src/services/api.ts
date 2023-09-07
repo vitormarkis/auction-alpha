@@ -1,9 +1,8 @@
-import { api_endpoint } from "@/CONSTANTS"
 import axios from "axios"
-import { getSession } from "next-auth/react"
+import { api_endpoint } from "@/CONSTANTS"
 
 export const api = axios.create({
-  baseURL: `${api_endpoint}/api`,
+  baseURL: [api_endpoint, "/api"].join(""),
 })
 
 // api.interceptors.request.use(async config => {

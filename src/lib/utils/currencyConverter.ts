@@ -9,7 +9,10 @@ export function currency(
   }
 ): string {
   const { trailZero } = preferences
-  const formattedValue = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(value)
+  const formattedValue = new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(value)
   if (!trailZero) return formattedValue
   const [leftPrice, rightPrice] = formattedValue.split(",")
   return rightPrice === "00" ? leftPrice : formattedValue

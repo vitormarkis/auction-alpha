@@ -1,3 +1,7 @@
-export function ServerGeneric({ element }: { element: React.ReactNode | (() => Promise<Element>) }) {
+export function ServerGeneric({
+  element,
+}: {
+  element: React.ReactNode | (() => Promise<Element>)
+}) {
   return <>{element}</>
 }
