@@ -1,22 +1,22 @@
 "use client"
 
 import { Session } from "next-auth"
+import { useSession } from "next-auth/react"
 import { useState } from "react"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import { MoreHorizontal } from "@styled-icons/fluentui-system-regular/MoreHorizontal"
 import { PostSession } from "@/requests/get-posts/getPosts"
-import { User } from "@/types/interfaces"
 import DeletePostDialog from "../DeletePostDialog"
 
 interface Props {
   authorId: string
-  user: User | null
   post: PostSession
   redirect?: string | undefined
   session?: Session
 }
 
-const PostMenu: React.FC<Props> = ({ authorId, user, post, redirect, session }) => {
+const PostMenu: React.FC<Props> = ({ authorId, post, redirect, session }) => {
+  const { user } = useSession().data ?? {}
   const [isModalOpen, setIsModalOpen] = useState(false)
   const isAuthor = authorId === user?.id ?? false
   const isAdmin = user?.role === "ADMIN"

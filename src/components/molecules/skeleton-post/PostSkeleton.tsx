@@ -7,7 +7,7 @@ export type PostSkeletonProps = {
 export function PostSkeleton({ quantity = 1 }: PostSkeletonProps) {
   return (
     <>
-      {Array.from({ length: quantity }).map(key => (
+      {Array.from({ length: quantity }).map((_, key) => (
         <div
           key={`post-skeleton-${key}`}
           className="p-6 whitespace-nowrap"

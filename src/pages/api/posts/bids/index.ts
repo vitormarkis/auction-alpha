@@ -1,29 +1,40 @@
 import { NextApiRequest, NextApiResponse } from "next"
 import { getServerSession } from "next-auth"
-import { bidSchema } from "@/schemas/posts"
+import { z } from "zod"
+import { createBid } from "@/actions/make-bid/database-operation"
+import { makeBidAPIBodySchema } from "@/actions/make-bid/schema-body-api"
 import { prisma } from "@/services/prisma"
+import { payloadParser } from "@/utils/payloadParser"
 import { authOptions } from "../../auth/[...nextauth]"
+
+export const payloadSchema_POST = z.object({
+  body: makeBidAPIBodySchema,
+})
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
     try {
       const session = await getServerSession(req, res, authOptions)
-      if (!session || !session.user || !session.user.id)
+      if (!session || !session.user || !session.user.id) {
         return res.status(401).send("Usuário não autenticado.")
+      }
 
-      const { post_id, value } = bidSchema.parse(req.body)
+      const payloadParsed = payloadParser(req, payloadSchema_POST)
+      if (!payloadParsed.parse.success) return res.status(400).json(payloadParsed.json)
 
-      await prisma.bids.create({
-        data: {
+      const { body } = payloadParsed.parse.data
+      const { post_id, value } = body
+
+      const createdBid = await createBid(
+        {
           post_id,
-          value,
           user_id: session.user.id,
+          value,
         },
-      })
+        prisma
+      )
 
-      return res.json({
-        msg: "Lance criado com sucesso",
-      })
+      return res.status(201).json(createdBid)
     } catch (error) {
       return res.json(error)
     }

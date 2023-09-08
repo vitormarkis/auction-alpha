@@ -1,6 +1,6 @@
-import { prisma } from "@/services/prisma"
+import { PrismaClient } from "@prisma/client"
 
-export async function getPosts() {
+export async function getPosts(prisma: PrismaClient) {
   const posts = await prisma.post.findMany({
     select: {
       id: true,

@@ -8,15 +8,13 @@ import { Poll } from "@styled-icons/fluentui-system-regular/Poll"
 import { currency } from "@/lib/utils/currencyConverter"
 import { ProfileAvatarPicture } from "@/components/atoms/avatar-picture-profile/ProfileAvatarPicture"
 import { PostSession } from "@/requests/get-posts/getPosts"
-import { User } from "@/types/interfaces"
 import PostMenu from "./PostMenu"
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   post: PostSession
-  user: User | null
 }
 
-export const Post: React.FC<Props> = ({ post: postProps, className, user, ...rest }) => {
+export const Post: React.FC<Props> = ({ post: postProps, className, ...rest }) => {
   const { author_id, created_at, id, post_media, price, text, title, author, slug, _count } =
     postProps
 
@@ -44,7 +42,6 @@ export const Post: React.FC<Props> = ({ post: postProps, className, user, ...res
           <PostMenu
             post={postProps}
             authorId={author_id}
-            user={user}
           />
         </div>
       </div>

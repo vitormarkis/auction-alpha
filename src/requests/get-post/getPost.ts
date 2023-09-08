@@ -52,3 +52,5 @@ export async function getPost(slug: string, prisma: PrismaClient) {
 
   return { post }
 }
+
+export type PostPage = Awaited<ReturnType<typeof getPost>>["post"]

@@ -38,7 +38,6 @@ export const ProfileAvatarPicture = React.forwardRef<
             {...props}
             src={src}
             className={cn("absolute inset-0", className)}
-            onLoadingStatusChange={isLoaded => console.log(isLoaded)}
           />
         ) : (
           <div className="absolute inset-0 bg-gray-300 animate-pulse" />
