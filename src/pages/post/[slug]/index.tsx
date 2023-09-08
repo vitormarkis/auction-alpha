@@ -16,7 +16,7 @@ import { usePosts } from "@/hooks/use-posts/usePosts"
 import { PostSession } from "@/requests/get-posts/getPosts"
 
 export default function PostPage() {
-  const { getPostPageQuery } = usePosts()
+  const { getPostPageQuery, getDeleteBidMutation } = usePosts()
   const router = useRouter()
   const { slug } = router.query
   const { data, status } = useSession()
@@ -24,6 +24,12 @@ export default function PostPage() {
 
   const { data: post, isLoading: isPostLoading } = getPostPageQuery(slug as string, {
     enabled: !!slug,
+  })
+
+  const { mutateAsync: mutateAsyncDeleteBid } = getDeleteBidMutation({
+    onSuccess: ({ message }) => {
+      alert(message)
+    },
   })
 
   const isAuthor = post?.author_id === user?.id
@@ -36,6 +42,10 @@ export default function PostPage() {
 
   const bidMadeByUser = user?.id ? post?.bids.find(post => user?.id === post.user.id) : null
   const userHasMadeABidOnThisPost = !!bidMadeByUser
+
+  async function handleDeleteBid(bidId: string) {
+    await mutateAsyncDeleteBid({ subject: { bidId } })
+  }
 
   return (
     <PostProvider post={post}>
@@ -156,6 +166,7 @@ export default function PostPage() {
                       {currency(bidMadeByUser.value)}
                     </p>
                     <button
+                      onClick={() => handleDeleteBid(bidMadeByUser.id)}
                       className="p-1 leading-none text-white bg-red-500 rounded-lg"
                       title="Remover seu lance desse post"
                     >

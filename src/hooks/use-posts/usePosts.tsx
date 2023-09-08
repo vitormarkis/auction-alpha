@@ -8,8 +8,12 @@ import {
   useQuery,
 } from "@tanstack/react-query"
 import { api_endpoint } from "@/CONSTANTS"
+import { DeleteBidVariables } from "@/actions/delete-bid/mutation-variables"
+import { DeleteBidAPIBody } from "@/actions/delete-bid/schema-body-api"
 import { CreatedBid } from "@/actions/make-bid/database-operation"
 import { MakeBidVariables } from "@/actions/make-bid/mutation-variables"
+import { MakeBidAPIBody } from "@/actions/make-bid/schema-body-api"
+import { DeleteBidResponse } from "@/pages/api/posts/bids"
 import { PostPage } from "@/requests/get-post/getPost"
 import { PostSession } from "@/requests/get-posts/getPosts"
 
@@ -19,11 +23,36 @@ export interface IPostsContext {
   getMakeBidMutation: (
     options?: UseMutationOptions<CreatedBid, unknown, MakeBidVariables>
   ) => UseMutationResult<CreatedBid, unknown, MakeBidVariables>
+  getDeleteBidMutation: (
+    options?: UseMutationOptions<DeleteBidResponse, unknown, DeleteBidVariables>
+  ) => UseMutationResult<DeleteBidResponse, unknown, DeleteBidVariables>
 }
 
 export const PostsContext = createContext({} as IPostsContext)
 
 export function PostsProvider(props: { children: React.ReactNode }) {
+  const getDeleteBidMutation = useCallback(
+    (options?: UseMutationOptions<DeleteBidResponse, unknown, DeleteBidVariables>) => {
+      const { ...mutationsOptions } = options ?? {}
+
+      return useMutation<DeleteBidResponse, unknown, DeleteBidVariables>({
+        mutationFn: async ({ subject }) => {
+          const response = await fetch(`/api/posts/bids`, {
+            method: "DELETE",
+            body: JSON.stringify({
+              bidId: subject.bidId,
+            } satisfies DeleteBidAPIBody),
+          })
+          if (!response.ok) throw new Error()
+          const data = (await response.json()) as DeleteBidResponse
+          return data
+        },
+        ...mutationsOptions,
+      })
+    },
+    []
+  )
+
   const getMakeBidMutation = useCallback(
     (options?: UseMutationOptions<CreatedBid, unknown, MakeBidVariables>) => {
       const { ...mutationsOptions } = options ?? {}
@@ -35,7 +64,7 @@ export function PostsProvider(props: { children: React.ReactNode }) {
             body: JSON.stringify({
               post_id: subject.postId,
               value: form.value,
-            }),
+            } satisfies MakeBidAPIBody),
           })
           if (!response.ok) throw new Error()
           const data = (await response.json()) as CreatedBid
@@ -85,6 +114,7 @@ export function PostsProvider(props: { children: React.ReactNode }) {
         postsQuery,
         getPostPageQuery,
         getMakeBidMutation,
+        getDeleteBidMutation,
       }}
     >
       {props.children}
