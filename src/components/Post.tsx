@@ -3,11 +3,11 @@ import moment from "moment"
 import "moment/locale/pt-br"
 import Link from "next/link"
 import { HTMLAttributes } from "react"
-import { Eye } from "@styled-icons/fluentui-system-regular/Eye"
-import { Poll } from "@styled-icons/fluentui-system-regular/Poll"
-import { currency } from "@/lib/utils/currencyConverter"
+// import { Eye } from "@styled-icons/fluentui-system-regular/Eye"
 import { ProfileAvatarPicture } from "@/components/atoms/avatar-picture-profile/ProfileAvatarPicture"
+import { currency } from "@/lib/utils/currencyConverter"
 import { PostSession } from "@/requests/get-posts/getPosts"
+import { Poll } from "@styled-icons/fluentui-system-regular/Poll"
 import PostMenu from "./PostMenu"
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
@@ -77,10 +77,11 @@ export const Post: React.FC<Props> = ({ post: postProps, className, ...rest }) =
           </div>
           <div className="bg-neutral-400 h-5 w-[1px] mx-3" />
           <div className="hidden whitespace-normal sm:flex items-center text-sm">
-            <Eye
+            eye
+            {/* <Eye
               width={16}
               height={16}
-            />
+            /> */}
             {_count.bids > 1 ? (
               <p className="ml-1">{_count.bids} pessoas já fizeram um lance</p>
             ) : (

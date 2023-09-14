@@ -1,12 +1,18 @@
 import { NextApiRequest, NextApiResponse } from "next"
 import { getServerSession } from "next-auth"
-import slugify from "react-slugify"
 import { z } from "zod"
 import { ownerId } from "@/CONSTANTS"
+import { createPost } from "@/actions/create-post/database-operation"
+import { createPostAPIBodySchema } from "@/actions/create-post/schema-body-api"
 import { getPosts } from "@/requests/get-posts/getPosts"
 import { prisma } from "@/services/prisma"
+import { createPostSlug } from "@/utils/create-post-slug/createPostSlug"
+import { payloadParser } from "@/utils/payloadParser"
 import { authOptions } from "../auth/[...nextauth]"
-import { newPostSchema } from "./schemas"
+
+const payloadSchema_POST = z.object({
+  body: createPostAPIBodySchema,
+})
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
@@ -22,30 +28,29 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(401).send("Usuário não autenticado.")
       }
 
-      const { announcement_date, medias_url, price, text, title } = newPostSchema.parse(req.body)
+      const payloadParsed = payloadParser(req, payloadSchema_POST)
+      if (!payloadParsed.parse.success) return res.status(400).json(payloadParsed.json)
 
-      const random = () => parseInt(String(Math.random() * 10 ** 10))
-      const slug = `${slugify(title)}-${random()}`
+      const { body } = payloadParsed.parse.data
+      const { announcement_date, medias_url, price, text, title } = body
+      const { slug } = createPostSlug(title)
 
-      const db_response = await prisma.post.create({
-        data: {
+      const createdPost = createPost(
+        {
           announcement_date,
+          medias_url,
           price,
           text,
-          slug,
           title,
+          slug,
           author_id: session.user.sub,
-          post_media: {
-            create: medias_url.map(media => ({
-              media,
-            })),
-          },
         },
-      })
+        prisma
+      )
 
-      return res.status(201).json(db_response)
+      return res.status(201).json(createdPost)
     } catch (error) {
-      return res.json(error)
+      return res.status(500).json(error)
     }
   }
 

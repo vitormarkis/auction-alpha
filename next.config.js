@@ -4,6 +4,7 @@ const nextConfig = {
   images: {
     domains: ["avatars.githubusercontent.com", "lh3.googleusercontent.com"],
   },
+  esmExternals: false,
   env: {
     ENVIRONMENT_SET: process.env.ENVIRONMENT_SET,
   },

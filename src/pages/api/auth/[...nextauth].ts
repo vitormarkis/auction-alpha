@@ -1,13 +1,13 @@
+import { sessionUserSchema, userLoginSchema } from "@/schemas/users"
+import { api } from "@/services/api"
+import { prisma } from "@/services/prisma"
+import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { NextAuthOptions } from "next-auth"
 import NextAuth from "next-auth/next"
 import CredentialsProvider from "next-auth/providers/credentials"
 import GithubProvider, { GithubProfile } from "next-auth/providers/github"
-import GoogleProvider, { GoogleProfile } from "next-auth/providers/google"
+import GoogleProvider from "next-auth/providers/google"
 import { z } from "zod"
-import { PrismaAdapter } from "@next-auth/prisma-adapter"
-import { sessionUserSchema, userLoginSchema } from "@/schemas/users"
-import { api } from "@/services/api"
-import { prisma } from "@/services/prisma"
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
