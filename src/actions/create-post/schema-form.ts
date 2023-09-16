@@ -19,7 +19,8 @@ export const createPostFormSchema = z.object({
     .max(5000, "Limite de caracteres excedido no campo descrição."),
   medias_url: z
     .array(uploadFileResponseSchema)
-    .min(1, "Escolha pelo menos uma imagem para seu post."),
+    .min(1, "Escolha pelo menos uma imagem para seu post.")
+    .transform(medias => medias.map(arg => arg.url)),
   price: z
     .string()
     .transform(Number)
@@ -37,7 +38,8 @@ export const createPostFormSchema = z.object({
       const comparison = dayjs().add(30, "day").startOf("day")
 
       return comparison.isAfter(upcomingDate) || comparison.isSame(upcomingDate)
-    }, "A data de encerramento do anúncio deve ser pelo menos dentro de 1 mês."),
+    }, "A data de encerramento do anúncio deve ser pelo menos dentro de 1 mês.")
+    .transform(arg => arg.toISOString()),
   // announcement_date: z
   //   .string({
   //     required_error: "Insira uma data válida.",
@@ -59,4 +61,4 @@ export const createPostFormSchema = z.object({
 })
 
 export type CreatePostFormInput = z.input<typeof createPostFormSchema>
-export type CreatePostForm = z.output<typeof createPostFormSchema>
+export type CreatePostFormOutput = z.output<typeof createPostFormSchema>

@@ -2,11 +2,15 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["avatars.githubusercontent.com", "lh3.googleusercontent.com"],
+    domains: ["avatars.githubusercontent.com", "lh3.googleusercontent.com", "utfs.io"],
   },
-  esmExternals: false,
+  experimental: {
+    esmExternals: false,
+  },
   env: {
     ENVIRONMENT_SET: process.env.ENVIRONMENT_SET,
+    UPLOADTHING_SECRET: process.env.UPLOADTHING_SECRET,
+    UPLOADTHING_APP_ID: process.env.UPLOADTHING_APP_ID,
   },
   // webpack(config) {
   //   config.infrastructureLogging = { debug: /PackFileCache/ }

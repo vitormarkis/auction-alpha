@@ -14,14 +14,16 @@ export const slotVariants = cva("", {
     size: {
       regular: "h-14 w-14",
       medium: "h-20 w-20",
+      large: "h-40 w-40",
+      "ver-regular": "w-14 aspect-[9/16]",
+      "ver-medium": "w-20 aspect-[9/16]",
     },
     ring: {
-      // prettier-ignore
       action: `
         [&:has(.upf-trigger.wrapper:focus)]:ring-[1.5px]
-        [&:has(.upf-trigger.wrapper:focus)]:ring-[#186868]
+        [&:has(.upf-trigger.wrapper:focus)]:ring-[#6fe0e0]
         [&:has(.upf-trigger.wrapper:focus)]:border-[#0ff]
-      `.replace(/\s+/g, " ").trim(),
+      `,
       none: "",
     },
   },
@@ -48,26 +50,34 @@ export const UploadFileSlot = React.forwardRef<React.ElementRef<"div">, UploadFi
     return (
       <div
         className={cn(
-          "relative border-[line-width:var(--borderWidth)] rounded-[var(--rounded)] transition-[transform] duration-200 shrink-0",
+          "relative border-neutral-500 rounded-[var(--rounded)] transition-[transform] duration-200 shrink-0",
           response &&
-            cn(
-              "[&:has(.upf-trigger:hover)]:-translate-y-2",
-              "[&:is(:has(.upf-trigger:hover),_:focus-within)_[data-purpose='remove-upload-file']]:translate-y-0",
-              "[&:is(:has(.upf-trigger:hover),_:focus-within)_[data-purpose='remove-upload-file']]:opacity-100",
-              "[&:is(:has(.upf-trigger:hover),_:focus-within)_[data-purpose='remove-upload-file']]:scale-100"
-            ),
+            cn(`
+              [&:has(.upf-trigger:hover)]:-translate-y-2
+              [&:is(:has(.upf-trigger:hover),_:focus-within)_[data-purpose='remove-upload-file']]:translate-y-[calc(-50%)]
+              [&:is(:has(.upf-trigger:hover),_:focus-within)_[data-purpose='remove-upload-file']]:opacity-100
+              [&:is(:has(.upf-trigger:hover),_:focus-within)_[data-purpose='remove-upload-file']]:scale-100
+              [&_[data-purpose='remove-upload-file']]:translate-y-[calc(-50%_+_1rem)]
+              [&_[data-purpose='remove-upload-file']]:opacity-0
+              [&_[data-purpose='remove-upload-file']]:scale-90
+            `),
           slotVariants({ className, ring, size })
         )}
         ref={ref}
-        style={cssVariables([
-          ["rounded", rounded, "px"],
-          ["borderWidth", borderWidth, "px"],
-        ])}
+        style={cssVariables(
+          [
+            ["rounded", rounded, "px"],
+            ["borderWidth", borderWidth, "px"],
+          ],
+          {
+            borderWidth,
+          }
+        )}
       >
         {response ? (
           <>
             <div className="absolute inset-0 overflow-hidden rounded-[calc(var(--rounded)_-_var(--borderWidth))]">
-              <div className="absolute inset-0 bg-neutral-800 animate-pulse" />
+              <div className="absolute inset-0 bg-neutral-300 animate-pulse" />
               <Link
                 // data-type="trigger"
                 target="_blank"
@@ -87,7 +97,8 @@ export const UploadFileSlot = React.forwardRef<React.ElementRef<"div">, UploadFi
               />
             </div>
             <UploadFileRemoveFile
-              className="absolute z-20 right-0 top-0 translate-x-1/2 -translate-y-1/2"
+              className="absolute z-30 right-0 top-0 translate-x-1/2 -translate-y-1/2"
+              size={{ sm: "medium" }}
               onClick={() => handleRemoveFile({ fileUrl: response.url })}
             />
           </>

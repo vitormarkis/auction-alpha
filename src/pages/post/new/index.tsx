@@ -1,6 +1,7 @@
 import { format } from "date-fns"
 import ptBR from "date-fns/locale/pt-BR"
 import { CalendarIcon } from "lucide-react"
+import { AlertOctagon } from "lucide-react"
 import moment from "moment"
 import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
@@ -24,13 +25,14 @@ import {
 import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Textarea } from "@/components/ui/textarea"
+import { UploadFileCarousel } from "@/components/upload-file/components/carousel/UploadFileCarousel"
 import { usePosts } from "@/hooks/use-posts/usePosts"
 import {
-  CreatePostForm,
+  CreatePostFormOutput,
   CreatePostFormInput,
   createPostFormSchema,
 } from "@/actions/create-post/schema-form"
-import { getCreatePostAPIBody } from "@/actions/create-post/transform-body-api"
+import { queryClient } from "@/services/queryClient"
 
 type MediaString = Record<string, string>
 
@@ -39,12 +41,8 @@ export default function NewPostPage() {
   const { mutateAsync: mutateAsyncCreatePost, isLoading: isLoadingCreatePost } =
     getCreatePostMutation({
       onSuccess: async () => {
+        queryClient.invalidateQueries(["posts"])
         reset()
-        setMediaInput([
-          {
-            initial: "",
-          },
-        ])
       },
     })
 
@@ -66,38 +64,10 @@ export default function NewPostPage() {
 
   const { handleSubmit, reset } = form
 
-  const [mediaInput, setMediaInput] = useState<MediaString[]>([
-    {
-      initial: "",
-    },
-  ])
-
   const submitHandler: SubmitHandler<CreatePostFormInput> = async formData => {
-    const form = formData as unknown as CreatePostForm
-    const body = getCreatePostAPIBody(form)
-    await mutateAsyncCreatePost({ form: body })
+    const form = formData as unknown as CreatePostFormOutput
+    await mutateAsyncCreatePost({ form })
   }
-
-  const maxInputs = 5
-
-  const rand = () => {
-    return Math.random().toString(36).substring(2, 9)
-  }
-
-  // const handleNewMediaInputRow = () => {
-  //   if (mediaInput.length >= maxInputs) return
-  //   setMediaInput(old => [...old, { [rand()]: "" }])
-  // }
-
-  // const handleDeleteMediaInputRow = (mediaString?: MediaString) => {
-  //   const [key] = Object.entries(mediaString ?? {})[0]
-
-  //   setMediaInput(old =>
-  //     old.filter(oldObj => {
-  //       return !(key in oldObj)
-  //     })
-  //   )
-  // }
 
   return (
     <HomeLayout>
@@ -119,6 +89,21 @@ export default function NewPostPage() {
           >
             <span>{isLoadingCreatePost ? "Publicando" : "Publicar"}</span>
           </button>
+        </div>
+        <div className="px-6">
+          <div className="pl-3 pt-3">
+            <div className="relative py-2 leading-none px-4 rounded-md bg-red-100 border border-red-500">
+              <div className="absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 h-6 w-6 rounded-full grid place-items-center bg-red-500">
+                <AlertOctagon
+                  size={14}
+                  className="text-white"
+                />
+              </div>
+              <h1 className="text-red-900">
+                Campos com valores troll resultarão na rejeição do post.
+              </h1>
+            </div>
+          </div>
         </div>
         <Form {...form}>
           <form
@@ -175,80 +160,36 @@ export default function NewPostPage() {
               name="medias_url"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Descrição</FormLabel>
+                  <FormLabel>Imagens do produto</FormLabel>
                   <FormControl>
-                    {/* <UploadFileCarousel<CreatePostFormInput>
+                    <UploadFileCarousel<CreatePostFormInput>
                       formField="medias_url"
                       endpoint="newPostMedias"
+                      containerClassname="peer"
                       {...field}
-                    /> */}
+                    />
                   </FormControl>
-                  <FormDescription className="peer-focus:opacity-100 opacity-0 transition-all duration-200 peer-focus:translate-y-0 translate-y-2 ease-in-out">
-                    Texto com detalhes sobre o produto, forneça o máximo de informações sobre o seu
-                    produto aqui.
+                  <FormDescription
+                    className={cn(
+                      "transition-all duration-200 ease-in-out",
+                      `
+                    translate-y-2 
+                    opacity-0 
+                    peer-focus-within:opacity-100
+                    peer-focus-within:translate-y-0
+                  `
+                    )}
+                  >
+                    Fotos do estado do produto.{" "}
+                    <strong>
+                      Seu post será rejeitado caso tenha imagens que não tenham relação com o
+                      produto ou que não se alinhem com os valores da Auction App.
+                    </strong>
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            {/* <div>
-              {mediaInput.map(obj => {
-                const [key] = Object.entries(obj)[0]
-
-                const { [key]: value } = mediaInput.find(arrObj => {
-                  return key in arrObj
-                })!
-
-                const lastInput = mediaInput.at(-1)?.[key] ?? ""
-
-                return (
-                  <div
-                    key={key}
-                    className="flex flex-row gap-2 mb-2"
-                  >
-                    <input
-                      type="text"
-                      placeholder="URL da mídia..."
-                      value={value}
-                      onChange={e =>
-                        setMediaInput(old =>
-                          old.map(oldObj =>
-                            key in oldObj ? { ...oldObj, [key]: e.target.value } : oldObj
-                          )
-                        )
-                      }
-                      className="border-neutral-500 border w-full bg-white px-3 py-3 rounded-lg focus:outline-1 focus:outline-offset-1 focus:outline-blue-600 focus:outline-double"
-                    />
-                    <div className="flex justify-center gap-2">
-                      {mediaInput.length === 1 && lastInput.length === 0 ? (
-                        <></>
-                      ) : lastInput?.length > 0 && mediaInput.length !== maxInputs ? (
-                        <>
-                          <RowButton
-                            mediaString={obj}
-                            onClickHandle={handleNewMediaInputRow}
-                            action="add"
-                          />
-                          {mediaInput.length > 1 && mediaInput.length <= maxInputs && (
-                            <RowButton
-                              mediaString={obj}
-                              onClickHandle={handleDeleteMediaInputRow}
-                              action="remove"
-                            />
-                          )}
-                        </>
-                      ) : (
-                        <RowButton
-                          mediaString={obj}
-                          onClickHandle={handleDeleteMediaInputRow}
-                          action="remove"
-                        />
-                      )}
-                    </div>
-                  </div>
-                )
-              })}
-            </div> */}
             <FormField
               control={form.control}
               name="price"

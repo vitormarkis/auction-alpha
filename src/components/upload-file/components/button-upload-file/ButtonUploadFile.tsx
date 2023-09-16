@@ -32,21 +32,22 @@ export function ButtonUploadFile({ className, ...props }: ButtonUploadFileProps)
     >
       <UploadButton
         appearance={{
+          container: "h-full",
           button:
-            "absolute inset-0 h-full w-full cursor-pointer data-[state='uploading']:opacity-95",
+            "absolute inset-0 h-full w-full bg-transparent cursor-pointer data-[state='uploading']:opacity-95",
           allowedContent: "hidden",
         }}
         content={{
           button: ({ ready, isUploading }) => {
             if (!ready || isUploading)
               return (
-                <div className="border-[4px] h-6 w-6 border-transparent border-b-white bg-transparent rounded-full animate-spin" />
+                <div className="border-[4px] h-6 w-6 border-transparent border-b-neutral-500 bg-transparent rounded-full animate-spin" />
               )
             return (
               <IconImage
                 size={20}
                 strokeWidth={2}
-                className="text-border"
+                className="text-border text-neutral-500"
               />
             )
           },

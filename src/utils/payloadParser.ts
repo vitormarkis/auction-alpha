@@ -10,8 +10,8 @@ type ResponseJSON = {
 
 export function payloadParser<
   T extends z.ZodObject<{
-    body?: z.ZodObject<any, "strip", z.ZodTypeAny>
-    query?: z.ZodObject<any, "strip", z.ZodTypeAny>
+    body?: z.ZodType
+    query?: z.ZodType
   }>,
 >(
   req: NextApiRequest,

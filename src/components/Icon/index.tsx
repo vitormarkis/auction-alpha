@@ -14,7 +14,8 @@ import { NotificationsNone } from "@styled-icons/material-sharp/NotificationsNon
 import { Payment } from "@styled-icons/material-sharp/Payment"
 import { Search } from "@styled-icons/material-sharp/Search"
 import { Settings } from "@styled-icons/material-sharp/Settings"
-import type { StyledIconBase } from "@styled-icons/styled-icon/index"
+
+// import type { StyledIconBase } from "@styled-icons/styled-icon/index"
 
 type PossibleIcons =
   | "AutoGraph"
@@ -33,7 +34,8 @@ type PossibleIcons =
   | "Feather"
   | "User"
 
-type TStyledIconBase = typeof StyledIconBase
+// type TStyledIconBase = typeof StyledIconBase
+type TStyledIconBase = any
 
 interface Props extends TStyledIconBase {
   icon: PossibleIcons
